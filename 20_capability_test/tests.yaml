@@ -1,0 +1,246 @@
+tests:
+  # ----------------------------------------------------------------------------
+  # Level 1 - Easy Factual (5 questions)
+  # ----------------------------------------------------------------------------
+  - id: "factual-capital"
+    difficulty: 1
+    category: "Factual"
+    prompt_en: "What is the capital of France? Reply with just the city name."
+    prompt_de: "Was ist die Hauptstadt von Frankreich? Antworte nur mit dem Namen der Stadt."
+    prompt_es: "¿Cuál es la capital de Francia? Responde solo con el nombre de la ciudad."
+    validator_type: "contains_any"
+    expected: ["paris", "parís"]
+
+  - id: "factual-author"
+    difficulty: 1
+    category: "Factual"
+    prompt_en: "Who wrote Romeo and Juliet? Reply with just the last name."
+    prompt_de: "Wer hat Romeo und Julia geschrieben? Antworte nur mit dem Nachnamen."
+    prompt_es: "¿Quién escribió Romeo y Julieta? Responde solo con el apellido."
+    validator_type: "contains_any"
+    expected: ["shakespeare"]
+
+  - id: "factual-planet"
+    difficulty: 1
+    category: "Factual"
+    prompt_en: "What is the largest planet in our solar system? Reply with just the planet name."
+    prompt_de: "Was ist der größte Planet in unserem Sonnensystem? Antworte nur mit dem Planetennamen."
+    prompt_es: "¿Cuál es el planeta más grande de nuestro sistema solar? Responde solo con el nombre del planeta."
+    validator_type: "contains_any"
+    expected: ["jupiter", "júpiter"]
+
+  - id: "factual-chemistry"
+    difficulty: 1
+    category: "Factual"
+    prompt_en: "What is the chemical symbol for gold? Reply with just the 2-letter symbol."
+    prompt_de: "Was ist das chemische Symbol für Gold? Antworte nur mit dem 2-stelligen Symbol."
+    prompt_es: "¿Cuál es el símbolo químico del oro? Responde solo con el símbolo de 2 letras."
+    validator_type: "contains_any"
+    expected: ["au"]
+
+  - id: "factual-continent"
+    difficulty: 1
+    category: "Factual"
+    prompt_en: "On which continent is Brazil located? Reply with just the continent name."
+    prompt_de: "Auf welchem Kontinent liegt Brasilien? Antworte nur mit dem Kontinent."
+    prompt_es: "¿En qué continente se encuentra Brasil? Responde solo con el nombre del continente."
+    validator_type: "contains_any"
+    expected: ["south america", "südamerika", "sudamérica", "america del sur", "américa del sur"]
+
+  # ----------------------------------------------------------------------------
+  # Level 2 - Formatting (5 questions)
+  # ----------------------------------------------------------------------------
+  - id: "formatting-json"
+    difficulty: 2
+    category: "Formatting"
+    prompt_en: "Extract the name 'Alice' and age 30 into JSON format. Do not include markdown or explanations. Just pure JSON."
+    prompt_de: "Extrahiere den Namen 'Alice' und das Alter 30 in das JSON-Format. Füge kein Markdown oder Erklärungen hinzu. Nur reines JSON."
+    prompt_es: "Extrae el nombre 'Alice' y la edad 30 en formato JSON. No incluyas markdown ni explicaciones. Solo JSON puro."
+    validator_type: "json"
+
+  - id: "formatting-markdown-table"
+    difficulty: 2
+    category: "Formatting"
+    prompt_en: "Return a markdown table with columns 'Name' and 'Age' and one row containing 'Bob' and '25'. Reply with just the markdown table."
+    prompt_de: "Erstelle eine Markdown-Tabelle mit den Spalten 'Name' und 'Alter' und einer Zeile mit 'Bob' und '25'. Antworte nur mit der Markdown-Tabelle."
+    prompt_es: "Devuelve una tabla markdown con las columnas 'Nombre' y 'Edad' y una fila con 'Bob' y '25'. Responde solo con la tabla markdown."
+    validator_type: "contains_all"
+    expected: ["|", "bob", "25"]
+
+  - id: "formatting-csv"
+    difficulty: 2
+    category: "Formatting"
+    prompt_en: "Format the following data into a CSV format with headers Name,Age: John (40) and Mary (35). Reply with just the CSV text without formatting blocks."
+    prompt_de: "Formatiere die folgenden Daten in ein CSV-Format mit den Spalten Name,Age: John (40) und Mary (35). Antworte nur mit dem CSV-Text ohne Formatierungsblöcke."
+    prompt_es: "Formatea los siguientes datos en formato CSV con los encabezados Name,Age: John (40) y Mary (35). Responde solo con el texto CSV sin bloques de formato."
+    validator_type: "contains_all"
+    expected: ["john,40", "mary,35"]
+
+  - id: "formatting-html-list"
+    difficulty: 2
+    category: "Formatting"
+    prompt_en: "Create an HTML unordered list containing exactly two elements: 'Apple' and 'Banana'. Reply with just the HTML code."
+    prompt_de: "Erstelle eine ungeordnete HTML-Liste, die genau zwei Elemente enthält: 'Apple' und 'Banana'. Antworte nur mit dem HTML-Code."
+    prompt_es: "Crea una lista desordenada en HTML que contenga exactamente dos elementos: 'Apple' y 'Banana'. Responde solo con el código HTML."
+    validator_type: "contains_all"
+    expected: ["<ul", "<li", "apple", "banana"]
+
+  - id: "formatting-xml"
+    difficulty: 2
+    category: "Formatting"
+    prompt_en: "Create an XML tag called 'person' with an attribute 'name' equal to 'Bob'. Reply with just the XML."
+    prompt_de: "Erstelle ein XML-Tag namens 'person' mit dem Attribut 'name' gleich 'Bob'. Antworte nur mit dem XML."
+    prompt_es: "Crea una etiqueta XML llamada 'person' con un atributo 'name' igual a 'Bob'. Responde solo con el XML."
+    validator_type: "contains_all"
+    expected: ["<person", "name=", "bob"]
+
+  # ----------------------------------------------------------------------------
+  # Level 3 - Math/IQ (5 questions)
+  # ----------------------------------------------------------------------------
+  - id: "math-iq-bat-ball"
+    difficulty: 3
+    category: "Math/IQ"
+    prompt_en: "A bat and a ball cost $1.10 in total. The bat costs $1.00 more than the ball. How much does the ball cost in cents? Reply with just the number."
+    prompt_de: "Ein Schläger und ein Ball kosten zusammen 1,10$. Der Schläger kostet 1,00$ mehr als der Ball. Wie viel kostet der Ball in Cent? Antworte nur mit der Zahl."
+    prompt_es: "Un bate y una pelota cuestan $1.10 en total. El bate cuesta $1.00 más que la pelota. ¿Cuánto cuesta la pelota en centavos? Responde solo con el número."
+    validator_type: "contains_any"
+    expected: ["5", "0.05", "five", "fünf", "cinco"]
+    not_expected: ["10", "ten", "zehn", "diez", "0.10"]
+
+  - id: "math-iq-machines"
+    difficulty: 3
+    category: "Math/IQ"
+    prompt_en: "If it takes 5 machines 5 minutes to make 5 widgets, how long would it take 100 machines to make 100 widgets? Reply with just the number of minutes."
+    prompt_de: "Wenn 5 Maschinen 5 Minuten brauchen, um 5 Geräte herzustellen, wie lange würden 100 Maschinen für 100 Geräte brauchen? Antworte nur mit der Anzahl der Minuten."
+    prompt_es: "Si 5 máquinas tardan 5 minutos en hacer 5 artefactos, ¿cuánto tiempo tardarían 100 máquinas en hacer 100 artefactos? Responde solo con el número de minutos."
+    validator_type: "contains_any"
+    expected: ["5", "five", "fünf", "cinco"]
+    not_expected: ["100", "hundred", "hundert", "cien"]
+
+  - id: "math-iq-lilypad"
+    difficulty: 3
+    category: "Math/IQ"
+    prompt_en: "In a lake, there is a patch of lily pads. Every day, the patch doubles in size. If it takes 48 days for the patch to cover the entire lake, how long would it take for the patch to cover half of the lake? Reply with just the number."
+    prompt_de: "In einem See gibt es ein Feld von Seerosenblättern. Jeden Tag verdoppelt sich die Größe des Feldes. Wenn es 48 Tage dauert, bis das Feld den ganzen See bedeckt, wie lange würde es dauern, bis das Feld den halben See bedeckt? Antworte nur mit der Zahl."
+    prompt_es: "En un lago, hay un grupo de nenúfares. Cada día, el grupo duplica su tamaño. Si tarda 48 días en cubrir todo el lago, ¿cuánto tiempo tardaría en cubrir la mitad del lago? Responde solo con el número."
+    validator_type: "contains_any"
+    expected: ["47"]
+    not_expected: ["24"]
+
+  - id: "math-iq-runner"
+    difficulty: 3
+    category: "Math/IQ"
+    prompt_en: "You are running a race and you pass the person in second place. What place are you in now? Reply with just the word for the position."
+    prompt_de: "Du nimmst an einem Rennen teil und überholst die Person auf dem zweiten Platz. Auf welchem Platz bist du jetzt? Antworte nur mit dem Wort für die Platzierung."
+    prompt_es: "Estás corriendo una carrera y pasas a la persona que va en segundo lugar. ¿En qué lugar estás ahora? Responde solo con la palabra de la posición."
+    validator_type: "contains_any"
+    expected: ["second", "zweiter", "zweite", "zweiten", "segundo"]
+    not_expected: ["first", "erste", "erster", "primero"]
+
+  - id: "math-iq-farmer"
+    difficulty: 3
+    category: "Math/IQ"
+    prompt_en: "A farmer has 15 sheep, and all but 8 die. How many are left? Reply with just the number."
+    prompt_de: "Ein Bauer hat 15 Schafe. Alle bis auf 8 sterben. Wie viele bleiben übrig? Antworte nur mit der Zahl."
+    prompt_es: "Un granjero tiene 15 ovejas, y mueren todas menos 8. ¿Cuántas quedan? Responde solo con el número."
+    validator_type: "contains_any"
+    expected: ["8", "eight", "acht", "ocho"]
+    not_expected: ["7", "seven", "sieben", "siete"]
+
+  # ----------------------------------------------------------------------------
+  # Level 4 - Logic/IQ/Mensa (5 questions)
+  # ----------------------------------------------------------------------------
+  - id: "logic-iq-mensa-math"
+    difficulty: 4
+    category: "Logic/IQ/Mensa"
+    prompt_en: "What is the 4-digit number in which the first digit is one-fifth of the last, and the second and third digits are the last digit multiplied by 3? (Hint: The sum of all digits is 12). Reply with just the 4-digit number."
+    prompt_de: "Wie lautet die 4-stellige Zahl, bei der die erste Ziffer ein Fünftel der letzten ist und die zweite und dritte Ziffer jeweils die letzte Ziffer multipliziert mit 3 sind? (Hinweis: Die Quersumme aller Ziffern ist 12). Antworte nur mit der 4-stelligen Zahl."
+    prompt_es: "¿Cuál es el número de 4 dígitos en el que el primer dígito es una quinta parte del último, y el segundo y tercer dígito son el último dígito multiplicado por 3? (Pista: La suma de todos los dígitos es 12). Responde solo con el número de 4 dígitos."
+    validator_type: "contains_any"
+    expected: ["1155", "1,155", "1.155"]
+
+  - id: "logic-iq-mensa-riddle"
+    difficulty: 4
+    category: "Logic/IQ/Mensa"
+    prompt_en: "A man is looking at a photograph. He says: 'Brothers and sisters, I have none. But that man's father is my father's son.' Who is in the photograph? Reply very concisely."
+    prompt_de: "Ein Mann betrachtet ein Foto. Er sagt: 'Brüder und Schwestern habe ich keine. Aber der Vater dieses Mannes ist der Sohn meines Vaters.' Wer ist auf dem Foto zu sehen? Antworte sehr kurz."
+    prompt_es: "Un hombre está mirando una fotografía. Dice: 'Hermanos y hermanas, no tengo ninguno. Pero el padre de ese hombre es el hijo de mi padre.' ¿Quién está en la fotografía? Responde de forma muy concisa."
+    validator_type: "contains_any"
+    expected: ["son", "sohn", "hijo", "boy"]
+    not_expected: ["himself", "er selbst", "sí mismo", "el mismo", "him", "me"]
+
+  - id: "logic-iq-mensa-family"
+    difficulty: 4
+    category: "Logic/IQ/Mensa"
+    prompt_en: "Mary's father has 5 daughters: Nana, Nene, Nini, Nono. What is the name of the fifth daughter? Reply with just the name."
+    prompt_de: "Marys Vater hat 5 Töchter: Nana, Nene, Nini, Nono. Wie heißt die fünfte Tochter? Antworte nur mit dem Namen."
+    prompt_es: "El padre de Mary tiene 5 hijas: Nana, Nene, Nini, Nono. ¿Cuál es el nombre de la quinta hija? Responde solo con el nombre."
+    validator_type: "contains_any"
+    expected: ["mary"]
+    not_expected: ["nunu", "nuno", "nano"]
+
+  - id: "logic-iq-mensa-code"
+    difficulty: 4
+    category: "Logic/IQ/Mensa"
+    prompt_en: "If 'CAT' is coded as 3-1-20, what is 'DOG' coded as using the same logic? Reply with just the numbers separated by dashes."
+    prompt_de: "Wenn 'CAT' als 3-1-20 kodiert wird, wie wird dann 'DOG' nach der gleichen Logik kodiert? Antworte nur mit den Zahlen, getrennt durch Bindestriche."
+    prompt_es: "Si 'CAT' se codifica como 3-1-20, ¿cómo se codifica 'DOG' usando la misma lógica? Responde solo con los números separados por guiones."
+    validator_type: "contains_any"
+    expected: ["4-15-7"]
+
+  - id: "logic-iq-mensa-calendar"
+    difficulty: 4
+    category: "Logic/IQ/Mensa"
+    prompt_en: "The day before two days after the day before tomorrow is Saturday. What day is it today? Reply with just the day of the week."
+    prompt_de: "Der Tag vor zwei Tagen nach dem Tag vor morgen ist Samstag. Welcher Tag ist heute? Antworte nur mit dem Wochentag."
+    prompt_es: "El día antes de dos días después del día anterior a mañana es sábado. ¿Qué día es hoy? Responde solo con el día de la semana."
+    validator_type: "contains_any"
+    expected: ["friday", "freitag", "viernes"]
+
+  # ----------------------------------------------------------------------------
+  # Level 5 - Sequences & Advanced IQ (5 questions)
+  # ----------------------------------------------------------------------------
+  - id: "logic-iq-mensa-sequence"
+    difficulty: 5
+    category: "Logic/IQ/Mensa"
+    prompt_en: "What number should come next in this sequence: 1, 4, 10, 22, ...? Reply with just the number."
+    prompt_de: "Welche Zahl sollte in dieser Folge als nächstes kommen: 1, 4, 10, 22, ...? Antworte nur mit der Zahl."
+    prompt_es: "¿Qué número debe ir a continuación en esta secuencia: 1, 4, 10, 22, ...? Responde solo con el número."
+    validator_type: "contains_any"
+    expected: ["46"]
+
+  - id: "logic-iq-mensa-word"
+    difficulty: 5
+    category: "Logic/IQ/Mensa"
+    prompt_en: "Which word does not belong in the following list: Apple, Banana, Carrot, Date, Elephant? Reply with just the word."
+    prompt_de: "Welches Wort gehört nicht in die folgende Liste: Apfel, Banane, Karotte, Dattel, Elefant? Antworte nur mit dem Wort."
+    prompt_es: "¿Qué palabra no pertenece a la siguiente lista: Manzana, Plátano, Zanahoria, Dátil, Elefante? Responde solo con la palabra."
+    validator_type: "contains_any"
+    expected: ["elephant", "elefant", "elefante"]
+
+  - id: "logic-iq-mensa-sequence2"
+    difficulty: 5
+    category: "Logic/IQ/Mensa"
+    prompt_en: "What number should come next in this sequence: 2, 6, 12, 20, 30, ...? Reply with just the number."
+    prompt_de: "Welche Zahl sollte in dieser Folge als nächstes kommen: 2, 6, 12, 20, 30, ...? Antworte nur mit der Zahl."
+    prompt_es: "¿Qué número debe ir a continuación en esta secuencia: 2, 6, 12, 20, 30, ...? Responde solo con el número."
+    validator_type: "contains_any"
+    expected: ["42"]
+
+  - id: "logic-iq-mensa-sequence3"
+    difficulty: 5
+    category: "Logic/IQ/Mensa"
+    prompt_en: "What number should come next in this sequence: 1, 1, 2, 3, 5, 8, ...? Reply with just the number."
+    prompt_de: "Welche Zahl sollte in dieser Folge als nächstes kommen: 1, 1, 2, 3, 5, 8, ...? Antworte nur mit der Zahl."
+    prompt_es: "¿Qué número debe ir a continuación en esta secuencia: 1, 1, 2, 3, 5, 8, ...? Responde solo con el número."
+    validator_type: "contains_any"
+    expected: ["13"]
+
+  - id: "logic-iq-mensa-squares"
+    difficulty: 5
+    category: "Logic/IQ/Mensa"
+    prompt_en: "What number should come next in this sequence: 1, 4, 9, 16, 25, ...? Reply with just the number."
+    prompt_de: "Welche Zahl sollte in dieser Folge als nächstes kommen: 1, 4, 9, 16, 25, ...? Antworte nur mit der Zahl."
+    prompt_es: "¿Qué número debe ir a continuación en esta secuencia: 1, 4, 9, 16, 25, ...? Responde solo con el número."
+    validator_type: "contains_any"
+    expected: ["36"]

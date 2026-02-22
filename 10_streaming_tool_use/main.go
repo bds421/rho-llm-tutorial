@@ -2,10 +2,6 @@
 //
 // Demonstrates: EventToolUse in streaming, event.ToolCall, ToolCall.ID/Name/Input,
 //               NewToolResultMessage with isError=true, streaming agentic loop
-//
-// Note: This tutorial uses Gemini because Anthropic requires tool_use content
-// blocks in the assistant message for multi-turn tool loops, which cannot be
-// constructed via NewTextMessage alone. This is a library limitation.
 
 package main
 
@@ -32,9 +28,9 @@ func executeTool(name string, input any) (string, bool) {
 		city, _ := args["city"].(string)
 		city = strings.ToLower(city)
 		populations := map[string]string{
-			"tokyo":     `{"city":"Tokyo","population":"13.96 million","country":"Japan"}`,
-			"paris":     `{"city":"Paris","population":"2.16 million","country":"France"}`,
-			"berlin":    `{"city":"Berlin","population":"3.75 million","country":"Germany"}`,
+			"tokyo":  `{"city":"Tokyo","population":"13.96 million","country":"Japan"}`,
+			"paris":  `{"city":"Paris","population":"2.16 million","country":"France"}`,
+			"berlin": `{"city":"Berlin","population":"3.75 million","country":"Germany"}`,
 		}
 		if data, ok := populations[city]; ok {
 			return data, false
@@ -119,8 +115,9 @@ func main() {
 		}
 
 		// If no tool calls were received, we're done.
-		// Note: Anthropic uses stopReason="tool_use", but Gemini uses "STOP"
-		// even when tool calls are present. Check toolCalls length instead.
+		// All providers now return normalized stop reasons (end_turn, tool_use,
+		// max_tokens), but checking toolCalls length is still the most robust
+		// approach for deciding whether to continue the agentic loop.
 		if len(toolCalls) == 0 {
 			fmt.Printf("\nFinal answer:\n%s\n", contentBuf.String())
 			break

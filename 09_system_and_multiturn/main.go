@@ -55,10 +55,11 @@ func main() {
 	}
 	fmt.Println()
 
-	// --- Approach 2: RoleSystem in message array (Gemini) ---
-	// Note: Anthropic does NOT accept RoleSystem in the messages array —
-	// use Request.System instead. Gemini's adapter converts RoleSystem messages
-	// to its systemInstruction field automatically.
+	// --- Approach 2: RoleSystem in message array ---
+	// Both Anthropic and Gemini adapters automatically promote RoleSystem
+	// messages to the provider's native system parameter (top-level "system"
+	// for Anthropic, systemInstruction for Gemini). Request.System is the
+	// simpler approach; RoleSystem in the messages array works equally well.
 	fmt.Println("=== Approach 2: RoleSystem message (Gemini) ===")
 	{
 		geminiCfg := llm.Config{

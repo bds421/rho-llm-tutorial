@@ -1,0 +1,102 @@
+report_dir: "testdata"
+
+# Model IDs must match the rho/llm registry exactly (see rho/llm/registry.go).
+# Short aliases (opus, sonnet, haiku, grok-mini, etc.) are also accepted.
+#
+# Fields:
+#   provider:        rho/llm provider name (anthropic, gemini, xai, ollama, …)
+#   model:           exact registry ID or registered alias
+#   api_key_env:     env var holding the API key — model is skipped if unset/empty
+#   base_url:        optional endpoint override
+#   timeout_seconds: per-request deadline (default: 120)
+
+models:
+
+  # ---------------------------------------------------------------------------
+  # Anthropic  (ANTHROPIC_API_KEY)
+  # ---------------------------------------------------------------------------
+  # - provider: "anthropic"
+  #   model: "claude-3-haiku-20240307"
+  #   api_key_env: "ANTHROPIC_API_KEY"
+  # - provider: "anthropic"
+  #   model: "claude-sonnet-4-0"
+  #   api_key_env: "ANTHROPIC_API_KEY"
+  # - provider: "anthropic"
+  #   model: "claude-opus-4-0"
+  #   api_key_env: "ANTHROPIC_API_KEY"
+  # - provider: "anthropic"
+  #   model: "claude-opus-4-1"
+  #   api_key_env: "ANTHROPIC_API_KEY"
+  # - provider: "anthropic"
+  #   model: "claude-sonnet-4-5"
+  #   api_key_env: "ANTHROPIC_API_KEY"
+  # - provider: "anthropic"
+  #   model: "claude-opus-4-5"
+  #   api_key_env: "ANTHROPIC_API_KEY"
+  - provider: "anthropic"
+    model: "claude-haiku-4-5-20251001"
+    api_key_env: "ANTHROPIC_API_KEY"
+  - provider: "anthropic"
+    model: "claude-sonnet-4-6"
+    api_key_env: "ANTHROPIC_API_KEY"
+  - provider: "anthropic"
+    model: "claude-opus-4-6"
+    api_key_env: "ANTHROPIC_API_KEY"
+
+  # ---------------------------------------------------------------------------
+  # Google Gemini  (GEMINI_API_KEY)
+  # ---------------------------------------------------------------------------
+  # - provider: "gemini"
+  #   model: "gemini-2.5-flash"
+  #   api_key_env: "GEMINI_API_KEY"
+  # - provider: "gemini"
+  #   model: "gemini-2.5-pro"
+  #   api_key_env: "GEMINI_API_KEY"
+  # - provider: "gemini"
+  #   model: "gemini-3-pro-preview"
+  #   api_key_env: "GEMINI_API_KEY"
+  - provider: "gemini"
+    model: "gemini-3-flash-preview"
+    api_key_env: "GEMINI_API_KEY"
+  - provider: "gemini"
+    model: "gemini-3.1-pro-preview"
+    api_key_env: "GEMINI_API_KEY"
+
+  # ---------------------------------------------------------------------------
+  # xAI / Grok  (XAI_API_KEY)
+  # ---------------------------------------------------------------------------
+  # - provider: "xai"
+  #   model: "grok-3"
+  #   api_key_env: "XAI_API_KEY"
+  # - provider: "xai"
+  #   model: "grok-4-1-fast-reasoning"
+  #   api_key_env: "XAI_API_KEY"
+  - provider: "xai"
+    model: "grok-3-mini"
+    api_key_env: "XAI_API_KEY"
+  - provider: "xai"
+    model: "grok-4-1-fast-non-reasoning"
+    api_key_env: "XAI_API_KEY"
+  - provider: "xai"
+    model: "grok-code-fast-1"
+    api_key_env: "XAI_API_KEY"
+
+  # ---------------------------------------------------------------------------
+  # Ollama  (local, no API key — model must be pulled)
+  # ---------------------------------------------------------------------------
+  - provider: "ollama"
+    model: "qwen3:4b"
+  - provider: "ollama"
+    model: "qwen3:8b"
+  - provider: "ollama"
+    model: "qwen3-coder:30b"
+  - provider: "ollama"
+    model: "gemma3:4b"
+  - provider: "ollama"
+    model: "gemma3:12b"
+  - provider: "ollama"
+    model: "gemma2:2b"
+  - provider: "ollama"
+    model: "deepseek-r1:14b"
+  - provider: "ollama"
+    model: "mistral-small3.2:24b"
