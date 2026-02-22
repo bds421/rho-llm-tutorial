@@ -1,0 +1,5 @@
+module tutorial/13_registry_deep
+
+go 1.24.3
+
+require gitlab2024.bds421-cloud.com/bds421/rho/llm v0.1.8
