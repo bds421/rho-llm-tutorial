@@ -153,9 +153,9 @@ tests:
   - id: "logic-iq-mensa-math"
     difficulty: 4
     category: "Logic/IQ/Mensa"
-    prompt_en: "What is the 4-digit number in which the first digit is one-fifth of the last, and the second and third digits are the last digit multiplied by 3? (Hint: The sum of all digits is 12). Reply with just the 4-digit number."
-    prompt_de: "Wie lautet die 4-stellige Zahl, bei der die erste Ziffer ein Fünftel der letzten ist und die zweite und dritte Ziffer jeweils die letzte Ziffer multipliziert mit 3 sind? (Hinweis: Die Quersumme aller Ziffern ist 12). Antworte nur mit der 4-stelligen Zahl."
-    prompt_es: "¿Cuál es el número de 4 dígitos en el que el primer dígito es una quinta parte del último, y el segundo y tercer dígito son el último dígito multiplicado por 3? (Pista: La suma de todos los dígitos es 12). Responde solo con el número de 4 dígitos."
+    prompt_en: "What is the 4-digit number where the first digit is one-fifth of the last digit, and the two-digit number formed by the second and third digits equals three times the last digit? (Hint: The sum of all four digits is 12). Reply with just the 4-digit number."
+    prompt_de: "Wie lautet die 4-stellige Zahl, bei der die erste Ziffer ein Fünftel der letzten Ziffer ist und die zweistellige Zahl aus zweiter und dritter Ziffer das Dreifache der letzten Ziffer ergibt? (Hinweis: Die Quersumme aller vier Ziffern ist 12). Antworte nur mit der 4-stelligen Zahl."
+    prompt_es: "¿Cuál es el número de 4 dígitos donde el primer dígito es una quinta parte del último dígito, y el número de dos dígitos formado por el segundo y tercer dígito es igual al triple del último dígito? (Pista: La suma de los cuatro dígitos es 12). Responde solo con el número de 4 dígitos."
     validator_type: "contains_any"
     expected: ["1155", "1,155", "1.155"]
 
@@ -192,8 +192,8 @@ tests:
     difficulty: 4
     category: "Logic/IQ/Mensa"
     prompt_en: "The day before two days after the day before tomorrow is Saturday. What day is it today? Reply with just the day of the week."
-    prompt_de: "Der Tag vor zwei Tagen nach dem Tag vor morgen ist Samstag. Welcher Tag ist heute? Antworte nur mit dem Wochentag."
-    prompt_es: "El día antes de dos días después del día anterior a mañana es sábado. ¿Qué día es hoy? Responde solo con el día de la semana."
+    prompt_de: "Folge diesen Schritten: Nimm den Tag vor morgen, gehe zwei Tage vorwärts, gehe dann einen Tag zurück — das Ergebnis ist Samstag. Welcher Tag ist heute? Antworte nur mit dem Wochentag."
+    prompt_es: "Sigue estos pasos: toma el día anterior a mañana, avanza dos días, luego retrocede un día — el resultado es sábado. ¿Qué día es hoy? Responde solo con el día de la semana."
     validator_type: "contains_any"
     expected: ["friday", "freitag", "viernes"]
 

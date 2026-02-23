@@ -16,7 +16,7 @@
 //
 // Run:
 //
-//	go test -v -timeout 30m ./...
+//	go test -v -timeout 120m ./...
 //
 // Reports land in testdata/RESULTS_<timestamp>.md.
 // Configure which models to test in config.yaml.
@@ -353,7 +353,7 @@ func TestLLMCapabilities(t *testing.T) {
 						}
 
 						start := time.Now()
-						respText, err := complete(client, timeout, prompt)
+						respText, err := complete(t.Context(), client, timeout, prompt)
 						duration := time.Since(start)
 
 						if err != nil {
@@ -408,8 +408,9 @@ func TestLLMCapabilities(t *testing.T) {
 // =============================================================================
 
 // complete sends a single user message to the client and returns the text response.
-func complete(client llm.Client, timeout time.Duration, prompt string) (string, error) {
-	ctx, cancel := context.WithTimeout(context.Background(), timeout)
+// parent should be t.Context() so that overall test cancellation cascades to HTTP.
+func complete(parent context.Context, client llm.Client, timeout time.Duration, prompt string) (string, error) {
+	ctx, cancel := context.WithTimeout(parent, timeout)
 	defer cancel()
 
 	req := llm.Request{

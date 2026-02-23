@@ -98,5 +98,7 @@ models:
     model: "gemma2:2b"
   - provider: "ollama"
     model: "deepseek-r1:14b"
+    timeout_seconds: 300
   - provider: "ollama"
     model: "mistral-small3.2:24b"
+    timeout_seconds: 300
