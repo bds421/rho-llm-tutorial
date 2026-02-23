@@ -85,11 +85,9 @@ models:
   # Ollama  (local, no API key — model must be pulled)
   # ---------------------------------------------------------------------------
   - provider: "ollama"
-    model: "qwen3:4b"
-  - provider: "ollama"
     model: "qwen3:8b"
   - provider: "ollama"
-    model: "qwen3-coder:30b"
+    model: "qwen3:14b"
   - provider: "ollama"
     model: "gemma3:4b"
   - provider: "ollama"
@@ -97,8 +95,15 @@ models:
   - provider: "ollama"
     model: "gemma2:2b"
   - provider: "ollama"
-    model: "deepseek-r1:14b"
-    timeout_seconds: 300
-  - provider: "ollama"
-    model: "mistral-small3.2:24b"
-    timeout_seconds: 300
+    model: "mistral:7b"
+  # --- not pulled locally (uncomment when available) ---
+  # - provider: "ollama"
+  #   model: "qwen3:4b"
+  # - provider: "ollama"
+  #   model: "qwen3-coder:30b"
+  # - provider: "ollama"
+  #   model: "deepseek-r1:14b"
+  #   timeout_seconds: 300
+  # - provider: "ollama"
+  #   model: "mistral-small3.2:24b"
+  #   timeout_seconds: 300
