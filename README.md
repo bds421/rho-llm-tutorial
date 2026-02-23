@@ -2,7 +2,7 @@
 
 Welcome to the **rho/llm Tutorial Suite**! This directory contains a comprehensive guide to mastering the `rho/llm` library—a production-grade Go wrapper for Large Language Models (LLMs) featuring built-in streaming, multi-key failover, and agentic workflows.
 
-## 🚀 Overview
+## Overview
 
 The `rho/llm` library provides a unified interface for interacting with various LLM providers, including:
 - **Cloud:** Anthropic (Claude), Google (Gemini), OpenAI, Groq, Mistral, xAI.
@@ -10,7 +10,7 @@ The `rho/llm` library provides a unified interface for interacting with various 
 
 This suite contains **20 tutorials** ranging from basic text completion to advanced stress-testing of concurrent multi-key auth pools.
 
-## 📂 Repository Structure
+## Repository Structure
 
 The tutorials are organized by complexity and feature set:
 
@@ -26,7 +26,7 @@ The tutorials are organized by complexity and feature set:
 | [19](./19_stress_tests) | Validation | Concurrent Stress Tests, Race-condition validation, Performance Benchmarks. |
 | [20](./20_capability_test) | Capability Testing | Multi-model regression matrix, YAML-driven test cases, multi-language (EN/DE/ES), report generation. |
 
-## 🛠️ Getting Started
+## Getting Started
 
 ### Prerequisites
 - Go 1.22+
@@ -46,11 +46,11 @@ cd 01_basic
 go run main.go
 ```
 
-## 📊 Documentation & Reports
+## Documentation & Reports
 
 - **[Consolidated QA Report](./REPORT.md)**: Includes the 100% API coverage cross-reference, tutorial execution logs, and tracked bug reports.
 - **[Stress Test Details](./19_stress_tests)**: Deep dive into the 49+ tests that ensure library stability.
 - **[Capability Test Reports](./20_capability_test/testdata)**: Multi-model regression results across reasoning and formatting tasks.
 
-## 🛡️ Stability
+## Stability
 All components (especially `AuthPool` and `PooledClient`) are verified with Go's `-race` detector and benchmarked for zero-allocation performance in hot paths.
