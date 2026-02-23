@@ -8,7 +8,7 @@ The `rho/llm` library provides a unified interface for interacting with various 
 - **Cloud:** Anthropic (Claude), Google (Gemini), OpenAI, Groq, Mistral, xAI.
 - **Local:** Ollama, vLLM, LM Studio.
 
-This suite contains **19 tutorials** ranging from basic text completion to advanced stress-testing of concurrent multi-key auth pools.
+This suite contains **20 tutorials** ranging from basic text completion to advanced stress-testing of concurrent multi-key auth pools.
 
 ## 📂 Repository Structure
 
@@ -24,6 +24,7 @@ The tutorials are organized by complexity and feature set:
 | [14-15](./14_provider_helpers) | Ecosystem | Provider Presets, No-Auth detection, Multi-provider comparisons. |
 | [16-18](./16_pool_deep_dive) | Internals | AuthPool mechanisms, Named Error Constructors, Content Model (Multimodal). |
 | [19](./19_stress_tests) | Validation | Concurrent Stress Tests, Race-condition validation, Performance Benchmarks. |
+| [20](./20_capability_test) | Capability Testing | Multi-model regression matrix, YAML-driven test cases, multi-language (EN/DE/ES), report generation. |
 
 ## 🛠️ Getting Started
 
@@ -49,6 +50,7 @@ go run main.go
 
 - **[Consolidated QA Report](./REPORT.md)**: Includes the 100% API coverage cross-reference, tutorial execution logs, and tracked bug reports.
 - **[Stress Test Details](./19_stress_tests)**: Deep dive into the 49+ tests that ensure library stability.
+- **[Capability Test Reports](./20_capability_test/testdata)**: Multi-model regression results across reasoning and formatting tasks.
 
 ## 🛡️ Stability
 All components (especially `AuthPool` and `PooledClient`) are verified with Go's `-race` detector and benchmarked for zero-allocation performance in hot paths.

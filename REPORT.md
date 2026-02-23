@@ -388,6 +388,43 @@ the library's concurrency, retry, and error-handling paths. No API keys needed.
 
 **Total: 49 tests + 5 benchmarks** — all pass with `-race` flag, zero external dependencies.
 
+### Capability tests (20_capability_test)
+
+Tutorial 20 is a YAML-driven multi-model capability regression suite. It sends 25 standardized
+test cases to each configured model in 3 languages (EN, DE, ES) and generates a timestamped
+markdown report with a scoreboard and per-test detail grid.
+
+**Test matrix:** 25 tests × 3 languages = 75 tests per model, across 5 difficulty levels.
+
+| Level | Category | Examples |
+|-------|----------|---------|
+| 1 | Factual | Capital cities, famous authors, planets, chemistry, continents |
+| 2 | Formatting | JSON, Markdown table, CSV, HTML list, XML |
+| 3 | Math/IQ | Bat-and-ball, machines, lilypad, runner, farmer |
+| 4 | Logic/IQ/Mensa | Math puzzles, riddles, family relations, codes, calendars |
+| 5 | Logic/IQ/Mensa | Number sequences, word puzzles, spatial reasoning |
+
+**Validator types:**
+
+| Validator | Behavior |
+|-----------|----------|
+| `json` | Parses response as valid JSON (strips markdown code fences) |
+| `contains_all` | All expected substrings must appear (case-insensitive); rejects `not_expected` |
+| `contains_any` | At least one expected substring must appear (case-insensitive); rejects `not_expected` |
+
+**Configuration files:**
+- `config.yaml` — Model definitions (provider, model ID, timeout, API key env var)
+- `tests.yaml` — Test cases (prompt per language, validator, expected/not_expected values, difficulty)
+
+**How to run:**
+```bash
+cd 20_capability_test && go test -v -timeout 120m ./...
+```
+
+**Report output:** Timestamped markdown files (`RESULTS_<YYYYMMDD_HHMMSS>.md`) in `testdata/`,
+containing a scoreboard sorted by pass rate, per-test EN/DE/ES grids, and raw outputs for
+failed/error cases.
+
 ### Modifications for coverage
 
 | Tutorial | Symbols Added |
