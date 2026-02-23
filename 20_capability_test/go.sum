@@ -1,5 +1,5 @@
-gitlab2024.bds421-cloud.com/bds421/rho/llm v0.1.8 h1:NtbvU+vBe5VD2EkcF3VNowXvs1ZzYkAy3h+UKjAFH0k=
-gitlab2024.bds421-cloud.com/bds421/rho/llm v0.1.8/go.mod h1:LWIZosY3NH15pkBmFGdz5qlK+D/RfnXDtuki1NY1I9g=
+gitlab2024.bds421-cloud.com/bds421/rho/llm v0.1.11 h1:wP1XNv1QSrluGXkq65uzTBJfql+fwL+KAN2AsqB4APc=
+gitlab2024.bds421-cloud.com/bds421/rho/llm v0.1.11/go.mod h1:KBfw7zPGRNioBZSOaoP9sTg3tkNYCujUvt69aKwUR44=
 gopkg.in/check.v1 v0.0.0-20161208181325-20d25e280405 h1:yhCVgyC4o1eVCa2tZl7eS0r+SDo693bJlVdllGtEeKM=
 gopkg.in/check.v1 v0.0.0-20161208181325-20d25e280405/go.mod h1:Co6ibVJAznAaIkqp8huTwlJQCZ016jof/cbN4VW5Yz0=
 gopkg.in/yaml.v3 v3.0.1 h1:fxVm/GzAzEWqLHuvctI91KS9hhNmmWOoWu0XTYJS7CA=

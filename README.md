@@ -29,7 +29,7 @@ The tutorials are organized by complexity and feature set:
 ## Getting Started
 
 ### Prerequisites
-- Go 1.22+
+- Go 1.26+
 - API Keys for Gemini, Anthropic, or OpenAI (optional if using [Ollama](https://ollama.com))
 
 ### Environment Setup
