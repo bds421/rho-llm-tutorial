@@ -143,7 +143,12 @@ func TestIsRetryable_NonAPIErrors(t *testing.T) {
 		{"request timeout", true},
 		{"unexpected eof", true},
 		{"connection reset by peer", true},
-		{"request failed: dial tcp", true},
+		{"broken pipe", true},
+		// "request failed: dial tcp" — in production, dial errors are wrapped
+		// net.Error types caught by the typed check in IsRetryable, not by
+		// string matching. The overly broad "request failed" pattern was removed
+		// to prevent false positives on non-retryable errors.
+		{"request failed: dial tcp", false},
 		{"permission denied", false},
 		{"invalid json", false},
 		{"", false},
