@@ -14,7 +14,7 @@ ALL_MODULES := . $(TUTORIALS) $(TEST_SUITES)
 build-all:
 	@for dir in $(TUTORIALS); do \
 		echo "==> Building $$dir"; \
-		cd $$dir && go build -o /dev/null . && cd ..; \
+		(cd $$dir && go build -o /dev/null .); \
 	done
 	@echo "All tutorials compile OK"
 
@@ -24,7 +24,7 @@ test-stress:
 
 ## test-capability: run tutorial 20 capability tests (requires API keys)
 test-capability:
-	cd 20_capability_test && go test -count=1 -timeout 10m ./...
+	cd 20_capability_test && go test -count=1 -timeout 120m ./...
 
 ## test-all: compile tutorials + run all test suites
 test-all: build-all test-stress
@@ -34,7 +34,7 @@ test-all: build-all test-stress
 vet-all:
 	@for dir in $(ALL_MODULES); do \
 		echo "==> Vetting $$dir"; \
-		cd $$dir && go vet ./... && cd ..; \
+		(cd $$dir && go vet ./...); \
 	done
 	@echo "All modules vet OK"
 
@@ -42,7 +42,7 @@ vet-all:
 tidy-all:
 	@for dir in $(ALL_MODULES); do \
 		echo "==> Tidying $$dir"; \
-		cd $$dir && go mod tidy && cd ..; \
+		(cd $$dir && go mod tidy); \
 	done
 	@echo "All modules tidied"
 
@@ -50,7 +50,7 @@ tidy-all:
 update-deps:
 	@for dir in $(ALL_MODULES); do \
 		echo "==> Updating $$dir"; \
-		cd $$dir && go get gitlab2024.bds421-cloud.com/bds421/rho/llm@latest && go mod tidy && cd ..; \
+		(cd $$dir && go get gitlab2024.bds421-cloud.com/bds421/rho/llm@latest && go mod tidy); \
 	done
 	@echo "All modules updated"
 

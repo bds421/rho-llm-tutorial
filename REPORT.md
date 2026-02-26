@@ -6,7 +6,7 @@ This document merges the API Coverage Report, Tutorial Run Output, and Bug Repor
 
 # API Coverage Report
 
-Cross-reference of every exported symbol in `rho/llm v0.1.8` against tutorial coverage.
+Cross-reference of every exported symbol in `rho/llm v0.1.11` against tutorial coverage.
 
 Verified by automated `grep -rl "llm.<Symbol>" */main.go` scan against `go doc -all` output.
 
@@ -14,7 +14,7 @@ Verified by automated `grep -rl "llm.<Symbol>" */main.go` scan against `go doc -
 
 ---
 
-## Functions (33 total)
+## Functions (35 total)
 
 | # | Function | Status | Tutorial(s) | Notes |
 |---|----------|--------|-------------|-------|
@@ -51,8 +51,10 @@ Verified by automated `grep -rl "llm.<Symbol>" */main.go` scan against `go doc -
 | 31 | `NewAuthError(provider, msg, code)` | T | 17 | 401 + 403 status codes |
 | 32 | `NewContextLengthError(provider, msg)` | T | 17 | Error constructor |
 | 33 | `NewAPIErrorFromStatus(provider, status, body)` | T | 17 | 429, 503, 401, 400+context, 500, 502, generic 400 |
+| 34 | `SafeHTTPClient(timeout)` | I | — | v0.1.9: HTTP client with TLS 1.2+, redirect auth stripping. Used by all adapters internally. |
+| 35 | `ThinkingBudgetTokens(level, customBudget)` | — | — | v0.1.10: Converts ThinkingLevel to token count; overridden by customBudget when > 0. |
 
-**Coverage: 32/32 consumer functions (100%)** + 1 internal (`RegisterProvider`)
+**Coverage: 32/34 consumer functions (94%)** + 1 internal (`RegisterProvider`). Untested: `SafeHTTPClient` (infrastructure), `ThinkingBudgetTokens` (utility).
 
 ---
 
@@ -88,7 +90,7 @@ Verified by automated `grep -rl "llm.<Symbol>" */main.go` scan against `go doc -
 
 ---
 
-## Constants (16 total)
+## Constants (21 total)
 
 | # | Constant | Status | Tutorial(s) |
 |---|----------|--------|-------------|
@@ -108,8 +110,13 @@ Verified by automated `grep -rl "llm.<Symbol>" */main.go` scan against `go doc -
 | 14 | `ThinkingLow` | T | 04 |
 | 15 | `ThinkingMedium` | T | 04 |
 | 16 | `ThinkingHigh` | T | 04 |
+| 17 | `MaxErrorBodyBytes` | — | — | v0.1.9: 1 MB cap on error response reads |
+| 18 | `MaxSSELineBytes` | — | — | v0.1.9: 256 KB SSE line buffer limit |
+| 19 | `MaxResponseBodyBytes` | — | — | v0.1.9: 32 MB cap on success response body |
+| 20 | `MaxToolInputBytes` | — | — | v0.1.9: 1 MB cap on streamed tool input |
+| 21 | `TokensNotReported` | — | — | v0.1.10: Sentinel (-1) for unreported token counts |
 
-**Coverage: 16/16 (100%)**
+**Coverage: 16/21 (76%)** — 5 untested constants are internal safety limits (v0.1.9-v0.1.10)
 
 ---
 
@@ -133,7 +140,7 @@ Verified by automated `grep -rl "llm.<Symbol>" */main.go` scan against `go doc -
 
 **Coverage: 11/11 (100%)**
 
-### Request fields (8 total)
+### Request fields (9 total)
 
 | Field | Status | Tutorial(s) |
 |-------|--------|-------------|
@@ -144,9 +151,10 @@ Verified by automated `grep -rl "llm.<Symbol>" */main.go` scan against `go doc -
 | `Temperature` | T | 12 |
 | `Tools` | T | 03, 10 |
 | `ThinkingLevel` | T | 04 (via Config fallback) |
+| `ThinkingBudget` | — | — | v0.1.10: Custom token budget; overrides ThinkingLevel default |
 | `StopSequences` | T | 12 |
 
-**Coverage: 8/8 (100%)**
+**Coverage: 8/9 (89%)** — `ThinkingBudget` (v0.1.10) not yet demonstrated
 
 ### Response fields (8 total)
 
@@ -312,13 +320,14 @@ Verified by automated `grep -rl "llm.<Symbol>" */main.go` scan against `go doc -
 
 ---
 
-## Variables (1 total)
+## Variables (2 total)
 
 | Variable | Status | Tutorial(s) | Notes |
 |----------|--------|-------------|-------|
 | `ErrNoAvailableProfiles` | T | 16 | Triggered by exhausting pool; verified via `errors.Is` and `CooldownError.Unwrap` |
+| `ErrClientClosed` | — | — | v0.1.10: Returned by Complete/Stream after Close(). Replaces nil-pointer panic. |
 
-**Coverage: 1/1 (100%)**
+**Coverage: 1/2 (50%)** — `ErrClientClosed` (v0.1.10) not yet demonstrated
 
 ---
 
@@ -326,15 +335,15 @@ Verified by automated `grep -rl "llm.<Symbol>" */main.go` scan against `go doc -
 
 | Category | Tested | Total | Coverage |
 |----------|--------|-------|----------|
-| Functions (consumer) | 32 | 32 | **100%** |
+| Functions (consumer) | 32 | 34 | **94%** |
 | Functions (internal) | 0 | 1 | — |
 | Types (consumer) | 22 | 22 | **100%** |
 | Types (internal) | 0 | 1 | — |
-| Constants | 16 | 16 | **100%** |
-| Variables | 1 | 1 | **100%** |
+| Constants | 16 | 21 | **76%** |
+| Variables | 1 | 2 | **50%** |
 | Methods (exported) | 24 | 24 | **100%** |
 | Config fields | 11 | 11 | **100%** |
-| Request fields | 8 | 8 | **100%** |
+| Request fields | 8 | 9 | **89%** |
 | Response fields | 8 | 8 | **100%** |
 | StreamEvent fields | 8 | 8 | **100%** |
 | ModelInfo fields | 11 | 11 | **100%** |
@@ -345,6 +354,8 @@ Verified by automated `grep -rl "llm.<Symbol>" */main.go` scan against `go doc -
 | ImageSource fields | 3 | 3 | **100%** |
 | AuthProfile fields | 7 | 7 | **100%** |
 | CooldownError fields | 1 | 1 | **100%** |
+
+**Note:** 9 untested symbols (v0.1.9-v0.1.11) are infrastructure/safety constants (`Max*Bytes`, `TokensNotReported`), utilities (`SafeHTTPClient`, `ThinkingBudgetTokens`), sentinel errors (`ErrClientClosed`), and advanced fields (`Request.ThinkingBudget`). All are tested in the library's own test suite (`security_test.go`, `llm_test.go`).
 
 ### Internal symbols (not consumer API)
 
@@ -360,7 +371,7 @@ Coverage was verified by automated scan:
 ```
 grep -rl "llm.<Symbol>" */main.go
 ```
-against the full `go doc -all .` output for `rho/llm v0.1.8`.
+against the full `go doc -all .` output for `rho/llm v0.1.11`.
 
 ### Tutorials that added coverage
 
@@ -438,8 +449,8 @@ failed/error cases.
 
 # Tutorial Run Output
 
-**Date:** 2026-02-21
-**Library:** `rho/llm v0.1.8`
+**Date:** 2026-02-25
+**Library:** `rho/llm v0.1.11`
 **Environment:** `GEMINI_API_KEY` and `ANTHROPIC_API_KEY` set. Ollama running locally. No OpenAI keys.
 
 ---
@@ -917,13 +928,24 @@ ToolCall.ThoughtSignature: gemini3-sig-xyz789
 | Compilation errors | 0/18 |
 | Unexpected failures | 0/18 |
 
-### Changes in v0.1.8
+### Changes in v0.1.8–v0.1.11
 
-| Change | Details |
-|--------|---------|
-| Groq models added | 6 models including llama-3.3-70b, deepseek-r1 distills |
-| Mistral models added | 8 models including magistral (reasoning), codestral, devstral |
-| Stop reasons normalized | Now `end_turn`/`max_tokens` (lowercase) instead of `STOP`/`MAX_TOKENS` |
+| Version | Change | Details |
+|---------|--------|---------|
+| v0.1.8 | Groq models added | 6 models including llama-3.3-70b, deepseek-r1 distills |
+| v0.1.8 | Mistral models added | 8 models including magistral (reasoning), codestral, devstral |
+| v0.1.8 | Stop reasons normalized | Now `end_turn`/`max_tokens` (lowercase) instead of `STOP`/`MAX_TOKENS` |
+| v0.1.9 | Security hardening | Gemini key→header, bounded reads (1 MB error / 256 KB SSE / 32 MB response / 1 MB tool input), redirect auth stripping, TLS 1.2 minimum |
+| v0.1.9 | Security test suite | 15 tests in `security_test.go` |
+| v0.1.10 | `TokensNotReported` sentinel | Distinguishes "not reported" (-1) from "zero tokens" (0) |
+| v0.1.10 | `Request.ThinkingBudget` | Per-request thinking token budget override |
+| v0.1.10 | `ErrClientClosed` sentinel | Replaces nil-pointer panic on use-after-Close |
+| v0.1.10 | Network error detection | `IsRetryable` now checks `net.Error`, `io.EOF`, `ECONNRESET`, `ECONNREFUSED` via type assertion |
+| v0.1.11 | Go 1.26 minimum | Resolves 15 stdlib CVEs in crypto/tls, net/http |
+| v0.1.11 | `ThinkingBudgetTokens` fix | Default case now returns 0 (was 4096 for `ThinkingNone`) |
+| v0.1.11 | Error wrapping fix | `AuthPool.GetAvailable()` now wraps `ErrNoAvailableProfiles` via `%w` |
+| v0.1.11 | Local provider resilience | Keyless providers (Ollama, vLLM) now get retry/backoff via `PooledClient` |
+| v0.1.11 | Adapter `Close()` fix | All adapters now call `CloseIdleConnections()` on close |
 
 ### Known issues
 
@@ -1000,17 +1022,17 @@ BenchmarkAuthPool_GetAvailable-16 30123632    39.93 ns/op    0 B/op   0 allocs/o
 BenchmarkAuthPool_Parallel-16     10030659    118.9 ns/op    0 B/op   0 allocs/op
 ```
 
-**Exit code:** 0 — PASS (46 tests + 5 benchmarks, all with `-race`)
+**Exit code:** 0 — PASS (49 tests + 5 benchmarks, all with `-race`)
 
 
 ---
 
 # rho/llm Bug Report
 
-**Date:** 2026-02-21
-**Library version:** `v0.1.8-0.20260221181905-e9c0e7f6bb50` (latest main)
-**Test suite:** 15 progressive tutorials exercising the full public API
-**Environment:** macOS Darwin 25.3.0, Go 1.24.3, Anthropic + Gemini API keys, Ollama local
+**Date:** 2026-02-25
+**Library version:** `rho/llm v0.1.11`
+**Test suite:** 18 progressive tutorials + 2 test suites (stress + capability)
+**Environment:** Linux 6.8.0, Go 1.26.0, Anthropic + Gemini + xAI API keys, Ollama local
 
 ---
 
@@ -1085,14 +1107,20 @@ But this had no effect — the adapter never saw it. Users had to set `ThinkingL
 
 ## Open Issues
 
+None — all previously reported bugs have been fixed.
+
+---
+
+## Closed Issues
+
 ### BUG-1: Anthropic adapter does not handle `RoleSystem` messages
 
-**Severity:** Medium
+**Severity:** Medium — **Fixed in v0.1.8**
 **Tutorial:** 09_system_and_multiturn
 **Affected providers:** Anthropic only (Gemini handles it correctly)
 
 **Description:**
-When `RoleSystem` messages are included in the `Request.Messages` array, the Anthropic adapter passes them through as-is with `role: "system"`. Anthropic's API rejects this with:
+When `RoleSystem` messages were included in the `Request.Messages` array, the Anthropic adapter passed them through as-is with `role: "system"`. Anthropic's API rejected this with:
 
 ```
 messages: Unexpected role "system". The Messages API accepts a top-level `system` parameter,
@@ -1117,13 +1145,11 @@ req := llm.Request{
 
 ### BUG-5: Anthropic adapter doesn't handle `RoleSystem` in message conversion
 
-**Severity:** Low (closely related to BUG-1, but distinct code path)
+**Severity:** Low — **Fixed in v0.1.8** (same fix as BUG-1)
 **Tutorial:** 09_system_and_multiturn
 
 **Description:**
-The Gemini adapter's `buildRequest` (gemini.go:256-271) has explicit handling for `llm.RoleSystem` messages — it extracts them and appends to `systemInstruction`. The Anthropic adapter's `buildRequest` (anthropic.go:248-274) has no such handling. The `switch msg.Role` block only handles `RoleUser` and `RoleAssistant`, falling through to `default` which passes the role string verbatim.
-
-This is the root cause of BUG-1 but worth noting as a distinct code-level issue: the Anthropic adapter's message conversion is incomplete.
+The Gemini adapter's `buildRequest` had explicit handling for `llm.RoleSystem` messages. The Anthropic adapter's `buildRequest` had no such handling. The `switch msg.Role` block only handled `RoleUser` and `RoleAssistant`, falling through to `default` which passed the role string verbatim. Now system messages are extracted into the top-level `system` parameter.
 
 ---
 
@@ -1183,15 +1209,7 @@ This is the root cause of BUG-1 but worth noting as a distinct code-level issue:
 | `IsNoAuthProvider` | 14, 15 |
 | Multi-provider comparison | 15 |
 
-### Still untested (internal/advanced)
+### Previously untested — now covered by tutorials 16–18
 
-| Symbol | Reason |
-|--------|--------|
-| `ContentPart`, `ContentType`, `ImageSource` | No multimodal/image examples — would need image files |
-| `AuthPool`, `NewAuthPool`, pool methods | Internal pool management — tested indirectly via `NewClientWithKeys` |
-| `PooledClient`, `NewPooledClient`, `PoolStatus` | Internal — tested indirectly via `NewClientWithKeys` |
-| `AuthProfile` methods | Internal pool health tracking |
-| `CooldownError`, `ErrNoAvailableProfiles` | Would require exhausting all pool keys |
-| Error constructors (`NewRateLimitError`, etc.) | Provider-side constructors, not consumer API |
-| `RegisterProvider`, `ProviderFactory` | Provider registration — used internally by adapters |
-| `LoggingClient` (struct directly) | Tested via `WithLogging`/`WithLoggingPrefix` wrappers |
+All symbols listed as "still untested" in prior versions of this report are now fully exercised:
+`ContentPart`, `ContentType`, `ImageSource` (tutorial 18), `AuthPool`, `NewAuthPool`, pool methods, `AuthProfile` methods, `PooledClient`, `NewPooledClient`, `PoolStatus`, `CooldownError`, `ErrNoAvailableProfiles` (tutorial 16), error constructors (tutorial 17).
