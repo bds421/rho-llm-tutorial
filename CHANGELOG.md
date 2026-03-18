@@ -1,5 +1,15 @@
 # Changelog
 
+## v0.2.5 — 2026-03-18
+
+### Changed
+- Replace short model aliases with full registry IDs in 12 tutorial Go files (`"flash"` → `"gemini-2.5-flash"`, `"haiku"` → `"claude-haiku-4-5-20251001"`, `"sonnet"` → `"claude-sonnet-4-6"`)
+- Remove alias-related inline comments (e.g. `// alias — resolves to ...`)
+- Remove "Short aliases … are also accepted" comment from config headers in tutorials 20 and 21
+
+### Added
+- **CLAUDE.md**: Rule — always use full model IDs, never short aliases (except tutorial 06 which demos `ResolveModelAlias`)
+
 ## v0.2.4 — 2026-03-18
 
 ### Changed

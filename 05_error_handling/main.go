@@ -25,7 +25,7 @@ func main() {
 	// Use a deliberately bad API key to trigger an auth error
 	cfg := llm.Config{
 		Provider:  "anthropic",
-		Model:     "haiku",
+		Model:     "claude-haiku-4-5-20251001",
 		APIKey:    "sk-invalid-key-for-demo",
 		MaxTokens: 100,
 		Timeout:   10 * time.Second,

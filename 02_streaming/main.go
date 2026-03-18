@@ -25,7 +25,7 @@ func main() {
 
 	cfg := llm.Config{
 		Provider:  "anthropic",
-		Model:     "haiku", // alias for claude-haiku-4-5
+		Model:     "claude-haiku-4-5-20251001",
 		APIKey:    os.Getenv("ANTHROPIC_API_KEY"),
 		MaxTokens: 512,
 		Timeout:   30 * time.Second,

@@ -8,6 +8,7 @@ package main
 import (
 	"context"
 	"fmt"
+	"log/slog"
 	"os"
 	"time"
 
@@ -21,6 +22,12 @@ type providerConfig struct {
 }
 
 func main() {
+	// Suppress internal library logs (pool creation, rotation) so the
+	// comparison table stays clean.
+	slog.SetDefault(slog.New(slog.NewTextHandler(os.Stderr, &slog.HandlerOptions{
+		Level: slog.LevelError,
+	})))
+
 	ctx := context.Background()
 
 	prompt := "What is the square root of 144? Answer with just the number."
@@ -31,7 +38,7 @@ func main() {
 			name: "Gemini Flash",
 			config: llm.Config{
 				Provider:  "gemini",
-				Model:     "flash",
+				Model:     "gemini-2.5-flash",
 				APIKey:    os.Getenv("GEMINI_API_KEY"),
 				MaxTokens: 50,
 				Timeout:   30 * time.Second,
@@ -41,7 +48,7 @@ func main() {
 			name: "Anthropic Haiku",
 			config: llm.Config{
 				Provider:  "anthropic",
-				Model:     "haiku",
+				Model:     "claude-haiku-4-5-20251001",
 				APIKey:    os.Getenv("ANTHROPIC_API_KEY"),
 				MaxTokens: 50,
 				Timeout:   30 * time.Second,

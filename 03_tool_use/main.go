@@ -62,7 +62,7 @@ func main() {
 
 	cfg := llm.Config{
 		Provider: "gemini",
-		Model:    "flash",
+		Model:    "gemini-2.5-flash",
 		APIKey:   os.Getenv("GEMINI_API_KEY"),
 		Timeout:  30 * time.Second,
 	}

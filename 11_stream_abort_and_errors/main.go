@@ -20,7 +20,7 @@ func main() {
 
 	cfg := llm.Config{
 		Provider:  "anthropic",
-		Model:     "haiku",
+		Model:     "claude-haiku-4-5-20251001",
 		APIKey:    os.Getenv("ANTHROPIC_API_KEY"),
 		MaxTokens: 1024,
 		Timeout:   30 * time.Second,
@@ -109,7 +109,7 @@ func main() {
 	{
 		shortCfg := llm.Config{
 			Provider:  "anthropic",
-			Model:     "haiku",
+			Model:     "claude-haiku-4-5-20251001",
 			APIKey:    os.Getenv("ANTHROPIC_API_KEY"),
 			MaxTokens: 4096,
 			Timeout:   2 * time.Second, // very short timeout

@@ -35,7 +35,7 @@ func main() {
 	{
 		cfg := llm.Config{
 			Provider:    "gemini",
-			Model:       "flash",
+			Model:       "gemini-2.5-flash",
 			APIKey:      apiKey,
 			MaxTokens:   100,
 			Timeout:     30 * time.Second,
@@ -63,7 +63,7 @@ func main() {
 	{
 		cfg := llm.Config{
 			Provider:  "gemini",
-			Model:     "flash",
+			Model:     "gemini-2.5-flash",
 			APIKey:    apiKey,
 			MaxTokens: 100,
 			Timeout:   30 * time.Second,
@@ -96,7 +96,7 @@ func main() {
 	{
 		cfg := llm.Config{
 			Provider:  "gemini",
-			Model:     "flash",
+			Model:     "gemini-2.5-flash",
 			APIKey:    apiKey,
 			MaxTokens: 100,
 			Timeout:   30 * time.Second,
@@ -126,7 +126,7 @@ func main() {
 	{
 		cfg := llm.Config{
 			Provider:  "gemini",
-			Model:     "flash",
+			Model:     "gemini-2.5-flash",
 			APIKey:    apiKey,
 			MaxTokens: 100,
 			Timeout:   30 * time.Second,

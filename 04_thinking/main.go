@@ -56,7 +56,7 @@ func main() {
 	{
 		noneCfg := llm.Config{
 			Provider:      "anthropic",
-			Model:         "haiku",
+			Model:         "claude-haiku-4-5-20251001",
 			APIKey:        os.Getenv("ANTHROPIC_API_KEY"),
 			MaxTokens:     100,
 			ThinkingLevel: llm.ThinkingNone, // Explicitly no thinking
@@ -91,7 +91,7 @@ func main() {
 	// --- Step 2: Configure with extended thinking enabled ---
 	cfg := llm.Config{
 		Provider:      "anthropic",
-		Model:         "sonnet",                       // alias for claude-sonnet-4-6
+		Model:         "claude-sonnet-4-6",
 		APIKey:        os.Getenv("ANTHROPIC_API_KEY"),
 		MaxTokens:     16000,                          // required when thinking is enabled
 		ThinkingLevel: llm.ThinkingHigh,                // ThinkingLow / ThinkingMedium / ThinkingHigh

@@ -21,7 +21,7 @@ func main() {
 
 	cfg := llm.Config{
 		Provider:  "anthropic",
-		Model:     "haiku",
+		Model:     "claude-haiku-4-5-20251001",
 		APIKey:    os.Getenv("ANTHROPIC_API_KEY"),
 		MaxTokens: 256,
 		Timeout:   30 * time.Second,
@@ -64,7 +64,7 @@ func main() {
 	{
 		geminiCfg := llm.Config{
 			Provider:  "gemini",
-			Model:     "flash",
+			Model:     "gemini-2.5-flash",
 			APIKey:    os.Getenv("GEMINI_API_KEY"),
 			MaxTokens: 256,
 			Timeout:   30 * time.Second,

@@ -1,11 +1,10 @@
 report_dir: "reports"
 
 # Model IDs must match the rho/llm registry exactly (see rho/llm/registry.go).
-# Short aliases (opus, sonnet, haiku, grok-mini, etc.) are also accepted.
 #
 # Fields:
 #   provider:        rho/llm provider name (anthropic, gemini, xai, ollama, ...)
-#   model:           exact registry ID or registered alias
+#   model:           exact registry ID
 #   api_key_env:     env var holding the API key -- model is skipped if unset/empty
 #   base_url:        optional endpoint override
 #   timeout_seconds: per-request deadline (default: 180 for tool use)

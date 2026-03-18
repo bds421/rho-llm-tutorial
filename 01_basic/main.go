@@ -27,7 +27,7 @@ func main() {
 	// for cloud providers (plus APIKey). Local providers like Ollama need no key.
 	cfg := llm.Config{
 		Provider:  "gemini",
-		Model:     "flash",                    // alias — resolves to "gemini-2.5-flash"
+		Model:     "gemini-2.5-flash",
 		APIKey:    os.Getenv("GEMINI_API_KEY"), // from environment
 		MaxTokens: 256,                        // max output tokens (default: 8192)
 		Timeout:   30 * time.Second,           // HTTP timeout (default: 120s)
