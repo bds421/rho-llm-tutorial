@@ -1,5 +1,20 @@
 # Changelog
 
+## v0.2.6 — 2026-03-18
+
+### Changed — Capability test questions (tutorial 20)
+- **Level 3** (Cognitive Reflection): Replace "switches" lateral-thinking riddle with "pills" CRT trap (intuitive 90 vs correct 60)
+- **Level 4** (Multi-Step Deduction): Replace 4 internet puzzles (hats, knights/knaves, two-doors, 12-coins) with genuinely harder problems:
+  - `logic-speed`: Harmonic mean trap (60/40 km/h → 48, not 50)
+  - `logic-digit`: Three-digit constraint-satisfaction algebra (→ 194)
+  - `logic-calendar`: 4-step temporal chain deduction (→ Sunday)
+  - `logic-weighing`: 9-coin balance derivation (→ 2 weighings)
+- **Level 5** (Advanced Reasoning): Replace 3 trivial/famous puzzles (pigeonhole, set intersection, snail) with:
+  - `advanced-clock`: Continuous hour-hand motion at 3:15 (→ 7.5°)
+  - `advanced-hanoi`: Tower of Hanoi recursive formula for 6 disks (→ 63)
+  - `advanced-derangement`: Inclusion-exclusion probability for 4 letters (→ 3/8)
+- Rename categories: "Math/IQ" → "Cognitive Reflection", "Logic/IQ/Mensa" → "Multi-Step Deduction" / "Advanced Reasoning"
+
 ## v0.2.5 — 2026-03-18
 
 ### Changed

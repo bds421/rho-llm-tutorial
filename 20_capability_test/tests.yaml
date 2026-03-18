@@ -95,11 +95,11 @@ tests:
     expected: ["<person", "name=", "bob"]
 
   # ----------------------------------------------------------------------------
-  # Level 3 - Math/IQ (5 questions)
+  # Level 3 - Cognitive Reflection (5 questions)
   # ----------------------------------------------------------------------------
   - id: "math-iq-bat-ball"
     difficulty: 3
-    category: "Math/IQ"
+    category: "Cognitive Reflection"
     prompt_en: "A bat and a ball cost $1.10 in total. The bat costs $1.00 more than the ball. How much does the ball cost in cents? Reply with just the number."
     prompt_de: "Ein Schläger und ein Ball kosten zusammen 1,10$. Der Schläger kostet 1,00$ mehr als der Ball. Wie viel kostet der Ball in Cent? Antworte nur mit der Zahl."
     prompt_es: "Un bate y una pelota cuestan $1.10 en total. El bate cuesta $1.00 más que la pelota. ¿Cuánto cuesta la pelota en centavos? Responde solo con el número."
@@ -109,7 +109,7 @@ tests:
 
   - id: "math-iq-machines"
     difficulty: 3
-    category: "Math/IQ"
+    category: "Cognitive Reflection"
     prompt_en: "If it takes 5 machines 5 minutes to make 5 widgets, how long would it take 100 machines to make 100 widgets? Reply with just the number of minutes."
     prompt_de: "Wenn 5 Maschinen 5 Minuten brauchen, um 5 Geräte herzustellen, wie lange würden 100 Maschinen für 100 Geräte brauchen? Antworte nur mit der Anzahl der Minuten."
     prompt_es: "Si 5 máquinas tardan 5 minutos en hacer 5 artefactos, ¿cuánto tiempo tardarían 100 máquinas en hacer 100 artefactos? Responde solo con el número de minutos."
@@ -119,7 +119,7 @@ tests:
 
   - id: "math-iq-lilypad"
     difficulty: 3
-    category: "Math/IQ"
+    category: "Cognitive Reflection"
     prompt_en: "In a lake, there is a patch of lily pads. Every day, the patch doubles in size. If it takes 48 days for the patch to cover the entire lake, how long would it take for the patch to cover half of the lake? Reply with just the number."
     prompt_de: "In einem See gibt es ein Feld von Seerosenblättern. Jeden Tag verdoppelt sich die Größe des Feldes. Wenn es 48 Tage dauert, bis das Feld den ganzen See bedeckt, wie lange würde es dauern, bis das Feld den halben See bedeckt? Antworte nur mit der Zahl."
     prompt_es: "En un lago, hay un grupo de nenúfares. Cada día, el grupo duplica su tamaño. Si tarda 48 días en cubrir todo el lago, ¿cuánto tiempo tardaría en cubrir la mitad del lago? Responde solo con el número."
@@ -127,120 +127,124 @@ tests:
     expected: ["47"]
     not_expected: ["24"]
 
-  - id: "math-iq-runner"
+  - id: "math-iq-probability"
     difficulty: 3
-    category: "Math/IQ"
-    prompt_en: "You are running a race and you pass the person in second place. What place are you in now? Reply with just the word for the position."
-    prompt_de: "Du nimmst an einem Rennen teil und überholst die Person auf dem zweiten Platz. Auf welchem Platz bist du jetzt? Antworte nur mit dem Wort für die Platzierung."
-    prompt_es: "Estás corriendo una carrera y pasas a la persona que va en segundo lugar. ¿En qué lugar estás ahora? Responde solo con la palabra de la posición."
+    category: "Cognitive Reflection"
+    prompt_en: "You flip a fair coin 3 times. Given that at least one flip was heads, what is the probability all three were heads? Reply as a simplified fraction."
+    prompt_de: "Du wirfst eine faire Münze 3 Mal. Gegeben, dass mindestens ein Wurf Kopf war, wie hoch ist die Wahrscheinlichkeit, dass alle drei Kopf waren? Antworte als gekürzter Bruch."
+    prompt_es: "Lanzas una moneda justa 3 veces. Dado que al menos un lanzamiento fue cara, ¿cuál es la probabilidad de que los tres hayan sido cara? Responde como fracción simplificada."
     validator_type: "contains_any"
-    expected: ["second", "zweiter", "zweite", "zweiten", "segundo"]
-    not_expected: ["first", "erste", "erster", "primero"]
+    expected: ["1/7"]
+    not_expected: ["1/8", "1/4"]
 
-  - id: "math-iq-farmer"
+  - id: "math-iq-pills"
     difficulty: 3
-    category: "Math/IQ"
-    prompt_en: "A farmer has 15 sheep, and all but 8 die. How many are left? Reply with just the number."
-    prompt_de: "Ein Bauer hat 15 Schafe. Alle bis auf 8 sterben. Wie viele bleiben übrig? Antworte nur mit der Zahl."
-    prompt_es: "Un granjero tiene 15 ovejas, y mueren todas menos 8. ¿Cuántas quedan? Responde solo con el número."
+    category: "Cognitive Reflection"
+    prompt_en: "A doctor gives you 3 pills and tells you to take one every 30 minutes. How many minutes until you have taken all 3 pills? Reply with just the number."
+    prompt_de: "Ein Arzt gibt dir 3 Tabletten und sagt, du sollst alle 30 Minuten eine nehmen. Wie viele Minuten dauert es, bis du alle 3 genommen hast? Antworte nur mit der Zahl."
+    prompt_es: "Un médico te da 3 pastillas y te dice que tomes una cada 30 minutos. ¿Cuántos minutos tardarás en tomar las 3? Responde solo con el número."
     validator_type: "contains_any"
-    expected: ["8", "eight", "acht", "ocho"]
-    not_expected: ["7", "seven", "sieben", "siete"]
+    expected: ["60", "sixty", "sechzig", "sesenta"]
+    not_expected: ["90", "ninety", "neunzig", "noventa"]
 
   # ----------------------------------------------------------------------------
-  # Level 4 - Logic/IQ/Mensa (5 questions)
+  # Level 4 - Multi-Step Deduction (5 questions)
   # ----------------------------------------------------------------------------
-  - id: "logic-iq-mensa-math"
+  - id: "logic-speed"
     difficulty: 4
-    category: "Logic/IQ/Mensa"
-    prompt_en: "What is the 4-digit number where the first digit is one-fifth of the last digit, and the two-digit number formed by the second and third digits equals three times the last digit? (Hint: The sum of all four digits is 12). Reply with just the 4-digit number."
-    prompt_de: "Wie lautet die 4-stellige Zahl, bei der die erste Ziffer ein Fünftel der letzten Ziffer ist und die zweistellige Zahl aus zweiter und dritter Ziffer das Dreifache der letzten Ziffer ergibt? (Hinweis: Die Quersumme aller vier Ziffern ist 12). Antworte nur mit der 4-stelligen Zahl."
-    prompt_es: "¿Cuál es el número de 4 dígitos donde el primer dígito es una quinta parte del último dígito, y el número de dos dígitos formado por el segundo y tercer dígito es igual al triple del último dígito? (Pista: La suma de los cuatro dígitos es 12). Responde solo con el número de 4 dígitos."
+    category: "Multi-Step Deduction"
+    prompt_en: "A car drives from city A to city B at 60 km/h and returns from B to A along the same route at 40 km/h. What is the average speed for the entire round trip in km/h? Reply with just the number."
+    prompt_de: "Ein Auto fährt von Stadt A nach Stadt B mit 60 km/h und fährt dieselbe Strecke mit 40 km/h zurück. Was ist die Durchschnittsgeschwindigkeit für die gesamte Hin- und Rückfahrt in km/h? Antworte nur mit der Zahl."
+    prompt_es: "Un coche va de la ciudad A a la B a 60 km/h y regresa por la misma ruta a 40 km/h. ¿Cuál es la velocidad promedio del viaje completo de ida y vuelta en km/h? Responde solo con el número."
     validator_type: "contains_any"
-    expected: ["1155", "1,155", "1.155"]
+    expected: ["48"]
+    not_expected: ["50"]
 
-  - id: "logic-iq-mensa-riddle"
+  - id: "logic-digit"
     difficulty: 4
-    category: "Logic/IQ/Mensa"
-    prompt_en: "A man is looking at a photograph. He says: 'Brothers and sisters, I have none. But that man's father is my father's son.' Who is in the photograph? Reply very concisely."
-    prompt_de: "Ein Mann betrachtet ein Foto. Er sagt: 'Brüder und Schwestern habe ich keine. Aber der Vater dieses Mannes ist der Sohn meines Vaters.' Wer ist auf dem Foto zu sehen? Antworte sehr kurz."
-    prompt_es: "Un hombre está mirando una fotografía. Dice: 'Hermanos y hermanas, no tengo ninguno. Pero el padre de ese hombre es el hijo de mi padre.' ¿Quién está en la fotografía? Responde de forma muy concisa."
+    category: "Multi-Step Deduction"
+    prompt_en: "I am a three-digit number. My tens digit is 5 more than my ones digit. My hundreds digit is 8 less than my tens digit. What number am I? Reply with just the number."
+    prompt_de: "Ich bin eine dreistellige Zahl. Meine Zehnerstelle ist 5 mehr als meine Einerstelle. Meine Hunderterstelle ist 8 weniger als meine Zehnerstelle. Welche Zahl bin ich? Antworte nur mit der Zahl."
+    prompt_es: "Soy un número de tres dígitos. Mi dígito de las decenas es 5 más que mi dígito de las unidades. Mi dígito de las centenas es 8 menos que mi dígito de las decenas. ¿Qué número soy? Responde solo con el número."
     validator_type: "contains_any"
-    expected: ["son", "sohn", "hijo", "boy"]
-    not_expected: ["himself", "er selbst", "sí mismo", "el mismo", "him", "me"]
+    expected: ["194"]
 
-  - id: "logic-iq-mensa-family"
+  - id: "logic-ages"
     difficulty: 4
-    category: "Logic/IQ/Mensa"
-    prompt_en: "Mary's father has 5 daughters: Nana, Nene, Nini, Nono. What is the name of the fifth daughter? Reply with just the name."
-    prompt_de: "Marys Vater hat 5 Töchter: Nana, Nene, Nini, Nono. Wie heißt die fünfte Tochter? Antworte nur mit dem Namen."
-    prompt_es: "El padre de Mary tiene 5 hijas: Nana, Nene, Nini, Nono. ¿Cuál es el nombre de la quinta hija? Responde solo con el nombre."
+    category: "Multi-Step Deduction"
+    prompt_en: "Alice is twice as old as Bob was when Alice was as old as Bob is now. Bob is 18. How old is Alice? Reply with just the number."
+    prompt_de: "Alice ist doppelt so alt wie Bob war, als Alice so alt war wie Bob jetzt ist. Bob ist 18. Wie alt ist Alice? Antworte nur mit der Zahl."
+    prompt_es: "Alice tiene el doble de la edad que tenía Bob cuando Alice tenía la edad que Bob tiene ahora. Bob tiene 18. ¿Cuántos años tiene Alice? Responde solo con el número."
     validator_type: "contains_any"
-    expected: ["mary"]
-    not_expected: ["nunu", "nuno", "nano"]
+    expected: ["24"]
+    not_expected: ["36", "27"]
 
-  - id: "logic-iq-mensa-code"
+  - id: "logic-calendar"
     difficulty: 4
-    category: "Logic/IQ/Mensa"
-    prompt_en: "If 'CAT' is coded as 3-1-20, what is 'DOG' coded as using the same logic? Reply with just the numbers separated by dashes."
-    prompt_de: "Wenn 'CAT' als 3-1-20 kodiert wird, wie wird dann 'DOG' nach der gleichen Logik kodiert? Antworte nur mit den Zahlen, getrennt durch Bindestriche."
-    prompt_es: "Si 'CAT' se codifica como 3-1-20, ¿cómo se codifica 'DOG' usando la misma lógica? Responde solo con los números separados por guiones."
+    category: "Multi-Step Deduction"
+    prompt_en: "If three days ago was two days after Monday, what day will tomorrow be? Reply with just the day of the week."
+    prompt_de: "Wenn vor drei Tagen zwei Tage nach Montag war, welcher Tag ist morgen? Antworte nur mit dem Wochentag."
+    prompt_es: "Si hace tres días fue dos días después del lunes, ¿qué día será mañana? Responde solo con el día de la semana."
     validator_type: "contains_any"
-    expected: ["4-15-7"]
+    expected: ["sunday", "sonntag", "domingo"]
 
-  - id: "logic-iq-mensa-calendar"
+  - id: "logic-weighing"
     difficulty: 4
-    category: "Logic/IQ/Mensa"
-    prompt_en: "The day before two days after the day before tomorrow is Saturday. What day is it today? Reply with just the day of the week."
-    prompt_de: "Folge diesen Schritten: Nimm den Tag vor morgen, gehe zwei Tage vorwärts, gehe dann einen Tag zurück — das Ergebnis ist Samstag. Welcher Tag ist heute? Antworte nur mit dem Wochentag."
-    prompt_es: "Sigue estos pasos: toma el día anterior a mañana, avanza dos días, luego retrocede un día — el resultado es sábado. ¿Qué día es hoy? Responde solo con el día de la semana."
+    category: "Multi-Step Deduction"
+    prompt_en: "You have 9 identical-looking coins. One is counterfeit and slightly heavier than the rest. Using a balance scale, what is the minimum number of weighings needed to guarantee finding the heavier coin? Reply with just the number."
+    prompt_de: "Du hast 9 identisch aussehende Münzen. Eine ist gefälscht und etwas schwerer. Wie viele Wägungen mit einer Balkenwaage brauchst du mindestens, um die schwerere Münze garantiert zu finden? Antworte nur mit der Zahl."
+    prompt_es: "Tienes 9 monedas de aspecto idéntico. Una es falsa y ligeramente más pesada. Usando una balanza, ¿cuál es el número mínimo de pesadas necesarias para garantizar encontrar la moneda más pesada? Responde solo con el número."
     validator_type: "contains_any"
-    expected: ["friday", "freitag", "viernes"]
+    expected: ["2"]
+    not_expected: ["3", "4"]
 
   # ----------------------------------------------------------------------------
-  # Level 5 - Sequences & Advanced IQ (5 questions)
+  # Level 5 - Advanced Reasoning (5 questions)
   # ----------------------------------------------------------------------------
-  - id: "logic-iq-mensa-sequence"
+  - id: "advanced-modular"
     difficulty: 5
-    category: "Logic/IQ/Mensa"
-    prompt_en: "What number should come next in this sequence: 1, 4, 10, 22, ...? Reply with just the number."
-    prompt_de: "Welche Zahl sollte in dieser Folge als nächstes kommen: 1, 4, 10, 22, ...? Antworte nur mit der Zahl."
-    prompt_es: "¿Qué número debe ir a continuación en esta secuencia: 1, 4, 10, 22, ...? Responde solo con el número."
+    category: "Advanced Reasoning"
+    prompt_en: "What is the remainder when 2^100 is divided by 7? Reply with just the number."
+    prompt_de: "Was ist der Rest, wenn 2^100 durch 7 geteilt wird? Antworte nur mit der Zahl."
+    prompt_es: "¿Cuál es el resto cuando 2^100 se divide entre 7? Responde solo con el número."
     validator_type: "contains_any"
-    expected: ["46"]
+    expected: ["2"]
+    not_expected: ["1", "4"]
 
-  - id: "logic-iq-mensa-word"
+  - id: "advanced-clock"
     difficulty: 5
-    category: "Logic/IQ/Mensa"
-    prompt_en: "Which word does not belong in the following list: Apple, Banana, Carrot, Date, Elephant? Reply with just the word."
-    prompt_de: "Welches Wort gehört nicht in die folgende Liste: Apfel, Banane, Karotte, Dattel, Elefant? Antworte nur mit dem Wort."
-    prompt_es: "¿Qué palabra no pertenece a la siguiente lista: Manzana, Plátano, Zanahoria, Dátil, Elefante? Responde solo con la palabra."
+    category: "Advanced Reasoning"
+    prompt_en: "At exactly 3:15, what is the angle in degrees between the hour hand and the minute hand of a clock? Reply with just the number."
+    prompt_de: "Um genau 3:15 Uhr, wie groß ist der Winkel in Grad zwischen dem Stunden- und dem Minutenzeiger einer Uhr? Antworte nur mit der Zahl."
+    prompt_es: "A las 3:15 en punto, ¿cuál es el ángulo en grados entre la manecilla de la hora y la del minuto de un reloj? Responde solo con el número."
     validator_type: "contains_any"
-    expected: ["elephant", "elefant", "elefante"]
+    expected: ["7.5", "7,5"]
+    not_expected: ["0", "90"]
 
-  - id: "logic-iq-mensa-sequence2"
+  - id: "advanced-meta-sequence"
     difficulty: 5
-    category: "Logic/IQ/Mensa"
-    prompt_en: "What number should come next in this sequence: 2, 6, 12, 20, 30, ...? Reply with just the number."
-    prompt_de: "Welche Zahl sollte in dieser Folge als nächstes kommen: 2, 6, 12, 20, 30, ...? Antworte nur mit der Zahl."
-    prompt_es: "¿Qué número debe ir a continuación en esta secuencia: 2, 6, 12, 20, 30, ...? Responde solo con el número."
+    category: "Advanced Reasoning"
+    prompt_en: "What comes next in this sequence: 3, 3, 5, 4, 4, 3, 5, 5, 4, ...? Reply with just the number."
+    prompt_de: "Was kommt als Nächstes in dieser Folge: 3, 3, 5, 4, 4, 3, 5, 5, 4, ...? Antworte nur mit der Zahl."
+    prompt_es: "¿Qué sigue en esta secuencia: 3, 3, 5, 4, 4, 3, 5, 5, 4, ...? Responde solo con el número."
     validator_type: "contains_any"
-    expected: ["42"]
+    expected: ["3"]
+    not_expected: ["4", "5", "6"]
 
-  - id: "logic-iq-mensa-sequence3"
+  - id: "advanced-hanoi"
     difficulty: 5
-    category: "Logic/IQ/Mensa"
-    prompt_en: "What number should come next in this sequence: 1, 1, 2, 3, 5, 8, ...? Reply with just the number."
-    prompt_de: "Welche Zahl sollte in dieser Folge als nächstes kommen: 1, 1, 2, 3, 5, 8, ...? Antworte nur mit der Zahl."
-    prompt_es: "¿Qué número debe ir a continuación en esta secuencia: 1, 1, 2, 3, 5, 8, ...? Responde solo con el número."
+    category: "Advanced Reasoning"
+    prompt_en: "In the Tower of Hanoi puzzle with 6 disks, what is the minimum number of moves needed to transfer all disks from one peg to another? Reply with just the number."
+    prompt_de: "Beim Turm-von-Hanoi-Puzzle mit 6 Scheiben: Wie viele Züge braucht man mindestens, um alle Scheiben auf einen anderen Stab zu bewegen? Antworte nur mit der Zahl."
+    prompt_es: "En el puzzle de la Torre de Hanói con 6 discos, ¿cuál es el número mínimo de movimientos necesarios para transferir todos los discos a otra varilla? Responde solo con el número."
     validator_type: "contains_any"
-    expected: ["13"]
+    expected: ["63"]
 
-  - id: "logic-iq-mensa-squares"
+  - id: "advanced-derangement"
     difficulty: 5
-    category: "Logic/IQ/Mensa"
-    prompt_en: "What number should come next in this sequence: 1, 4, 9, 16, 25, ...? Reply with just the number."
-    prompt_de: "Welche Zahl sollte in dieser Folge als nächstes kommen: 1, 4, 9, 16, 25, ...? Antworte nur mit der Zahl."
-    prompt_es: "¿Qué número debe ir a continuación en esta secuencia: 1, 4, 9, 16, 25, ...? Responde solo con el número."
+    category: "Advanced Reasoning"
+    prompt_en: "You randomly place 4 different letters into 4 labeled envelopes (one letter per envelope). What is the probability that NO letter ends up in its correct envelope? Reply as a simplified fraction."
+    prompt_de: "Du verteilst 4 verschiedene Briefe zufällig auf 4 beschriftete Umschläge (ein Brief pro Umschlag). Wie hoch ist die Wahrscheinlichkeit, dass KEIN Brief im richtigen Umschlag landet? Antworte als gekürzter Bruch."
+    prompt_es: "Colocas aleatoriamente 4 cartas diferentes en 4 sobres etiquetados (una carta por sobre). ¿Cuál es la probabilidad de que NINGUNA carta termine en su sobre correcto? Responde como fracción simplificada."
     validator_type: "contains_any"
-    expected: ["36"]
+    expected: ["3/8"]
