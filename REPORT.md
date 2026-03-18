@@ -440,9 +440,9 @@ failed/error cases.
 
 ### Tool use benchmark (21_cloud_ctl_tool_use)
 
-Tutorial 21 is a YAML-driven multi-model tool use benchmark that runs agentic tool-call loops against
-the real `cl` (cloud-ctl) CLI binary. Each configured model receives a natural-language task, invokes
-tools to complete it, and the results are scored and reported.
+Tutorial 21 is a YAML-driven multi-model tool use benchmark that runs agentic tool-call loops with
+mock tool responses (no external dependencies required). Each configured model receives a natural-language
+task, invokes tools to complete it, and the results are scored and reported. Providers run in parallel.
 
 **Configuration files:**
 - `config.yaml` — Model definitions (provider, model ID, timeout, API key env var)

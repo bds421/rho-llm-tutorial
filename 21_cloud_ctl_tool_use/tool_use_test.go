@@ -4,9 +4,8 @@
 //               llm.NewToolResultMessage, agentic tool-use loop,
 //               YAML-driven multi-model test matrix, markdown report generation.
 //
-// Runs every tool call against the real `cl` binary (cloud-ctl CLI).
-// Requires: `cl` in PATH + valid authentication (CLOUD_ACCOUNT / OAuth).
-// Skips automatically if `cl` is not available or auth fails.
+// Tool calls return mock responses (no external dependencies needed).
+// The benchmark tests tool *selection* and *argument construction*.
 //
 // Run:
 //
@@ -22,11 +21,11 @@ import (
 	"io"
 	"net/http"
 	"os"
-	"os/exec"
 	"path/filepath"
 	"regexp"
 	"sort"
 	"strings"
+	"sync"
 	"testing"
 	"time"
 
@@ -147,25 +146,6 @@ func loadTestMatrix(t *testing.T) []TestCase {
 		testMatrix = append(testMatrix, tc)
 	}
 	return testMatrix
-}
-
-// =============================================================================
-// cl binary availability check
-// =============================================================================
-
-// checkCLAvailable verifies the cl binary is in PATH and authenticated.
-// Returns an error message if not available, empty string if OK.
-func checkCLAvailable() string {
-	if _, err := exec.LookPath("cl"); err != nil {
-		return "cl binary not found in PATH (build with: go build -o cl ./cmd/cl/ in rho/cloud-ctl)"
-	}
-	// Smoke test: list calendars (lightweight, read-only).
-	cmd := exec.Command("cl", "calendar", "calendars", "--json")
-	out, err := cmd.CombinedOutput()
-	if err != nil {
-		return fmt.Sprintf("cl auth check failed: %s: %s", err, strings.TrimSpace(string(out)))
-	}
-	return ""
 }
 
 // =============================================================================
@@ -456,12 +436,6 @@ func validateAllToolsCalledAndCoherent(tc TestCase, traces []ToolTrace, response
 // =============================================================================
 
 func TestCloudCtlToolUse(t *testing.T) {
-	// Gate: cl binary must be available and authenticated.
-	if msg := checkCLAvailable(); msg != "" {
-		t.Skipf("SKIP: %s", msg)
-	}
-	t.Log("cl binary available and authenticated")
-
 	testConfig := loadConfig(t)
 	testMatrix := loadTestMatrix(t)
 
@@ -479,154 +453,181 @@ func TestCloudCtlToolUse(t *testing.T) {
 	t.Logf("Running tool-use matrix: %d configured models x %d tests",
 		len(testConfig.Models), len(testMatrix))
 
+	var mu sync.Mutex
 	var results []TestResult
 
-	for _, modelCfg := range testConfig.Models {
-		modelCfg := modelCfg
-		label := modelCfg.Provider + "/" + modelCfg.Model
+	// Report generation runs after all parallel subtests complete.
+	t.Cleanup(func() {
+		mu.Lock()
+		finalResults := make([]TestResult, len(results))
+		copy(finalResults, results)
+		mu.Unlock()
 
-		// --- Skip check 1: API key required but not set ---
-		if modelCfg.APIKeyEnv != "" && os.Getenv(modelCfg.APIKeyEnv) == "" {
-			t.Logf("SKIP %s: env var %s is not set", label, modelCfg.APIKeyEnv)
-			continue
+		if len(finalResults) == 0 {
+			t.Log("No models ran (all skipped). Check API keys and Ollama status.")
+			return
 		}
 
-		// --- Skip check 2: Ollama model not pulled ---
-		if modelCfg.Provider == "ollama" {
-			if ollamaModels == nil {
-				t.Logf("SKIP %s: Ollama is not reachable", label)
-				continue
-			}
-			if !ollamaModels[modelCfg.Model] {
-				t.Logf("SKIP %s: model not found in local Ollama (run: ollama pull %s)",
-					label, modelCfg.Model)
-				continue
-			}
+		timestamp := time.Now().Format("20060102_150405")
+		reportFile := fmt.Sprintf("RESULTS_TOOL_USE_%s.md", timestamp)
+		t.Logf("Writing report to %s/%s", testConfig.ReportDir, reportFile)
+		if err := generateReport(testConfig.ReportDir, reportFile, testMatrix, finalResults); err != nil {
+			t.Errorf("Failed to write report: %v", err)
 		}
+	})
 
-		// --- Build the rho/llm client ---
-		apiKey := ""
-		if modelCfg.APIKeyEnv != "" {
-			apiKey = os.Getenv(modelCfg.APIKeyEnv)
-		}
+	// Group models by provider so providers run in parallel while models
+	// within the same provider run sequentially (avoids rate-limit storms).
+	providerGroups := map[string][]ModelConfig{}
+	for _, mc := range testConfig.Models {
+		providerGroups[mc.Provider] = append(providerGroups[mc.Provider], mc)
+	}
 
-		timeout := 180 * time.Second
-		if modelCfg.TimeoutSeconds > 0 {
-			timeout = time.Duration(modelCfg.TimeoutSeconds) * time.Second
-		}
+	for providerName, models := range providerGroups {
+		t.Run(providerName, func(t *testing.T) {
+			t.Parallel()
 
-		cfg := llm.Config{
-			Provider:  modelCfg.Provider,
-			Model:     modelCfg.Model,
-			APIKey:    apiKey,
-			MaxTokens: 4096,
-			Timeout:   timeout,
-		}
-		if modelCfg.BaseURL != "" {
-			cfg.BaseURL = modelCfg.BaseURL
-		}
+			for _, modelCfg := range models {
+				modelCfg := modelCfg
+				label := modelCfg.Provider + "/" + modelCfg.Model
 
-		client, err := llm.NewClient(cfg)
-		if err != nil {
-			t.Logf("SKIP %s: cannot create client: %v", label, err)
-			continue
-		}
+				// --- Skip check 1: API key required but not set ---
+				if modelCfg.APIKeyEnv != "" && os.Getenv(modelCfg.APIKeyEnv) == "" {
+					t.Logf("SKIP %s: env var %s is not set", label, modelCfg.APIKeyEnv)
+					continue
+				}
 
-		resolvedModel := client.Model()
-		resolvedProvider := client.Provider()
+				// --- Skip check 2: Ollama model not pulled ---
+				if modelCfg.Provider == "ollama" {
+					if ollamaModels == nil {
+						t.Logf("SKIP %s: Ollama is not reachable", label)
+						continue
+					}
+					if !ollamaModels[modelCfg.Model] {
+						t.Logf("SKIP %s: model not found in local Ollama (run: ollama pull %s)",
+							label, modelCfg.Model)
+						continue
+					}
+				}
 
-		t.Run(resolvedProvider+"/"+resolvedModel, func(t *testing.T) {
-			defer client.Close()
+				// --- Build the rho/llm client ---
+				apiKey := ""
+				if modelCfg.APIKeyEnv != "" {
+					apiKey = os.Getenv(modelCfg.APIKeyEnv)
+				}
 
-			for _, tc := range testMatrix {
-				tc := tc
-				testName := fmt.Sprintf("%s/%s", tc.Category, tc.ID)
+				timeout := 180 * time.Second
+				if modelCfg.TimeoutSeconds > 0 {
+					timeout = time.Duration(modelCfg.TimeoutSeconds) * time.Second
+				}
 
-				t.Run(testName, func(t *testing.T) {
-					ctx, cancel := context.WithTimeout(t.Context(), timeout)
-					defer cancel()
+				cfg := llm.Config{
+					Provider:  modelCfg.Provider,
+					Model:     modelCfg.Model,
+					APIKey:    apiKey,
+					MaxTokens: 4096,
+					Timeout:   timeout,
+				}
+				if modelCfg.BaseURL != "" {
+					cfg.BaseURL = modelCfg.BaseURL
+				}
 
-					start := time.Now()
-					response, traces, rounds, err := runAgenticLoop(ctx, client, tc)
-					duration := time.Since(start)
+				client, err := llm.NewClient(cfg)
+				if err != nil {
+					t.Logf("SKIP %s: cannot create client: %v", label, err)
+					continue
+				}
 
-					if err != nil {
-						t.Logf("ERROR %s: %v", resolvedModel, err)
-						results = append(results, TestResult{
-							Model: resolvedModel, Provider: resolvedProvider,
-							TestCaseID: tc.ID, Status: StatusError,
-							Response: fmt.Sprintf("ERROR: %v", err),
-							Duration: duration, Rounds: rounds,
-							ToolTraces: traces,
+				resolvedModel := client.Model()
+				resolvedProvider := client.Provider()
+
+				t.Run(resolvedModel, func(t *testing.T) {
+					defer client.Close()
+
+					for _, tc := range testMatrix {
+						tc := tc
+						testName := fmt.Sprintf("%s/%s", tc.Category, tc.ID)
+
+						t.Run(testName, func(t *testing.T) {
+							ctx, cancel := context.WithTimeout(t.Context(), timeout)
+							defer cancel()
+
+							start := time.Now()
+							response, traces, rounds, err := runAgenticLoop(ctx, client, tc)
+							duration := time.Since(start)
+
+							if err != nil {
+								t.Logf("ERROR %s: %v", resolvedModel, err)
+								mu.Lock()
+								results = append(results, TestResult{
+									Model: resolvedModel, Provider: resolvedProvider,
+									TestCaseID: tc.ID, Status: StatusError,
+									Response: fmt.Sprintf("ERROR: %v", err),
+									Duration: duration, Rounds: rounds,
+									ToolTraces: traces,
+								})
+								mu.Unlock()
+								return
+							}
+
+							called := toolsCalled(traces)
+							var toolCorrect, argsCorrect, passed bool
+
+							switch tc.ValidatorType {
+							case "tool_called":
+								toolCorrect = validateToolCalled(tc, traces)
+								argsCorrect = true
+								passed = toolCorrect
+
+							case "tool_called_with_arg":
+								toolCorrect, argsCorrect = validateToolCalledWithArg(tc, traces)
+								passed = toolCorrect && argsCorrect
+
+							case "all_tools_called":
+								toolCorrect = validateAllToolsCalled(tc, traces)
+								argsCorrect = true
+								passed = toolCorrect
+
+							case "handles_error":
+								toolCorrect = validateToolCalled(tc, traces)
+								argsCorrect = true
+								passed = validateHandlesError(tc, traces, response)
+
+							case "handles_empty":
+								toolCorrect = validateToolCalled(tc, traces)
+								argsCorrect = true
+								passed = validateHandlesEmpty(tc, traces, response)
+
+							case "all_tools_called_and_coherent":
+								toolCorrect = validateAllToolsCalled(tc, traces)
+								argsCorrect = true
+								passed = validateAllToolsCalledAndCoherent(tc, traces, response)
+							}
+
+							status := StatusPass
+							if !passed {
+								status = StatusFail
+								t.Logf("FAIL  %s -- tools called: %v, expected: %v, toolOK=%v, argsOK=%v",
+									resolvedModel, called, tc.ExpectedTools, toolCorrect, argsCorrect)
+							} else {
+								t.Logf("PASS  %s (%d rounds, tools: %v)", resolvedModel, rounds, called)
+							}
+
+							mu.Lock()
+							results = append(results, TestResult{
+								Model: resolvedModel, Provider: resolvedProvider,
+								TestCaseID: tc.ID, Status: status,
+								Response: response, Duration: duration,
+								Rounds: rounds, ToolsCalled: called,
+								ToolTraces:  traces,
+								ToolCorrect: toolCorrect, ArgsCorrect: argsCorrect,
+							})
+							mu.Unlock()
 						})
-						return
 					}
-
-					called := toolsCalled(traces)
-					var toolCorrect, argsCorrect, passed bool
-
-					switch tc.ValidatorType {
-					case "tool_called":
-						toolCorrect = validateToolCalled(tc, traces)
-						argsCorrect = true
-						passed = toolCorrect
-
-					case "tool_called_with_arg":
-						toolCorrect, argsCorrect = validateToolCalledWithArg(tc, traces)
-						passed = toolCorrect && argsCorrect
-
-					case "all_tools_called":
-						toolCorrect = validateAllToolsCalled(tc, traces)
-						argsCorrect = true
-						passed = toolCorrect
-
-					case "handles_error":
-						toolCorrect = validateToolCalled(tc, traces)
-						argsCorrect = true
-						passed = validateHandlesError(tc, traces, response)
-
-					case "handles_empty":
-						toolCorrect = validateToolCalled(tc, traces)
-						argsCorrect = true
-						passed = validateHandlesEmpty(tc, traces, response)
-
-					case "all_tools_called_and_coherent":
-						toolCorrect = validateAllToolsCalled(tc, traces)
-						argsCorrect = true
-						passed = validateAllToolsCalledAndCoherent(tc, traces, response)
-					}
-
-					status := StatusPass
-					if !passed {
-						status = StatusFail
-						t.Logf("FAIL  %s -- tools called: %v, expected: %v, toolOK=%v, argsOK=%v",
-							resolvedModel, called, tc.ExpectedTools, toolCorrect, argsCorrect)
-					} else {
-						t.Logf("PASS  %s (%d rounds, tools: %v)", resolvedModel, rounds, called)
-					}
-
-					results = append(results, TestResult{
-						Model: resolvedModel, Provider: resolvedProvider,
-						TestCaseID: tc.ID, Status: status,
-						Response: response, Duration: duration,
-						Rounds: rounds, ToolsCalled: called,
-						ToolTraces:  traces,
-						ToolCorrect: toolCorrect, ArgsCorrect: argsCorrect,
-					})
 				})
 			}
 		})
-	}
-
-	if len(results) == 0 {
-		t.Skip("No models ran (all skipped). Check API keys and Ollama status.")
-	}
-
-	timestamp := time.Now().Format("20060102_150405")
-	reportFile := fmt.Sprintf("RESULTS_TOOL_USE_%s.md", timestamp)
-	t.Logf("Writing report to %s/%s", testConfig.ReportDir, reportFile)
-	if err := generateReport(testConfig.ReportDir, reportFile, testMatrix, results); err != nil {
-		t.Errorf("Failed to write report: %v", err)
 	}
 }
 
