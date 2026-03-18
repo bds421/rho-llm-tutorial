@@ -6,7 +6,7 @@ This document merges the API Coverage Report, Tutorial Run Output, and Bug Repor
 
 # API Coverage Report
 
-Cross-reference of every exported symbol in `rho/llm v0.1.11` against tutorial coverage.
+Cross-reference of every exported symbol in `rho/llm v0.1.15 (github.com/bds421/rho-llm)` against tutorial coverage.
 
 Verified by automated `grep -rl "llm.<Symbol>" */main.go` scan against `go doc -all` output.
 
@@ -371,7 +371,7 @@ Coverage was verified by automated scan:
 ```
 grep -rl "llm.<Symbol>" */main.go
 ```
-against the full `go doc -all .` output for `rho/llm v0.1.11`.
+against the full `go doc -all .` output for `rho/llm v0.1.15`.
 
 ### Tutorials that added coverage
 
@@ -436,6 +436,23 @@ cd 20_capability_test && go test -v -timeout 120m ./...
 containing a scoreboard sorted by pass rate, per-test EN/DE/ES grids, and raw outputs for
 failed/error cases.
 
+### Tool use benchmark (21_cloud_ctl_tool_use)
+
+Tutorial 21 is a YAML-driven multi-model tool use benchmark that runs agentic tool-call loops against
+the real `cl` (cloud-ctl) CLI binary. Each configured model receives a natural-language task, invokes
+tools to complete it, and the results are scored and reported.
+
+**Configuration files:**
+- `config.yaml` — Model definitions (provider, model ID, timeout, API key env var)
+- `tests.yaml` — Tool-use test cases (prompts, expected tool calls, validation)
+
+**How to run:**
+```bash
+cd 21_cloud_ctl_tool_use && go test -v -timeout 60m ./...
+```
+
+**Report output:** Timestamped markdown files (`RESULTS_TOOL_USE_<YYYYMMDD_HHMMSS>.md`) in `testdata/`.
+
 ### Modifications for coverage
 
 | Tutorial | Symbols Added |
@@ -449,9 +466,9 @@ failed/error cases.
 
 # Tutorial Run Output
 
-**Date:** 2026-02-25
-**Library:** `rho/llm v0.1.11`
-**Environment:** `GEMINI_API_KEY` and `ANTHROPIC_API_KEY` set. Ollama running locally. No OpenAI keys.
+**Date:** 2026-03-18
+**Library:** `rho/llm v0.1.15`
+**Environment:** `GEMINI_API_KEY`, `ANTHROPIC_API_KEY`, `XAI_API_KEY`, `OPENAI_API_KEY` set. Ollama running locally.
 
 ---
 
@@ -547,7 +564,7 @@ Attempt 1/3...
 ```
 === Alias Resolution ===
   opus -> claude-opus-4-6, sonnet -> claude-sonnet-4-6, haiku -> claude-haiku-4-5-20251001
-  flash -> gemini-2.5-flash, grok -> grok-4-fast-non-reasoning, gemini-pro -> gemini-3-pro-preview
+  flash -> gemini-2.5-flash, grok -> grok-4.20-beta, gemini-pro -> gemini-3.1-pro-preview
 
 === Cost Estimation ===
   claude-sonnet-4-6 (1000 in, 500 out): $0.010500
@@ -555,11 +572,11 @@ Attempt 1/3...
   gemini-2.5-flash (5000 in, 1000 out): $0.001350
 
 === Provider Detection ===
-  gemini-2.5-flash -> gemini, claude-sonnet-4-6 -> anthropic, gpt-5.2 -> openai
+  gemini-2.5-flash -> gemini, claude-sonnet-4-6 -> anthropic, gpt-5.4 -> openai
 
 === Default Models ===
-  anthropic -> claude-sonnet-4-6, gemini -> gemini-2.5-flash-lite
-  xai -> grok-4-fast-non-reasoning, openai -> gpt-5.2
+  anthropic -> claude-sonnet-4-6, gemini -> gemini-3.1-flash-lite-preview
+  xai -> grok-4.20-beta, openai -> gpt-5.4
 ```
 
 **Exit code:** 0 — PASS
@@ -712,14 +729,14 @@ Final answer: Tokyo: 13.96 million. Atlantis: not found.
 
 === Available Models Per Provider ===
   anthropic (9 models): claude-opus-4-6 [thinking], claude-sonnet-4-6 [thinking], ...
-  gemini (7 models): gemini-3.1-pro-preview [thought-signature], gemini-2.5-flash, ...
-  xai (7 models): grok-4-1-fast-reasoning [intrinsic-reasoning], grok-4-fast-non-reasoning, ...
-  openai (14 models): gpt-5.2 [intrinsic-reasoning], o3 [intrinsic-reasoning], ...
+  gemini (8 models): gemini-3.1-pro-preview [thought-signature], gemini-3.1-flash-lite-preview, gemini-2.5-flash, ...
+  xai (8 models): grok-4.20-beta [intrinsic-reasoning], grok-4-1-fast-reasoning [intrinsic-reasoning], ...
+  openai (18 models): gpt-5.4-pro [intrinsic-reasoning], gpt-5.4 [intrinsic-reasoning], ...
   groq (6 models): llama-3.3-70b-versatile, deepseek-r1-distill-llama-70b [intrinsic-reasoning], ...
   mistral (8 models): mistral-large-2512, magistral-medium-2509 [intrinsic-reasoning], ...
 
 === Models with Thinking Support ===
-  21 models across anthropic (API-controlled), xai, openai, groq, mistral (intrinsic)
+  25 models across anthropic (API-controlled), xai, openai, groq, mistral (intrinsic)
 
 === Models with ThoughtSignature ===
   gemini-3.1-pro-preview, gemini-3-pro-preview, gemini-3-flash-preview
@@ -918,6 +935,7 @@ ToolCall.ThoughtSignature: gemini3-sig-xyz789
 | 16 | pool_deep_dive | 0 | PASS | (none) | AuthPool, AuthProfile, PooledClient, CooldownError, ErrNoAvailableProfiles |
 | 17 | error_constructors | 0 | PASS | (none) | NewRateLimitError, NewOverloadedError, NewAuthError, NewContextLengthError, NewAPIErrorFromStatus |
 | 18 | content_model | 0 | PASS | (none) | ContentPart, ContentType, ImageSource, ToolCall.ThoughtSignature |
+| 21 | cloud_ctl_tool_use | — | TEST SUITE | Mixed | Tool, ToolCall, agentic tool-use loop, YAML-driven multi-model matrix |
 
 ### Summary
 
@@ -927,8 +945,9 @@ ToolCall.ThoughtSignature: gemini3-sig-xyz789
 | Partial pass (missing keys) | 1/18 (tutorial 08) |
 | Compilation errors | 0/18 |
 | Unexpected failures | 0/18 |
+| Test suites | 3 (stress: 49 tests, capability: 75/model, tool-use: YAML-driven) |
 
-### Changes in v0.1.8–v0.1.11
+### Changes in v0.1.8–v0.1.15
 
 | Version | Change | Details |
 |---------|--------|---------|
@@ -946,6 +965,10 @@ ToolCall.ThoughtSignature: gemini3-sig-xyz789
 | v0.1.11 | Error wrapping fix | `AuthPool.GetAvailable()` now wraps `ErrNoAvailableProfiles` via `%w` |
 | v0.1.11 | Local provider resilience | Keyless providers (Ollama, vLLM) now get retry/backoff via `PooledClient` |
 | v0.1.11 | Adapter `Close()` fix | All adapters now call `CloseIdleConnections()` on close |
+| v0.1.12 | Gemini empty text fix | All adapters skip empty `ContentText` parts |
+| v0.1.13 | Circuit breaker | 3-state machine, configurable retry policy, cooldowns, retry observability hook |
+| v0.1.14 | Context caching | Anthropic inline caching, Gemini cached content references |
+| v0.1.15 | GitHub migration | Module path changed to `github.com/bds421/rho-llm`; new models (Grok 4.20, Gemini 3.1 Flash Lite, GPT 5.4, GPT 5.3) |
 
 ### Known issues
 
@@ -1029,10 +1052,10 @@ BenchmarkAuthPool_Parallel-16     10030659    118.9 ns/op    0 B/op   0 allocs/o
 
 # rho/llm Bug Report
 
-**Date:** 2026-02-25
-**Library version:** `rho/llm v0.1.11`
-**Test suite:** 18 progressive tutorials + 2 test suites (stress + capability)
-**Environment:** Linux 6.8.0, Go 1.26.0, Anthropic + Gemini + xAI API keys, Ollama local
+**Date:** 2026-03-18
+**Library version:** `rho/llm v0.1.15`
+**Test suite:** 18 progressive tutorials + 3 test suites (stress + capability + tool-use)
+**Environment:** macOS Darwin 25.3.0, Go 1.26.0, Anthropic + Gemini + xAI + OpenAI API keys, Ollama local
 
 ---
 
