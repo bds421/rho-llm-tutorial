@@ -2,6 +2,10 @@
 
 ## v0.2.6 — 2026-03-18
 
+### Added
+- **20_capability_test**: `-config` flag to specify a custom model config YAML (`go test -config config_run.yaml`)
+- **20_capability_test**: `-short` mode runs English only, skipping DE/ES (3× faster)
+
 ### Changed — Capability test questions (tutorial 20)
 - **Level 3** (Cognitive Reflection): Replace "switches" lateral-thinking riddle with "pills" CRT trap (intuitive 90 vs correct 60)
 - **Level 4** (Multi-Step Deduction): Replace 4 internet puzzles (hats, knights/knaves, two-doors, 12-coins) with genuinely harder problems:

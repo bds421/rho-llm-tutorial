@@ -17,15 +17,18 @@
 // Run:
 //
 //	go test -v -timeout 120m ./...
+//	go test -v -timeout 120m -config config_run.yaml ./...
+//	go test -v -short -timeout 30m ./...                       # English only
 //
-// Reports land in testdata/RESULTS_<timestamp>.md.
-// Configure which models to test in config.yaml.
+// Reports land in reports/RESULTS_<timestamp>.md.
+// Configure which models to test in config.yaml (or pass a custom file via -config).
 // Add or edit test prompts in tests.yaml.
 package capability_test
 
 import (
 	"context"
 	"encoding/json"
+	"flag"
 	"fmt"
 	"io"
 	"net/http"
@@ -42,6 +45,8 @@ import (
 	_ "github.com/bds421/rho-llm/provider" // register all provider adapters
 	"gopkg.in/yaml.v3"
 )
+
+var configFile = flag.String("config", "config.yaml", "path to model config YAML")
 
 // =============================================================================
 // Configuration
@@ -64,16 +69,17 @@ type ModelConfig struct {
 
 func loadConfig(t *testing.T) Config {
 	t.Helper()
-	b, err := os.ReadFile("config.yaml")
+	name := *configFile
+	b, err := os.ReadFile(name)
 	if err != nil {
-		b, err = os.ReadFile(filepath.Join("20_capability_test", "config.yaml"))
+		b, err = os.ReadFile(filepath.Join("20_capability_test", name))
 		if err != nil {
-			t.Fatalf("Failed to load config.yaml: %v", err)
+			t.Fatalf("Failed to load %s: %v", name, err)
 		}
 	}
 	var cfg Config
 	if err := yaml.Unmarshal(b, &cfg); err != nil {
-		t.Fatalf("Failed to parse config.yaml: %v", err)
+		t.Fatalf("Failed to parse %s: %v", name, err)
 	}
 	return cfg
 }
@@ -274,12 +280,16 @@ func TestLLMCapabilities(t *testing.T) {
 		t.Logf("Ollama available: %d models pulled locally.", len(ollamaModels))
 	}
 
-	t.Logf("Running capability matrix: %d configured models × %d tests × 3 languages",
-		len(testConfig.Models), len(testMatrix))
+	languages := []string{"EN", "DE", "ES"}
+	if testing.Short() {
+		languages = []string{"EN"}
+	}
+
+	t.Logf("Running capability matrix: %d configured models × %d tests × %d language(s)",
+		len(testConfig.Models), len(testMatrix), len(languages))
 
 	var mu sync.Mutex
 	var results []TestResult
-	languages := []string{"EN", "DE", "ES"}
 
 	// Register cleanup to generate the report after all parallel subtests finish.
 	t.Cleanup(func() {
