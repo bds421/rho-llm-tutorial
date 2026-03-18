@@ -1,5 +1,17 @@
 # Changelog
 
+## v0.2.7 — 2026-03-18
+
+### Changed
+- Bump `rho/llm` dependency from v0.1.18 to v0.1.20 — adds thinking/reasoning content parsing for Gemini and OpenAI-compat providers
+
+### Improved — Tutorial 15 (Multi-Provider Comparison)
+- Display `resp.Thinking` content for models that reason by default (Gemini 2.5 Flash, Ollama Qwen3)
+- Add `EstimateCost` to streaming comparison output
+- Handle `EventThinking` stream events, show accumulated thinking size
+- Increase Ollama Qwen3 `MaxTokens` from 50 to 1024 — reasoning models need headroom for chain-of-thought + answer
+- Update tutorial header to mention thinking/reasoning content
+
 ## v0.2.6 — 2026-03-18
 
 ### Added

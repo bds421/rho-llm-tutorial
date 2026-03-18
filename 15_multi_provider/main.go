@@ -1,7 +1,8 @@
 // Tutorial 15: Multi-Provider Comparison
 //
 // Demonstrates: using multiple providers in one program, comparing responses,
-//               EstimateCost across providers, provider-agnostic code
+//               EstimateCost across providers, provider-agnostic code,
+//               thinking/reasoning content from models that think by default
 
 package main
 
@@ -59,7 +60,7 @@ func main() {
 			config: llm.Config{
 				Provider:  "ollama",
 				Model:     "qwen3:4b",
-				MaxTokens: 50,
+				MaxTokens: 1024, // Qwen3 thinks by default — needs room for reasoning + answer
 				Timeout:   60 * time.Second,
 			},
 		},
@@ -113,6 +114,15 @@ func main() {
 		fmt.Printf("%-20s %-10s %-8d %-8d $%-11.6f %v\n",
 			p.name, content, resp.InputTokens, resp.OutputTokens, cost,
 			elapsed.Round(time.Millisecond))
+
+		// Show thinking content if the model reasoned (Gemini 2.5, Qwen3, etc.)
+		if resp.Thinking != "" {
+			thinking := resp.Thinking
+			if len(thinking) > 72 {
+				thinking = thinking[:72] + "..."
+			}
+			fmt.Printf("  └─ thinking: %s\n", thinking)
+		}
 	}
 
 	fmt.Println()
@@ -130,16 +140,25 @@ func main() {
 		}
 
 		fmt.Printf("  %s: ", p.name)
+		var thinkingTokens int
 		for event, err := range client.Stream(ctx, req) {
 			if err != nil {
 				fmt.Printf("[error: %v]", err)
 				break
 			}
 			switch event.Type {
+			case llm.EventThinking:
+				thinkingTokens += len(event.Thinking) // approximate
 			case llm.EventContent:
 				fmt.Print(event.Text)
 			case llm.EventDone:
-				fmt.Printf(" (in=%d, out=%d)\n", event.InputTokens, event.OutputTokens)
+				resolvedModel := llm.ResolveModelAlias(p.config.Model)
+				cost := llm.EstimateCost(resolvedModel, event.InputTokens, event.OutputTokens)
+				fmt.Printf(" (in=%d, out=%d, $%.6f", event.InputTokens, event.OutputTokens, cost)
+				if thinkingTokens > 0 {
+					fmt.Printf(", thought ~%d chars", thinkingTokens)
+				}
+				fmt.Println(")")
 			}
 		}
 		client.Close()
