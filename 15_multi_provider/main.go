@@ -33,7 +33,14 @@ func main() {
 
 	prompt := "What is the square root of 144? Answer with just the number."
 
-	// Configure multiple providers — the Request code is identical for all
+	// Configure multiple providers — the Request code is identical for all.
+	//
+	// Token budget note: models with Thinking: true in the registry (Qwen3,
+	// DeepSeek-R1, etc.) consume output tokens for internal chain-of-thought
+	// before producing the visible answer. A small MaxTokens (e.g. 50) may be
+	// entirely consumed by reasoning, leaving nothing for the actual response.
+	// The Gemini adapter pads maxOutputTokens automatically; for OpenAI-compat
+	// providers (Ollama, Groq) you must set a larger budget yourself.
 	providers := []providerConfig{
 		{
 			name: "Gemini Flash",
@@ -41,7 +48,7 @@ func main() {
 				Provider:  "gemini",
 				Model:     "gemini-2.5-flash",
 				APIKey:    os.Getenv("GEMINI_API_KEY"),
-				MaxTokens: 50,
+				MaxTokens: 100,
 				Timeout:   30 * time.Second,
 			},
 		},
@@ -51,16 +58,19 @@ func main() {
 				Provider:  "anthropic",
 				Model:     "claude-haiku-4-5-20251001",
 				APIKey:    os.Getenv("ANTHROPIC_API_KEY"),
-				MaxTokens: 50,
+				MaxTokens: 100,
 				Timeout:   30 * time.Second,
 			},
 		},
 		{
 			name: "Ollama Qwen3:4b",
 			config: llm.Config{
-				Provider:  "ollama",
-				Model:     "qwen3:4b",
-				MaxTokens: 1024, // Qwen3 thinks by default — needs room for reasoning + answer
+				Provider: "ollama",
+				Model:    "qwen3:4b",
+				// Qwen3 thinks by default (info.Thinking == true). With 100 tokens
+				// the reasoning alone would exhaust the budget. 2048 gives enough
+				// headroom for chain-of-thought + answer on most prompts.
+				MaxTokens: 2048,
 				Timeout:   60 * time.Second,
 			},
 		},
@@ -139,7 +149,14 @@ func main() {
 			continue
 		}
 
-		fmt.Printf("  %s: ", p.name)
+		// Check if the model reasons intrinsically — useful for adjusting
+		// expectations (higher latency, output tokens include reasoning).
+		info, _ := llm.GetModelInfo(llm.ResolveModelAlias(p.config.Model))
+		tag := ""
+		if info.Thinking {
+			tag = " [thinks]"
+		}
+		fmt.Printf("  %s%s: ", p.name, tag)
 		var thinkingTokens int
 		for event, err := range client.Stream(ctx, req) {
 			if err != nil {

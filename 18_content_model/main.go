@@ -2,17 +2,22 @@
 //
 // Demonstrates: ContentPart, ContentType constants (ContentText, ContentImage,
 //               ContentToolUse, ContentToolResult), ImageSource,
-//               ToolCall.ThoughtSignature
+//               NewImageMessage, ValidateImageSource, ToolCall.ThoughtSignature
 //
-// No API keys required — all content structures are built and inspected locally.
+// Steps 1-6 require no API keys — all content structures are built and inspected locally.
+// Step 7 sends a real image to a vision-capable model (requires GEMINI_API_KEY).
 
 package main
 
 import (
+	"context"
+	"encoding/base64"
 	"encoding/json"
 	"fmt"
+	"os"
 
 	"github.com/bds421/rho-llm"
+	_ "github.com/bds421/rho-llm/provider"
 )
 
 func main() {
@@ -135,4 +140,84 @@ func main() {
 
 	data, _ := json.MarshalIndent(multimodal, "", "  ")
 	fmt.Println(string(data))
+	fmt.Println()
+
+	// =========================================================================
+	// Step 7: NewImageMessage helper + ValidateImageSource
+	// =========================================================================
+	fmt.Println("=== Step 7: NewImageMessage + ValidateImageSource ===")
+
+	// 1x1 red pixel PNG
+	pixelData := "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg=="
+	imgMsg := llm.NewImageMessage(llm.RoleUser, "image/png", pixelData)
+	fmt.Printf("NewImageMessage: Role=%s, Parts=%d, Type=%s, MediaType=%s\n",
+		imgMsg.Role, len(imgMsg.Content), imgMsg.Content[0].Type, imgMsg.Content[0].Source.MediaType)
+
+	// Validation: valid image passes
+	if err := llm.ValidateImageSource(imgMsg.Content[0]); err != nil {
+		fmt.Printf("  Unexpected validation error: %v\n", err)
+	} else {
+		fmt.Println("  ValidateImageSource: OK")
+	}
+
+	// Validation: invalid media type
+	badPart := llm.ContentPart{
+		Type:   llm.ContentImage,
+		Source: &llm.ImageSource{Type: "base64", MediaType: "text/plain", Data: "abc"},
+	}
+	if err := llm.ValidateImageSource(badPart); err != nil {
+		fmt.Printf("  ValidateImageSource (text/plain): %v\n", err)
+	}
+	fmt.Println()
+
+	// =========================================================================
+	// Step 8: Live API call — send image to a vision model (optional)
+	// =========================================================================
+	fmt.Println("=== Step 8: Live Vision API Call (optional) ===")
+
+	apiKey := os.Getenv("GEMINI_API_KEY")
+	if apiKey == "" {
+		fmt.Println("  Skipped — set GEMINI_API_KEY to enable")
+		return
+	}
+
+	// Encode the 1x1 red pixel as base64
+	redPixelPNG, _ := base64.StdEncoding.DecodeString(pixelData)
+	_ = redPixelPNG // already have pixelData as base64
+
+	cfg := llm.Config{
+		Provider:  "gemini",
+		Model:     "gemini-2.5-flash",
+		APIKey:    apiKey,
+		MaxTokens: 256,
+	}
+	client, err := llm.NewClient(cfg)
+	if err != nil {
+		fmt.Printf("  NewClient error: %v\n", err)
+		return
+	}
+	defer client.Close()
+
+	req := llm.Request{
+		Messages: []llm.Message{{
+			Role: llm.RoleUser,
+			Content: []llm.ContentPart{
+				{Type: llm.ContentText, Text: "Describe this image in one sentence."},
+				{Type: llm.ContentImage, Source: &llm.ImageSource{
+					Type: "base64", MediaType: "image/png", Data: pixelData,
+				}},
+			},
+		}},
+	}
+
+	resp, err := client.Complete(context.Background(), req)
+	if err != nil {
+		fmt.Printf("  Complete error: %v\n", err)
+		return
+	}
+
+	fmt.Printf("  Model: %s\n", resp.Model)
+	fmt.Printf("  Response: %s\n", resp.Content)
+	fmt.Printf("  Tokens: in=%d out=%d\n", resp.InputTokens, resp.OutputTokens)
+	fmt.Printf("  Cost: $%.6f\n", llm.EstimateCost(cfg.Model, resp.InputTokens, resp.OutputTokens))
 }

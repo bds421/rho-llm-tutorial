@@ -1,5 +1,18 @@
 # Changelog
 
+## v0.2.9 — 2026-03-18
+
+### Improved — Tutorial 15 (Multi-Provider Comparison)
+- Document token budget tradeoff for reasoning models — models with `info.Thinking == true` consume output tokens for chain-of-thought before producing visible answers
+- Increase Ollama Qwen3 `MaxTokens` from 1024 to 2048 for reliable answers on longer prompts
+- Show `[thinks]` registry tag in streaming output via `llm.GetModelInfo`
+- Unify `MaxTokens` to 100 for non-reasoning providers (Gemini, Anthropic)
+- Bump `rho/llm` dependency to v0.1.22 — exposes `ThinkingTokens` on `llm.Response`
+
+### Added — Tutorial 15 integration tests
+- `TestGeminiThinkingModelReturnsContent` — verifies Gemini adapter's `maxOutputTokens` padding produces non-empty content (skipped without `GEMINI_API_KEY`)
+- `TestOllamaThinkingModelReturnsContent` — verifies Ollama reasoning field parsed into `resp.Thinking` and content is non-empty with sufficient budget (skipped without Ollama)
+
 ## v0.2.8 — 2026-03-18
 
 ### Added — Capability test questions (tutorial 20)
@@ -9,6 +22,11 @@
 - **Level 5**: `advanced-self-referential` — self-describing 10-digit sequence (→ 6210001000)
 - **Level 5**: `advanced-epistemic` — three-logician epistemic reasoning with elimination (→ 3)
 - **Level 5**: `advanced-clock-trisection` — impossibility proof: three hands never trisect (→ 0)
+
+### Improved — Tutorial 18 (Content Model)
+- Add live vision API demo (Step 8): sends base64 image to Gemini, displays response + cost
+- Demonstrate `NewImageMessage` helper and `ValidateImageSource` (Step 7)
+- Bump `rho/llm` dependency from v0.1.20 to v0.1.21 — adds image/vision support for all 3 adapters
 
 ### Fixed
 - **Validator logic**: `not_expected` now only fires when `expected` is absent — correct answers with intermediate work (e.g., showing `1/8` en route to `1/7`) no longer cause false failures
