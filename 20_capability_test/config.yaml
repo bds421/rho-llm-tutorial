@@ -82,6 +82,16 @@ models:
     api_key_env: "XAI_API_KEY"
 
   # ---------------------------------------------------------------------------
+  # Mistral  (MISTRAL_API_KEY)
+  # ---------------------------------------------------------------------------
+  - provider: "mistral"
+    model: "mistral-small-2506"
+    api_key_env: "MISTRAL_API_KEY"
+  - provider: "mistral"
+    model: "mistral-large-2512"
+    api_key_env: "MISTRAL_API_KEY"
+
+  # ---------------------------------------------------------------------------
   # Ollama  (local, no API key — model must be pulled)
   # ---------------------------------------------------------------------------
   - provider: "ollama"
