@@ -1,5 +1,18 @@
 # Changelog
 
+## v0.2.8 — 2026-03-18
+
+### Added — Capability test questions (tutorial 20)
+- **Level 4**: `logic-alpha-sequence` — digits sorted alphabetically by English name (→ 0)
+- **Level 5**: `advanced-logic-grid` — 8-constraint multi-variable deduction (5 scientists, 5 elements, 5 floors)
+- **Level 5**: `advanced-calculator` — minimum button presses ×2/+1 to reach 100 (→ 8, work-backwards strategy)
+- **Level 5**: `advanced-self-referential` — self-describing 10-digit sequence (→ 6210001000)
+- **Level 5**: `advanced-epistemic` — three-logician epistemic reasoning with elimination (→ 3)
+- **Level 5**: `advanced-clock-trisection` — impossibility proof: three hands never trisect (→ 0)
+
+### Fixed
+- **Validator logic**: `not_expected` now only fires when `expected` is absent — correct answers with intermediate work (e.g., showing `1/8` en route to `1/7`) no longer cause false failures
+
 ## v0.2.7 — 2026-03-18
 
 ### Changed

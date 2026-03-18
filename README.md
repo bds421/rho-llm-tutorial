@@ -26,7 +26,7 @@ The tutorials are organized by complexity and feature set:
 | [14-15](./14_provider_helpers) | Ecosystem | Provider Presets, No-Auth detection, Multi-provider comparisons, Thinking/Reasoning content. |
 | [16-18](./16_pool_deep_dive) | Internals | AuthPool mechanisms, Named Error Constructors, Content Model (Multimodal). |
 | [19](./19_stress_tests) | Validation | Concurrent Stress Tests, Race-condition validation, Performance Benchmarks. |
-| [20](./20_capability_test) | Capability Testing | Multi-model regression matrix, YAML-driven test cases (L1 factual → L5 derangements/modular arithmetic), multi-language (EN/DE/ES), report generation. |
+| [20](./20_capability_test) | Capability Testing | Multi-model regression matrix, YAML-driven test cases (L1 factual → L5 epistemic logic/clock trisection), multi-language (EN/DE/ES), `-config` and `-short` flags, report generation. |
 | [21](./21_cloud_ctl_tool_use) | Tool Use Benchmark | Agentic tool-use loop with mock responses (no external dependencies), YAML-driven multi-model test matrix, parallel-by-provider execution, markdown report generation. |
 
 ## Getting Started

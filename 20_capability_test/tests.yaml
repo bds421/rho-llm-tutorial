@@ -198,6 +198,15 @@ tests:
     expected: ["2"]
     not_expected: ["3", "4"]
 
+  - id: "logic-alpha-sequence"
+    difficulty: 4
+    category: "Multi-Step Deduction"
+    prompt_en: "What is the next number in this sequence: 8, 5, 4, 9, 1, 7, 6, 3, 2, ...? Hint: the rule has nothing to do with arithmetic operations between the numbers. Reply with just the number."
+    prompt_de: "Was kommt als Nächstes in dieser Folge: 8, 5, 4, 9, 1, 7, 6, 3, 2, ...? Hinweis: Die Regel hat nichts mit arithmetischen Operationen zwischen den Zahlen zu tun. Antworte nur mit der Zahl."
+    prompt_es: "¿Qué número sigue en esta secuencia: 8, 5, 4, 9, 1, 7, 6, 3, 2, ...? Pista: la regla no tiene nada que ver con operaciones aritméticas entre los números. Responde solo con el número."
+    validator_type: "contains_any"
+    expected: ["0"]
+
   # ----------------------------------------------------------------------------
   # Level 5 - Advanced Reasoning (5 questions)
   # ----------------------------------------------------------------------------
@@ -248,3 +257,49 @@ tests:
     prompt_es: "Colocas aleatoriamente 4 cartas diferentes en 4 sobres etiquetados (una carta por sobre). ¿Cuál es la probabilidad de que NINGUNA carta termine en su sobre correcto? Responde como fracción simplificada."
     validator_type: "contains_any"
     expected: ["3/8"]
+
+  - id: "advanced-logic-grid"
+    difficulty: 5
+    category: "Advanced Reasoning"
+    prompt_en: "Five scientists — Ada, Bo, Cy, Di, Em — each study a different element (Gold, Iron, Neon, Lead, Zinc) and work on different floors (1-5). Clues: (1) Ada works exactly two floors below the Iron researcher. (2) The Neon researcher works on an odd-numbered floor. (3) Bo works on floor 4. (4) Cy studies either Gold or Zinc. (5) Di works directly one floor below the Zinc researcher. (6) Em does not study Lead. (7) The Lead researcher works on floor 1. (8) The person on floor 3 studies Gold. Reply with: Floor1=Name/Element, Floor2=Name/Element, ..., Floor5=Name/Element."
+    prompt_de: "Fünf Wissenschaftler — Ada, Bo, Cy, Di, Em — erforschen je ein anderes Element (Gold, Eisen, Neon, Blei, Zink) und arbeiten auf verschiedenen Stockwerken (1-5). Hinweise: (1) Ada arbeitet genau zwei Stockwerke unter dem Eisenforscher. (2) Der Neonforscher arbeitet auf einem ungeraden Stockwerk. (3) Bo arbeitet auf Stockwerk 4. (4) Cy erforscht entweder Gold oder Zink. (5) Di arbeitet direkt ein Stockwerk unter dem Zinkforscher. (6) Em erforscht nicht Blei. (7) Der Bleiforscher arbeitet auf Stockwerk 1. (8) Die Person auf Stockwerk 3 erforscht Gold. Antworte mit: Stock1=Name/Element, Stock2=Name/Element, ..., Stock5=Name/Element."
+    prompt_es: "Cinco científicos — Ada, Bo, Cy, Di, Em — estudian elementos diferentes (Oro, Hierro, Neón, Plomo, Zinc) y trabajan en pisos distintos (1-5). Pistas: (1) Ada trabaja exactamente dos pisos debajo del investigador de Hierro. (2) El investigador de Neón trabaja en un piso impar. (3) Bo trabaja en el piso 4. (4) Cy estudia Oro o Zinc. (5) Di trabaja directamente un piso debajo del investigador de Zinc. (6) Em no estudia Plomo. (7) El investigador de Plomo trabaja en el piso 1. (8) La persona del piso 3 estudia Oro. Responde con: Piso1=Nombre/Elemento, Piso2=Nombre/Elemento, ..., Piso5=Nombre/Elemento."
+    validator_type: "contains_all"
+    expected: ["di", "lead", "ada", "zinc", "cy", "gold", "bo", "iron", "em", "neon"]
+
+  - id: "advanced-calculator"
+    difficulty: 5
+    category: "Advanced Reasoning"
+    prompt_en: "A calculator displays '1'. It has two buttons: Button A multiplies the displayed number by 2, Button B adds 1. What is the minimum number of button presses to reach exactly 100? Reply with just the number."
+    prompt_de: "Ein Taschenrechner zeigt '1'. Er hat zwei Tasten: Taste A multipliziert die angezeigte Zahl mit 2, Taste B addiert 1. Wie viele Tastendrücke braucht man mindestens, um genau 100 zu erreichen? Antworte nur mit der Zahl."
+    prompt_es: "Una calculadora muestra '1'. Tiene dos botones: el Botón A multiplica el número mostrado por 2, el Botón B suma 1. ¿Cuál es el número mínimo de pulsaciones para llegar exactamente a 100? Responde solo con el número."
+    validator_type: "contains_any"
+    expected: ["8"]
+    not_expected: ["9", "10", "11", "12"]
+
+  - id: "advanced-self-referential"
+    difficulty: 5
+    category: "Advanced Reasoning"
+    prompt_en: "Find a 10-digit sequence d0 d1 d2 d3 d4 d5 d6 d7 d8 d9 (leading zeros allowed) where digit di equals the number of times digit i appears in the entire sequence. For example, d3 tells you how many 3s exist across all ten positions. Reply with just the 10 digits in order."
+    prompt_de: "Finde eine 10-stellige Folge d0 d1 d2 d3 d4 d5 d6 d7 d8 d9 (führende Nullen erlaubt), wobei die Ziffer di angibt, wie oft die Ziffer i in der gesamten Folge vorkommt. Zum Beispiel sagt d3, wie viele 3en es in allen zehn Positionen gibt. Antworte nur mit den 10 Ziffern in Reihenfolge."
+    prompt_es: "Encuentra una secuencia de 10 dígitos d0 d1 d2 d3 d4 d5 d6 d7 d8 d9 (ceros iniciales permitidos) donde el dígito di es igual al número de veces que el dígito i aparece en toda la secuencia. Por ejemplo, d3 indica cuántos 3 hay en las diez posiciones. Responde solo con los 10 dígitos en orden."
+    validator_type: "contains_any"
+    expected: ["6210001000"]
+
+  - id: "advanced-epistemic"
+    difficulty: 5
+    category: "Advanced Reasoning"
+    prompt_en: "Three perfect logicians (A, B, C) each have a positive integer on their forehead. They see the other two but not their own. They're told: 'Exactly one of the three numbers equals the sum of the other two.' A sees B=2, C=3. B sees A=1, C=3. C sees A=1, B=2. Asked in turn: A says 'No, I don't know my number.' B says 'No.' C says 'Yes, I know.' What is C's number? Reply with just the number."
+    prompt_de: "Drei perfekte Logiker (A, B, C) haben jeweils eine positive ganze Zahl auf der Stirn. Sie sehen die anderen zwei, aber nicht ihre eigene. Man sagt ihnen: 'Genau eine der drei Zahlen ist die Summe der anderen zwei.' A sieht B=2, C=3. B sieht A=1, C=3. C sieht A=1, B=2. Der Reihe nach gefragt: A sagt 'Nein, ich weiß meine Zahl nicht.' B sagt 'Nein.' C sagt 'Ja, ich weiß.' Welche Zahl hat C? Antworte nur mit der Zahl."
+    prompt_es: "Tres lógicos perfectos (A, B, C) tienen un entero positivo en la frente. Ven los otros dos pero no el suyo. Se les dice: 'Exactamente uno de los tres números es la suma de los otros dos.' A ve B=2, C=3. B ve A=1, C=3. C ve A=1, B=2. Preguntados en turno: A dice 'No, no sé mi número.' B dice 'No.' C dice 'Sí, lo sé.' ¿Cuál es el número de C? Responde solo con el número."
+    validator_type: "contains_any"
+    expected: ["3"]
+
+  - id: "advanced-clock-trisection"
+    difficulty: 5
+    category: "Advanced Reasoning"
+    prompt_en: "On a standard analog clock, the hour hand, minute hand, and second hand all move continuously at their usual constant rates. How many times in a 12-hour period are all three hands exactly 120 degrees apart from each other (perfectly trisecting the clock face)? Reply with just the number."
+    prompt_de: "Auf einer analogen Standarduhr bewegen sich Stunden-, Minuten- und Sekundenzeiger kontinuierlich mit ihren üblichen konstanten Geschwindigkeiten. Wie oft in einem 12-Stunden-Zeitraum stehen alle drei Zeiger genau 120 Grad voneinander entfernt (perfekte Dreiteilung des Zifferblatts)? Antworte nur mit der Zahl."
+    prompt_es: "En un reloj analógico estándar, las manecillas de hora, minuto y segundo se mueven continuamente a sus velocidades constantes habituales. ¿Cuántas veces en un período de 12 horas están las tres manecillas exactamente a 120 grados una de otra (trisectando perfectamente la esfera)? Responde solo con el número."
+    validator_type: "contains_any"
+    expected: ["0"]

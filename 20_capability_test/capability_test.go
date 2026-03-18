@@ -180,20 +180,21 @@ func loadTestMatrix(t *testing.T) []TestCase {
 						return false
 					}
 				}
-				if len(notExpected) > 0 && containsAny(resp, notExpected...) {
-					return false
-				}
+				// not_expected is only checked when expected is satisfied —
+				// it catches wrong-only answers, not intermediate work.
 				return true
 			}
 		default: // "contains_any"
 			tc.Validator = func(resp string) bool {
-				if len(expected) > 0 && !containsAny(resp, expected...) {
-					return false
+				hasExpected := len(expected) == 0 || containsAny(resp, expected...)
+				if hasExpected {
+					return true // correct answer present — ignore intermediate work
 				}
+				// Wrong or missing answer — check for known trap answers.
 				if len(notExpected) > 0 && containsAny(resp, notExpected...) {
 					return false
 				}
-				return true
+				return false // expected not found
 			}
 		}
 
