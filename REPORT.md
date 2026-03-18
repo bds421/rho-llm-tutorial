@@ -403,7 +403,9 @@ the library's concurrency, retry, and error-handling paths. No API keys needed.
 
 Tutorial 20 is a YAML-driven multi-model capability regression suite. It sends 25 standardized
 test cases to each configured model in 3 languages (EN, DE, ES) and generates a timestamped
-markdown report with a scoreboard and per-test detail grid.
+markdown report with a scoreboard and per-test detail grid. Providers run in parallel
+(anthropic, gemini, xai, openai, ollama concurrently) while models within the same provider
+run sequentially to avoid rate-limit storms.
 
 **Test matrix:** 25 tests × 3 languages = 75 tests per model, across 5 difficulty levels.
 

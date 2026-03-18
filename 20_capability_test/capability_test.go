@@ -34,6 +34,7 @@ import (
 	"regexp"
 	"sort"
 	"strings"
+	"sync"
 	"testing"
 	"time"
 
@@ -276,130 +277,157 @@ func TestLLMCapabilities(t *testing.T) {
 	t.Logf("Running capability matrix: %d configured models × %d tests × 3 languages",
 		len(testConfig.Models), len(testMatrix))
 
+	var mu sync.Mutex
 	var results []TestResult
 	languages := []string{"EN", "DE", "ES"}
 
+	// Register cleanup to generate the report after all parallel subtests finish.
+	t.Cleanup(func() {
+		mu.Lock()
+		finalResults := make([]TestResult, len(results))
+		copy(finalResults, results)
+		mu.Unlock()
+
+		if len(finalResults) == 0 {
+			t.Log("No models ran (all skipped). Check API keys and Ollama status.")
+			return
+		}
+
+		// Write a timestamped markdown report.
+		timestamp := time.Now().Format("20060102_150405")
+		reportFile := fmt.Sprintf("RESULTS_%s.md", timestamp)
+		t.Logf("Writing report to %s/%s", testConfig.ReportDir, reportFile)
+		if err := generateMarkdownReport(testConfig.ReportDir, reportFile, testMatrix, finalResults); err != nil {
+			t.Errorf("Failed to write report: %v", err)
+		}
+	})
+
+	// Group models by provider so each provider runs in parallel while
+	// models within the same provider run sequentially (avoids rate-limit
+	// storms on a single API key).
+	providerGroups := make(map[string][]ModelConfig)
 	for _, modelCfg := range testConfig.Models {
-		modelCfg := modelCfg // loop-variable capture
-		label := modelCfg.Provider + "/" + modelCfg.Model
+		providerGroups[modelCfg.Provider] = append(providerGroups[modelCfg.Provider], modelCfg)
+	}
 
-		// --- Skip check 1: API key required but not set ---
-		if modelCfg.APIKeyEnv != "" && os.Getenv(modelCfg.APIKeyEnv) == "" {
-			t.Logf("SKIP %s: env var %s is not set", label, modelCfg.APIKeyEnv)
-			continue
-		}
+	for providerName, models := range providerGroups {
+		t.Run(providerName, func(t *testing.T) {
+			t.Parallel()
 
-		// --- Skip check 2: Ollama model not pulled ---
-		if modelCfg.Provider == "ollama" {
-			if ollamaModels == nil {
-				t.Logf("SKIP %s: Ollama is not reachable", label)
-				continue
-			}
-			if !ollamaModels[modelCfg.Model] {
-				t.Logf("SKIP %s: model not found in local Ollama (run: ollama pull %s)",
-					label, modelCfg.Model)
-				continue
-			}
-		}
+			for _, modelCfg := range models {
+				label := modelCfg.Provider + "/" + modelCfg.Model
 
-		// --- Build the rho/llm client ---
-		apiKey := ""
-		if modelCfg.APIKeyEnv != "" {
-			apiKey = os.Getenv(modelCfg.APIKeyEnv)
-		}
-
-		timeout := 120 * time.Second
-		if modelCfg.TimeoutSeconds > 0 {
-			timeout = time.Duration(modelCfg.TimeoutSeconds) * time.Second
-		}
-
-		cfg := llm.Config{
-			Provider:  modelCfg.Provider,
-			Model:     modelCfg.Model,
-			APIKey:    apiKey,
-			MaxTokens: 2048, // generous budget for thinking models
-			Timeout:   timeout,
-		}
-		if modelCfg.BaseURL != "" {
-			cfg.BaseURL = modelCfg.BaseURL
-		}
-
-		client, err := llm.NewClient(cfg)
-		if err != nil {
-			t.Logf("SKIP %s: cannot create client: %v", label, err)
-			continue
-		}
-
-		// Use the resolved IDs from the client itself (handles aliases).
-		resolvedModel := client.Model()
-		resolvedProvider := client.Provider()
-
-		t.Run(resolvedProvider+"/"+resolvedModel, func(t *testing.T) {
-			defer client.Close()
-
-			for _, tc := range testMatrix {
-				for _, lang := range languages {
-					testName := fmt.Sprintf("%s/%s/%s", tc.Category, tc.ID, lang)
-
-					t.Run(testName, func(t *testing.T) {
-						var prompt string
-						switch lang {
-						case "EN":
-							prompt = tc.PromptEN
-						case "DE":
-							prompt = tc.PromptDE
-						case "ES":
-							prompt = tc.PromptES
-						}
-
-						start := time.Now()
-						respText, err := complete(t.Context(), client, timeout, prompt)
-						duration := time.Since(start)
-
-						if err != nil {
-							t.Logf("ERROR %s: %v", resolvedModel, err)
-							results = append(results, TestResult{
-								Model: resolvedModel, Provider: resolvedProvider,
-								TestCaseID: tc.ID, Language: lang,
-								Status:   StatusError,
-								Response: fmt.Sprintf("ERROR: %v", err),
-								Duration: duration,
-							})
-							return
-						}
-
-						passed := tc.Validator(respText)
-						status := StatusPass
-						if !passed {
-							status = StatusFail
-							t.Logf("FAIL  %s — expected condition not met. Output: %q", resolvedModel, respText)
-						} else {
-							t.Logf("PASS  %s", resolvedModel)
-						}
-
-						results = append(results, TestResult{
-							Model: resolvedModel, Provider: resolvedProvider,
-							TestCaseID: tc.ID, Language: lang,
-							Status:   status,
-							Response: respText,
-							Duration: duration,
-						})
-					})
+				// --- Skip check 1: API key required but not set ---
+				if modelCfg.APIKeyEnv != "" && os.Getenv(modelCfg.APIKeyEnv) == "" {
+					t.Logf("SKIP %s: env var %s is not set", label, modelCfg.APIKeyEnv)
+					continue
 				}
+
+				// --- Skip check 2: Ollama model not pulled ---
+				if modelCfg.Provider == "ollama" {
+					if ollamaModels == nil {
+						t.Logf("SKIP %s: Ollama is not reachable", label)
+						continue
+					}
+					if !ollamaModels[modelCfg.Model] {
+						t.Logf("SKIP %s: model not found in local Ollama (run: ollama pull %s)",
+							label, modelCfg.Model)
+						continue
+					}
+				}
+
+				// --- Build the rho/llm client ---
+				apiKey := ""
+				if modelCfg.APIKeyEnv != "" {
+					apiKey = os.Getenv(modelCfg.APIKeyEnv)
+				}
+
+				timeout := 120 * time.Second
+				if modelCfg.TimeoutSeconds > 0 {
+					timeout = time.Duration(modelCfg.TimeoutSeconds) * time.Second
+				}
+
+				cfg := llm.Config{
+					Provider:  modelCfg.Provider,
+					Model:     modelCfg.Model,
+					APIKey:    apiKey,
+					MaxTokens: 2048, // generous budget for thinking models
+					Timeout:   timeout,
+				}
+				if modelCfg.BaseURL != "" {
+					cfg.BaseURL = modelCfg.BaseURL
+				}
+
+				client, err := llm.NewClient(cfg)
+				if err != nil {
+					t.Logf("SKIP %s: cannot create client: %v", label, err)
+					continue
+				}
+
+				// Use the resolved IDs from the client itself (handles aliases).
+				resolvedModel := client.Model()
+				resolvedProvider := client.Provider()
+
+				t.Run(resolvedModel, func(t *testing.T) {
+					defer client.Close()
+
+					for _, tc := range testMatrix {
+						for _, lang := range languages {
+							testName := fmt.Sprintf("%s/%s/%s", tc.Category, tc.ID, lang)
+
+							t.Run(testName, func(t *testing.T) {
+								var prompt string
+								switch lang {
+								case "EN":
+									prompt = tc.PromptEN
+								case "DE":
+									prompt = tc.PromptDE
+								case "ES":
+									prompt = tc.PromptES
+								}
+
+								start := time.Now()
+								respText, err := complete(t.Context(), client, timeout, prompt)
+								duration := time.Since(start)
+
+								if err != nil {
+									t.Logf("ERROR %s: %v", resolvedModel, err)
+									mu.Lock()
+									results = append(results, TestResult{
+										Model: resolvedModel, Provider: resolvedProvider,
+										TestCaseID: tc.ID, Language: lang,
+										Status:   StatusError,
+										Response: fmt.Sprintf("ERROR: %v", err),
+										Duration: duration,
+									})
+									mu.Unlock()
+									return
+								}
+
+								passed := tc.Validator(respText)
+								status := StatusPass
+								if !passed {
+									status = StatusFail
+									t.Logf("FAIL  %s — expected condition not met. Output: %q", resolvedModel, respText)
+								} else {
+									t.Logf("PASS  %s", resolvedModel)
+								}
+
+								mu.Lock()
+								results = append(results, TestResult{
+									Model: resolvedModel, Provider: resolvedProvider,
+									TestCaseID: tc.ID, Language: lang,
+									Status:   status,
+									Response: respText,
+									Duration: duration,
+								})
+								mu.Unlock()
+							})
+						}
+					}
+				})
 			}
 		})
-	}
-
-	if len(results) == 0 {
-		t.Skip("No models ran (all skipped). Check API keys and Ollama status.")
-	}
-
-	// Write a timestamped markdown report.
-	timestamp := time.Now().Format("20060102_150405")
-	reportFile := fmt.Sprintf("RESULTS_%s.md", timestamp)
-	t.Logf("Writing report to %s/%s", testConfig.ReportDir, reportFile)
-	if err := generateMarkdownReport(testConfig.ReportDir, reportFile, testMatrix, results); err != nil {
-		t.Errorf("Failed to write report: %v", err)
 	}
 }
 
