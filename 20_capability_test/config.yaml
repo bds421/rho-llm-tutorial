@@ -1,4 +1,4 @@
-report_dir: "testdata"
+report_dir: "reports"
 
 # Model IDs must match the rho/llm registry exactly (see rho/llm/registry.go).
 # Short aliases (opus, sonnet, haiku, grok-mini, etc.) are also accepted.
@@ -47,6 +47,9 @@ models:
   # Google Gemini  (GEMINI_API_KEY)
   # ---------------------------------------------------------------------------
   # - provider: "gemini"
+  #   model: "gemini-2.0-flash"
+  #   api_key_env: "GEMINI_API_KEY"
+  # - provider: "gemini"
   #   model: "gemini-2.5-flash"
   #   api_key_env: "GEMINI_API_KEY"
   # - provider: "gemini"
@@ -61,6 +64,9 @@ models:
   - provider: "gemini"
     model: "gemini-3.1-pro-preview"
     api_key_env: "GEMINI_API_KEY"
+  - provider: "gemini"
+    model: "gemini-3.1-flash-lite-preview"
+    api_key_env: "GEMINI_API_KEY"
 
   # ---------------------------------------------------------------------------
   # xAI / Grok  (XAI_API_KEY)
@@ -71,6 +77,15 @@ models:
   # - provider: "xai"
   #   model: "grok-4-1-fast-reasoning"
   #   api_key_env: "XAI_API_KEY"
+  # - provider: "xai"
+  #   model: "grok-4.20-beta"
+  #   api_key_env: "XAI_API_KEY"
+  # - provider: "xai"
+  #   model: "grok-4-fast-reasoning"
+  #   api_key_env: "XAI_API_KEY"
+  # - provider: "xai"
+  #   model: "grok-4-0709"
+  #   api_key_env: "XAI_API_KEY"
   - provider: "xai"
     model: "grok-3-mini"
     api_key_env: "XAI_API_KEY"
@@ -78,14 +93,52 @@ models:
     model: "grok-4-1-fast-non-reasoning"
     api_key_env: "XAI_API_KEY"
   - provider: "xai"
+    model: "grok-4-fast-non-reasoning"
+    api_key_env: "XAI_API_KEY"
+  - provider: "xai"
     model: "grok-code-fast-1"
     api_key_env: "XAI_API_KEY"
 
   # ---------------------------------------------------------------------------
+  # OpenAI  (OPENAI_API_KEY)
+  # ---------------------------------------------------------------------------
+  # - provider: "openai"
+  #   model: "gpt-5.4-nano"
+  #   api_key_env: "OPENAI_API_KEY"
+  # - provider: "openai"
+  #   model: "gpt-4.1-nano"
+  #   api_key_env: "OPENAI_API_KEY"
+
+  # ---------------------------------------------------------------------------
+  # Groq  (GROQ_API_KEY)
+  # ---------------------------------------------------------------------------
+  # - provider: "groq"
+  #   model: "llama-3.3-70b-versatile"
+  #   api_key_env: "GROQ_API_KEY"
+  # - provider: "groq"
+  #   model: "deepseek-r1-distill-llama-70b"
+  #   api_key_env: "GROQ_API_KEY"
+
+  # ---------------------------------------------------------------------------
   # Mistral  (MISTRAL_API_KEY)
   # ---------------------------------------------------------------------------
+  # - provider: "mistral"
+  #   model: "mistral-medium-latest"
+  #   api_key_env: "MISTRAL_API_KEY"
+  # - provider: "mistral"
+  #   model: "codestral-2508"
+  #   api_key_env: "MISTRAL_API_KEY"
+  # - provider: "mistral"
+  #   model: "devstral-2512"
+  #   api_key_env: "MISTRAL_API_KEY"
+  # - provider: "mistral"
+  #   model: "magistral-medium-2509"
+  #   api_key_env: "MISTRAL_API_KEY"
   - provider: "mistral"
     model: "mistral-small-2506"
+    api_key_env: "MISTRAL_API_KEY"
+  - provider: "mistral"
+    model: "mistral-small-2603"
     api_key_env: "MISTRAL_API_KEY"
   - provider: "mistral"
     model: "mistral-large-2512"

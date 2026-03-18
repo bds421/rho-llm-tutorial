@@ -32,7 +32,7 @@ The tutorials are organized by complexity and feature set:
 ## Getting Started
 
 ### Prerequisites
-- Go 1.26+
+- Go 1.26.1+
 - API Keys for Gemini, Anthropic, or OpenAI (optional if using [Ollama](https://ollama.com))
 
 ### Environment Setup
@@ -53,7 +53,11 @@ go run main.go
 
 - **[Consolidated QA Report](./REPORT.md)**: Includes the 100% API coverage cross-reference, tutorial execution logs, and tracked bug reports.
 - **[Stress Test Details](./19_stress_tests)**: Deep dive into the 49+ tests that ensure library stability.
-- **[Capability Test Reports](./20_capability_test/testdata)**: Multi-model regression results across reasoning and formatting tasks.
+- **[Capability Test Reports](./20_capability_test/reports)**: Multi-model regression results across reasoning and formatting tasks (generated locally, not checked in).
+
+## Changelog
+
+See [CHANGELOG.md](./CHANGELOG.md) for version history.
 
 ## Stability
 All components (especially `AuthPool` and `PooledClient`) are verified with Go's `-race` detector and benchmarked for zero-allocation performance in hot paths.

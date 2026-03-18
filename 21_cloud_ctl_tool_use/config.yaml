@@ -1,4 +1,4 @@
-report_dir: "testdata"
+report_dir: "reports"
 
 # Model IDs must match the rho/llm registry exactly (see rho/llm/registry.go).
 # Short aliases (opus, sonnet, haiku, grok-mini, etc.) are also accepted.
@@ -43,6 +43,10 @@ models:
   # ---------------------------------------------------------------------------
   # xAI / Grok  (XAI_API_KEY)
   # ---------------------------------------------------------------------------
+  # - provider: "xai"
+  #   model: "grok-4.20-beta-0309-non-reasoning"
+  #   api_key_env: "XAI_API_KEY"
+  #   timeout_seconds: 180
   - provider: "xai"
     model: "grok-3-mini"
     api_key_env: "XAI_API_KEY"
@@ -55,6 +59,10 @@ models:
   # ---------------------------------------------------------------------------
   # OpenAI  (OPENAI_API_KEY)
   # ---------------------------------------------------------------------------
+  # - provider: "openai"
+  #   model: "gpt-5.4-nano"
+  #   api_key_env: "OPENAI_API_KEY"
+  #   timeout_seconds: 180
   - provider: "openai"
     model: "gpt-5-nano"
     api_key_env: "OPENAI_API_KEY"
@@ -67,8 +75,16 @@ models:
   # ---------------------------------------------------------------------------
   # Mistral  (MISTRAL_API_KEY)
   # ---------------------------------------------------------------------------
+  # - provider: "mistral"
+  #   model: "mistral-small-2603"
+  #   api_key_env: "MISTRAL_API_KEY"
+  #   timeout_seconds: 180
   - provider: "mistral"
     model: "mistral-small-2506"
+    api_key_env: "MISTRAL_API_KEY"
+    timeout_seconds: 180
+  - provider: "mistral"
+    model: "mistral-small-2603"
     api_key_env: "MISTRAL_API_KEY"
     timeout_seconds: 180
 

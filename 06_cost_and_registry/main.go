@@ -20,7 +20,7 @@ import (
 
 func main() {
 	// --- Step 1: Resolve short aliases to full model IDs ---
-	aliases := []string{"opus", "sonnet", "haiku", "flash", "grok", "grok-code", "gemini-pro"}
+	aliases := []string{"opus", "sonnet", "haiku", "flash", "grok", "grok-code", "gemini-pro", "gpt", "mistral-small", "groq", "codestral"}
 	fmt.Println("=== Alias Resolution ===")
 	for _, alias := range aliases {
 		resolved := llm.ResolveModelAlias(alias)
@@ -35,6 +35,8 @@ func main() {
 		"claude-sonnet-4-6",
 		"gemini-2.5-flash",
 		"grok-4-fast-non-reasoning",
+		"gpt-5.4-nano",
+		"mistral-small-2603",
 	}
 	for _, model := range models {
 		info, ok := llm.GetModelInfo(model)
@@ -73,7 +75,7 @@ func main() {
 
 	// --- Step 4: Detect provider from model ID ---
 	fmt.Println("=== Provider Detection ===")
-	for _, model := range []string{"gemini-2.5-flash", "claude-sonnet-4-6", "gpt-5.2"} {
+	for _, model := range []string{"gemini-2.5-flash", "claude-sonnet-4-6", "gpt-5.4"} {
 		provider := llm.ProviderForModel(model)
 		fmt.Printf("  %-30s -> provider: %s\n", model, provider)
 	}
@@ -81,7 +83,7 @@ func main() {
 
 	// --- Step 5: Get default model for a provider ---
 	fmt.Println("=== Default Models ===")
-	for _, prov := range []string{"anthropic", "gemini", "xai", "openai"} {
+	for _, prov := range []string{"anthropic", "gemini", "xai", "openai", "groq", "mistral"} {
 		model := llm.GetDefaultModel(prov)
 		fmt.Printf("  %-12s -> %s\n", prov, model)
 	}
