@@ -1,4 +1,4 @@
-module tutorial/05_error_handling
+module github.com/bds421/rho-llm-tutorial/05_error_handling
 
 go 1.26.0
 

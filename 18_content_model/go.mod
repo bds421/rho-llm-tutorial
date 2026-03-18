@@ -1,4 +1,4 @@
-module tutorial/18_content_model
+module github.com/bds421/rho-llm-tutorial/18_content_model
 
 go 1.26.0
 

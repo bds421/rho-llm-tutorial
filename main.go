@@ -25,7 +25,7 @@ func main() {
 		{"Gemini Stream", "gemini", "flash", os.Getenv("GEMINI_API_KEY"), true},
 		{"Anthropic Complete", "anthropic", "haiku", os.Getenv("ANTHROPIC_API_KEY"), false},
 		{"Anthropic Stream", "anthropic", "haiku", os.Getenv("ANTHROPIC_API_KEY"), true},
-		// Ollama (local, no API key)
+		// Ollama (local, no API key — requires `ollama pull <model>` first)
 		{"Ollama Qwen3 Complete", "ollama", "qwen3:4b", "", false},
 		{"Ollama Qwen3 Stream", "ollama", "qwen3:4b", "", true},
 		{"Ollama Gemma3 Complete", "ollama", "gemma3:4b", "", false},

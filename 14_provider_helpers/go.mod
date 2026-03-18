@@ -1,4 +1,4 @@
-module tutorial/14_provider_helpers
+module github.com/bds421/rho-llm-tutorial/14_provider_helpers
 
 go 1.26.0
 

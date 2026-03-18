@@ -1,4 +1,4 @@
-module tutorial/09_system_and_multiturn
+module github.com/bds421/rho-llm-tutorial/09_system_and_multiturn
 
 go 1.26.0
 

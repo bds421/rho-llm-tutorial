@@ -1,4 +1,4 @@
-module tutorial/02_streaming
+module github.com/bds421/rho-llm-tutorial/02_streaming
 
 go 1.26.0
 

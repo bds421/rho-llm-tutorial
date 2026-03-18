@@ -1,4 +1,4 @@
-module tutorial/19_stress_tests
+module github.com/bds421/rho-llm-tutorial/19_stress_tests
 
 go 1.26.0
 

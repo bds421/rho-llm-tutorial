@@ -1,4 +1,4 @@
-module tutorial
+module github.com/bds421/rho-llm-tutorial
 
 go 1.26.0
 

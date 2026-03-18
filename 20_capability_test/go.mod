@@ -1,4 +1,4 @@
-module tutorial/20_capability_test
+module github.com/bds421/rho-llm-tutorial/20_capability_test
 
 go 1.26.0
 

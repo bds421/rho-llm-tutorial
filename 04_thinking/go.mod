@@ -1,4 +1,4 @@
-module tutorial/04_thinking
+module github.com/bds421/rho-llm-tutorial/04_thinking
 
 go 1.26.0
 

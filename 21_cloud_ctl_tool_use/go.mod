@@ -1,4 +1,4 @@
-module tutorial/21_cloud_ctl_tool_use
+module github.com/bds421/rho-llm-tutorial/21_cloud_ctl_tool_use
 
 go 1.26.0
 

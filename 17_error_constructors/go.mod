@@ -1,4 +1,4 @@
-module tutorial/17_error_constructors
+module github.com/bds421/rho-llm-tutorial/17_error_constructors
 
 go 1.26.0
 

@@ -1,4 +1,4 @@
-module tutorial/08_auth_pool_failover
+module github.com/bds421/rho-llm-tutorial/08_auth_pool_failover
 
 go 1.26.0
 

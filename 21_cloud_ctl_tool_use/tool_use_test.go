@@ -1,4 +1,4 @@
-// Tutorial 21: Cloud-CTL Tool Use Benchmark
+// Tutorial 21: Tool Use Benchmark
 //
 // Demonstrates: llm.Tool, llm.ToolCall, llm.NewAssistantMessage,
 //               llm.NewToolResultMessage, agentic tool-use loop,
@@ -638,7 +638,7 @@ func TestCloudCtlToolUse(t *testing.T) {
 func generateReport(dir, filename string, testMatrix []TestCase, results []TestResult) error {
 	var sb strings.Builder
 
-	sb.WriteString("# Cloud-CTL Tool Use Benchmark Report\n\n")
+	sb.WriteString("# Tool Use Benchmark Report\n\n")
 	sb.WriteString(fmt.Sprintf("Generated: `%s`\n\n", time.Now().Format("2006-01-02 15:04:05")))
 
 	// Tool definitions summary

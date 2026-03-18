@@ -1,4 +1,4 @@
-// Tutorial 21: Cloud-CTL Tool Use Benchmark
+// Tutorial 21: Tool Use Benchmark
 //
 // Demonstrates: llm.Tool, llm.ToolCall, llm.NewAssistantMessage,
 //               llm.NewToolResultMessage, agentic tool-use loop,

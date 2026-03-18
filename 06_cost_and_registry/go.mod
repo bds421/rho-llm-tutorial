@@ -1,4 +1,4 @@
-module tutorial/06_cost_and_registry
+module github.com/bds421/rho-llm-tutorial/06_cost_and_registry
 
 go 1.26.0
 

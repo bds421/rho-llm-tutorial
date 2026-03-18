@@ -1,4 +1,4 @@
-module tutorial/15_multi_provider
+module github.com/bds421/rho-llm-tutorial/15_multi_provider
 
 go 1.26.0
 

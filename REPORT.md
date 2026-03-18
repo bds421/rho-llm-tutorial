@@ -6,7 +6,7 @@ This document merges the API Coverage Report, Tutorial Run Output, and Bug Repor
 
 # API Coverage Report
 
-Cross-reference of every exported symbol in `rho/llm v0.1.15 (github.com/bds421/rho-llm)` against tutorial coverage.
+Cross-reference of every exported symbol in `rho/llm v0.1.16 (github.com/bds421/rho-llm)` against tutorial coverage.
 
 Verified by automated `grep -rl "llm.<Symbol>" */main.go` scan against `go doc -all` output.
 
@@ -371,7 +371,7 @@ Coverage was verified by automated scan:
 ```
 grep -rl "llm.<Symbol>" */main.go
 ```
-against the full `go doc -all .` output for `rho/llm v0.1.15`.
+against the full `go doc -all .` output for `rho/llm v0.1.16`.
 
 ### Tutorials that added coverage
 
@@ -469,7 +469,7 @@ cd 21_cloud_ctl_tool_use && go test -v -timeout 60m ./...
 # Tutorial Run Output
 
 **Date:** 2026-03-18
-**Library:** `rho/llm v0.1.15`
+**Library:** `rho/llm v0.1.16`
 **Environment:** `GEMINI_API_KEY`, `ANTHROPIC_API_KEY`, `XAI_API_KEY`, `OPENAI_API_KEY` set. Ollama running locally.
 
 ---
@@ -1055,7 +1055,7 @@ BenchmarkAuthPool_Parallel-16     10030659    118.9 ns/op    0 B/op   0 allocs/o
 # rho/llm Bug Report
 
 **Date:** 2026-03-18
-**Library version:** `rho/llm v0.1.15`
+**Library version:** `rho/llm v0.1.16`
 **Test suite:** 18 progressive tutorials + 3 test suites (stress + capability + tool-use)
 **Environment:** macOS Darwin 25.3.0, Go 1.26.0, Anthropic + Gemini + xAI + OpenAI API keys, Ollama local
 

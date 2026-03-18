@@ -41,5 +41,5 @@ server
 */*.exe
 
 # If an executable inherits the folder name (e.g. 01_basic produces an executable named 01_basic)
-[0-1][0-9]_*/[0-1][0-9]_*
+[0-9][0-9]_*/[0-9][0-9]_*
 

@@ -1,4 +1,4 @@
-module tutorial/11_stream_abort_and_errors
+module github.com/bds421/rho-llm-tutorial/11_stream_abort_and_errors
 
 go 1.26.0
 

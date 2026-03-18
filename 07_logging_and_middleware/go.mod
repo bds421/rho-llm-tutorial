@@ -1,4 +1,4 @@
-module tutorial/07_logging_and_middleware
+module github.com/bds421/rho-llm-tutorial/07_logging_and_middleware
 
 go 1.26.0
 
