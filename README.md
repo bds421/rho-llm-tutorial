@@ -24,7 +24,7 @@ The tutorials are organized by complexity and feature set:
 | [08-10](./08_auth_pool_failover) | Advanced Flows | Multi-key Failover, System Prompts, Multi-turn Chat, Streaming Tools. |
 | [11-13](./11_stream_abort_and_errors) | Reliability | Abort Control, Request Overrides, Deep Registry Inspection. |
 | [14-15](./14_provider_helpers) | Ecosystem | Provider Presets, No-Auth detection, Multi-provider comparisons, Thinking/Reasoning content, live integration tests. |
-| [16-18](./16_pool_deep_dive) | Internals | AuthPool mechanisms, Named Error Constructors, Content Model (Multimodal, Image/Vision). |
+| [16-18](./16_pool_deep_dive) | Internals | AuthPool mechanisms, Named Error Constructors, Content Model (Multimodal, Image/Vision), live vision integration tests. |
 | [19](./19_stress_tests) | Validation | Concurrent Stress Tests, Race-condition validation, Performance Benchmarks. |
 | [20](./20_capability_test) | Capability Testing | Multi-model regression matrix, YAML-driven test cases (L1 factual → L5 epistemic logic/clock trisection), multi-language (EN/DE/ES), `-config` and `-short` flags, report generation. |
 | [21](./21_cloud_ctl_tool_use) | Tool Use Benchmark | Agentic tool-use loop with mock responses (no external dependencies), YAML-driven multi-model test matrix, parallel-by-provider execution, markdown report generation. |

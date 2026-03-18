@@ -1,5 +1,12 @@
 # Changelog
 
+## v0.3.1 — 2026-03-18
+
+### Added — Tutorial 18 (Content Model) live vision tests
+- `TestGeminiVisionDescribesImage` — sends a real image to Gemini 2.5 Flash, verifies it identifies a golden retriever (skipped without `GEMINI_API_KEY`)
+- `TestAnthropicVisionDescribesImage` — sends the same image to Anthropic Haiku, verifies the response (skipped without `ANTHROPIC_API_KEY`)
+- Test image: golden retriever cropped from [robert-mcdermott/LLM-Image-Classification](https://github.com/robert-mcdermott/LLM-Image-Classification) dataset (`testdata/dog.png`)
+
 ## v0.3.0 — 2026-03-18
 
 ### Changed — **Breaking** (rho/llm v0.2.1)
