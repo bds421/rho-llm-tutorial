@@ -46,3 +46,7 @@ server
 # Generated test reports
 */reports/
 
+# Ad-hoc test configs (e.g. config_compare.yaml)
+*/config_*.yaml
+!*/config.yaml
+

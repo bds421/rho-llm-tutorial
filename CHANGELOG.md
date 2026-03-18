@@ -1,5 +1,14 @@
 # Changelog
 
+## v0.2.4 — 2026-03-18
+
+### Changed
+- Bump `rho/llm` dependency from v0.1.17 to v0.1.18 (all 22 modules) — fixes Mistral `max_completion_tokens` rejection (HTTP 422) for `mistral-small-2603`
+
+### Fixed
+- **21_cloud_ctl_tool_use/tests.yaml**: Add missing `"no matches"` to `empty_keywords` in `error-empty-search` test case — was causing false failures for models using that phrasing
+- **.gitignore**: Add `*/config_*.yaml` pattern to exclude ad-hoc test configs from tracking
+
 ## v0.2.3 — 2026-03-18
 
 ### Changed

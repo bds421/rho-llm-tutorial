@@ -115,7 +115,7 @@ tests:
     expected_tools: ["drive_search"]
     acceptable_tools: ["drive_ls"]
     validator_type: "handles_empty"
-    empty_keywords: ["no results", "no files", "nothing", "not found", "couldn't find", "could not find", "empty", "no matching", "didn't find", "did not find", "0 results", "none", "no documents", "no items", "weren't any", "were not any", "doesn't appear", "does not appear"]
+    empty_keywords: ["no results", "no files", "nothing", "not found", "couldn't find", "could not find", "empty", "no matching", "no matches", "didn't find", "did not find", "0 results", "none", "no documents", "no items", "weren't any", "were not any", "doesn't appear", "does not appear"]
 
   # ============================================================================
   # Level 5 - Complex Reasoning (3 tests)
