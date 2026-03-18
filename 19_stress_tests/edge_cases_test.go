@@ -5,7 +5,7 @@ import (
 	"errors"
 	"testing"
 
-	llm "gitlab2024.bds421-cloud.com/bds421/rho/llm"
+	llm "github.com/bds421/rho-llm"
 )
 
 func TestNewAuthPool_EmptyKeys(t *testing.T) {

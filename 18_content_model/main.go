@@ -12,7 +12,7 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"gitlab2024.bds421-cloud.com/bds421/rho/llm"
+	"github.com/bds421/rho-llm"
 )
 
 func main() {

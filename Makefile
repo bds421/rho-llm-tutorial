@@ -4,7 +4,7 @@ TUTORIALS := 01_basic 02_streaming 03_tool_use 04_thinking 05_error_handling \
 	12_request_overrides 13_registry_deep 14_provider_helpers 15_multi_provider \
 	16_pool_deep_dive 17_error_constructors 18_content_model
 
-TEST_SUITES := 19_stress_tests 20_capability_test
+TEST_SUITES := 19_stress_tests 20_capability_test 21_cloud_ctl_tool_use
 
 ALL_MODULES := . $(TUTORIALS) $(TEST_SUITES)
 
@@ -50,7 +50,7 @@ tidy-all:
 update-deps:
 	@for dir in $(ALL_MODULES); do \
 		echo "==> Updating $$dir"; \
-		(cd $$dir && go get gitlab2024.bds421-cloud.com/bds421/rho/llm@latest && go mod tidy); \
+		(cd $$dir && go get github.com/bds421/rho-llm@latest && go mod tidy); \
 	done
 	@echo "All modules updated"
 

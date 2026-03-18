@@ -30,8 +30,8 @@ import (
 	"testing"
 	"time"
 
-	"gitlab2024.bds421-cloud.com/bds421/rho/llm"
-	_ "gitlab2024.bds421-cloud.com/bds421/rho/llm/provider" // register all provider adapters
+	"github.com/bds421/rho-llm"
+	_ "github.com/bds421/rho-llm/provider" // register all provider adapters
 	"gopkg.in/yaml.v3"
 )
 

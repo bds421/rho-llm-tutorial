@@ -6,7 +6,7 @@ import (
 	"testing"
 	"time"
 
-	llm "gitlab2024.bds421-cloud.com/bds421/rho/llm"
+	llm "github.com/bds421/rho-llm"
 )
 
 func TestAuthPool_ConcurrentGetAvailable(t *testing.T) {
