@@ -68,7 +68,11 @@ func main() {
 		{"gemini-2.5-flash", 5000, 1000},
 	}
 	for _, s := range scenarios {
-		cost := llm.EstimateCost(s.model, s.input, s.output)
+		cost := llm.EstimateCost(llm.CostInput{
+			Model:        s.model,
+			InputTokens:  s.input,
+			OutputTokens: s.output,
+		})
 		fmt.Printf("  %s (%d in, %d out): $%.6f\n", s.model, s.input, s.output, cost)
 	}
 	fmt.Println()

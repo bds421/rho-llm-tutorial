@@ -33,7 +33,7 @@ func main() {
 			Provider:    "anthropic",
 			Model:       "claude-sonnet-4-6",
 			MaxTokens:   256,
-			Temperature: 0.7, // sampling temperature (default: 1.0)
+			Temperature: ptrFloat64(0.7), // nil = provider default; explicit pointer to send on wire
 			Timeout:     120 * time.Second,
 		}
 
@@ -60,7 +60,11 @@ func main() {
 				fmt.Printf("Error (all keys failed): %v\n", err)
 			} else {
 				fmt.Printf("Response: %s\n", resp.Content)
-				cost := llm.EstimateCost("claude-sonnet-4-6", resp.InputTokens, resp.OutputTokens)
+				cost := llm.EstimateCost(llm.CostInput{
+					Model:        "claude-sonnet-4-6",
+					InputTokens:  resp.InputTokens,
+					OutputTokens: resp.OutputTokens,
+				})
 				fmt.Printf("Cost: $%.6f\n", cost)
 			}
 			client.Close()
@@ -157,3 +161,5 @@ func main() {
 		}
 	}
 }
+
+func ptrFloat64(v float64) *float64 { return &v }

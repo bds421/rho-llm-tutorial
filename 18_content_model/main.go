@@ -219,5 +219,9 @@ func main() {
 	fmt.Printf("  Model: %s\n", resp.Model)
 	fmt.Printf("  Response: %s\n", resp.Content)
 	fmt.Printf("  Tokens: in=%d out=%d\n", resp.InputTokens, resp.OutputTokens)
-	fmt.Printf("  Cost: $%.6f\n", llm.EstimateCost(cfg.Model, resp.InputTokens, resp.OutputTokens))
+	fmt.Printf("  Cost: $%.6f\n", llm.EstimateCost(llm.CostInput{
+		Model:        cfg.Model,
+		InputTokens:  resp.InputTokens,
+		OutputTokens: resp.OutputTokens,
+	}))
 }

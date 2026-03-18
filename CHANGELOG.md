@@ -1,5 +1,13 @@
 # Changelog
 
+## v0.3.0 — 2026-03-18
+
+### Changed — **Breaking** (rho/llm v0.2.1)
+- Bump `rho/llm` dependency from v0.1.22 to v0.2.1 across all 22 modules
+- **`Config.Temperature`** changed from `float64` to `*float64` — `nil` means "use provider default, don't send on wire". Updated tutorials 08 and 12.
+- **`EstimateCost`** replaced with `EstimateCost(CostInput)` — accepts `ThinkingTokens`, `CacheCreateTokens`, `CacheReadTokens` for accurate pricing. Updated tutorials 06, 08, 15, 18.
+- **`Config.Temperature` display** in tutorial 13 now handles nil pointer
+
 ## v0.2.9 — 2026-03-18
 
 ### Improved — Tutorial 15 (Multi-Provider Comparison)

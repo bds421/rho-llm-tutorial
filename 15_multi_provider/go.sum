@@ -6,3 +6,5 @@ github.com/bds421/rho-llm v0.1.21 h1:9UfsCFJjwk4jgnQS1Jm1PIQljQsYSBYPVGqQ1Lqnd+k
 github.com/bds421/rho-llm v0.1.21/go.mod h1:LEhfJA5vstvQeIXE8elltyOgJo+YEOPJq4fZ/8SABYE=
 github.com/bds421/rho-llm v0.1.22 h1:EyvW3b8zJBrqe6oa11645OKyyuYVnTiSJluBen/0bhc=
 github.com/bds421/rho-llm v0.1.22/go.mod h1:LEhfJA5vstvQeIXE8elltyOgJo+YEOPJq4fZ/8SABYE=
+github.com/bds421/rho-llm v0.2.1 h1:bvyGfAJxdAredXlC0Iv3O/ALujoPrSqb1FnacIEIGHc=
+github.com/bds421/rho-llm v0.2.1/go.mod h1:LEhfJA5vstvQeIXE8elltyOgJo+YEOPJq4fZ/8SABYE=

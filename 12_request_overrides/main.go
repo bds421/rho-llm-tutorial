@@ -19,12 +19,13 @@ func main() {
 	ctx := context.Background()
 
 	cfg := llm.Config{
-		Provider:    "gemini",
-		Model:       "gemini-2.5-flash",
-		APIKey:      os.Getenv("GEMINI_API_KEY"),
-		MaxTokens:   1024,        // default max tokens
-		Temperature: 1.0,         // default temperature
-		Timeout:     30 * time.Second,
+		Provider:  "gemini",
+		Model:     "gemini-2.5-flash",
+		APIKey:    os.Getenv("GEMINI_API_KEY"),
+		MaxTokens: 1024, // default max tokens
+		// Temperature: nil means "use provider default, don't send".
+		// Set explicitly with ptrFloat64(1.0) to force a value on the wire.
+		Timeout: 30 * time.Second,
 	}
 
 	client, err := llm.NewClient(cfg)
@@ -39,11 +40,12 @@ func main() {
 	prompt := "Give me one random word."
 
 	for _, temp := range []float64{0.0, 1.5} {
+		t := temp // capture for pointer
 		req := llm.Request{
 			Messages: []llm.Message{
 				llm.NewTextMessage(llm.RoleUser, prompt),
 			},
-			Temperature: temp,
+			Temperature: &t, // *float64 — explicit value sent on the wire
 			MaxTokens:   20,
 		}
 

@@ -113,7 +113,12 @@ func main() {
 
 		// EstimateCost works with the resolved model name
 		resolvedModel := llm.ResolveModelAlias(p.config.Model)
-		cost := llm.EstimateCost(resolvedModel, resp.InputTokens, resp.OutputTokens)
+		cost := llm.EstimateCost(llm.CostInput{
+			Model:          resolvedModel,
+			InputTokens:    resp.InputTokens,
+			OutputTokens:   resp.OutputTokens,
+			ThinkingTokens: resp.ThinkingTokens,
+		})
 
 		// Truncate response for table display
 		content := resp.Content
@@ -170,7 +175,12 @@ func main() {
 				fmt.Print(event.Text)
 			case llm.EventDone:
 				resolvedModel := llm.ResolveModelAlias(p.config.Model)
-				cost := llm.EstimateCost(resolvedModel, event.InputTokens, event.OutputTokens)
+				cost := llm.EstimateCost(llm.CostInput{
+					Model:          resolvedModel,
+					InputTokens:    event.InputTokens,
+					OutputTokens:   event.OutputTokens,
+					ThinkingTokens: event.ThinkingTokens,
+				})
 				fmt.Printf(" (in=%d, out=%d, $%.6f", event.InputTokens, event.OutputTokens, cost)
 				if thinkingTokens > 0 {
 					fmt.Printf(", thought ~%d chars", thinkingTokens)

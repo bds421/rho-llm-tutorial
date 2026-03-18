@@ -21,7 +21,11 @@ func main() {
 		fmt.Printf("  Provider:      %s\n", cfg.Provider)
 		fmt.Printf("  Model:         %s\n", cfg.Model)
 		fmt.Printf("  MaxTokens:     %d\n", cfg.MaxTokens)
-		fmt.Printf("  Temperature:   %.1f\n", cfg.Temperature)
+		if cfg.Temperature != nil {
+			fmt.Printf("  Temperature:   %.1f\n", *cfg.Temperature)
+		} else {
+			fmt.Printf("  Temperature:   <provider default>\n")
+		}
 		fmt.Printf("  Timeout:       %v\n", cfg.Timeout)
 		fmt.Printf("  ThinkingLevel: %q\n", cfg.ThinkingLevel)
 	}
