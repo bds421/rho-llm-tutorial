@@ -3,7 +3,9 @@
 // Demonstrates: Config.ThinkingLevel, ThinkingNone/ThinkingLow/ThinkingMedium/ThinkingHigh,
 //               Config.ProviderName, Client.Provider(),
 //               GetModelInfo, ModelInfo.SupportsThinking, ModelInfo.Thinking,
-//               Response.Thinking, EventThinking, event.Thinking
+//               Response.Thinking, EventThinking, event.Thinking,
+//               ThinkingBudgetTokens, Request.ThinkingBudget, Request.ThinkingLevel,
+//               ReasoningSummary (auto/detailed/concise)
 //
 // Many modern models support reasoning (chain-of-thought). There are two flavors:
 //   1. API-controlled thinking budgets (e.g. Anthropic) — opt-in via ThinkingLevel
@@ -145,5 +147,65 @@ func main() {
 			fmt.Printf("\n\nDone: reason=%s, input=%d, output=%d\n",
 				event.StopReason, event.InputTokens, event.OutputTokens)
 		}
+	}
+	fmt.Println()
+
+	// --- Step 4: ThinkingBudgetTokens — inspect default budgets (v0.2.2+) ---
+	// ThinkingBudgetTokens resolves a ThinkingLevel to its default token count.
+	// Pass customBudget > 0 to override the level default.
+	fmt.Println("=== ThinkingBudgetTokens ===")
+	for _, level := range []llm.ThinkingLevel{
+		llm.ThinkingNone, llm.ThinkingMinimal, llm.ThinkingLow,
+		llm.ThinkingMedium, llm.ThinkingHigh, llm.ThinkingXHigh,
+	} {
+		tokens := llm.ThinkingBudgetTokens(level, 0) // 0 = use level default
+		label := string(level)
+		if label == "" {
+			label = "(none)"
+		}
+		fmt.Printf("  %-10s → %6d tokens\n", label, tokens)
+	}
+	// Custom budget overrides the level default
+	custom := llm.ThinkingBudgetTokens(llm.ThinkingHigh, 5000)
+	fmt.Printf("  high+custom=5000 → %d tokens\n\n", custom)
+
+	// --- Step 5: Per-request ThinkingBudget override (Anthropic) ---
+	// Request.ThinkingBudget and Request.ThinkingLevel let you override
+	// the client-level Config on a per-request basis.
+	fmt.Println("=== Per-request ThinkingBudget ===")
+	budgetReq := llm.Request{
+		Messages: []llm.Message{
+			llm.NewTextMessage(llm.RoleUser, "What is 7 * 8? Answer with just the number."),
+		},
+		ThinkingLevel:  llm.ThinkingLow, // per-request override
+		ThinkingBudget: 1024,            // custom token budget for this request only
+	}
+
+	budgetResp, err := client.Complete(ctx, budgetReq)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error: %v\n", err)
+	} else {
+		fmt.Printf("Answer: %s\n", budgetResp.Content)
+		if budgetResp.Thinking != "" {
+			fmt.Printf("Thinking (len=%d): %.80s...\n", len(budgetResp.Thinking), budgetResp.Thinking)
+		}
+		fmt.Printf("Tokens: input=%d, output=%d\n", budgetResp.InputTokens, budgetResp.OutputTokens)
+	}
+	fmt.Println()
+
+	// --- Step 6: ReasoningSummary constants (v0.2.2+) ---
+	// ReasoningSummary controls reasoning summary text in responses.
+	// Used with OpenAI Responses API (GPT-5 family). Available on Request.
+	fmt.Println("=== ReasoningSummary constants ===")
+	for _, rs := range []struct {
+		name string
+		val  llm.ReasoningSummary
+	}{
+		{"ReasoningSummaryNone", llm.ReasoningSummaryNone},
+		{"ReasoningSummaryAuto", llm.ReasoningSummaryAuto},
+		{"ReasoningSummaryDetailed", llm.ReasoningSummaryDetailed},
+		{"ReasoningSummaryConcise", llm.ReasoningSummaryConcise},
+	} {
+		fmt.Printf("  %-28s = %q\n", rs.name, rs.val)
 	}
 }

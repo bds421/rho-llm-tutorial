@@ -1,0 +1,150 @@
+tests:
+
+  # ============================================================================
+  # Level 1 - Single Tool Selection (3 tests)
+  # The model should identify and call exactly one correct tool.
+  # ============================================================================
+
+  - id: "single-list-files"
+    difficulty: 1
+    category: "Single Tool"
+    prompt: "List my recent files."
+    expected_tools: ["drive_ls"]
+    acceptable_tools: ["drive_search"]
+    validator_type: "tool_called"
+
+  - id: "single-search-email"
+    difficulty: 1
+    category: "Single Tool"
+    prompt: "Show my unread emails."
+    expected_tools: ["email_search"]
+    validator_type: "tool_called"
+
+  - id: "single-list-calendars"
+    difficulty: 1
+    category: "Single Tool"
+    prompt: "What calendars do I have?"
+    expected_tools: ["calendar_calendars"]
+    validator_type: "tool_called"
+
+  # ============================================================================
+  # Level 2 - Argument Construction (4 tests)
+  # The model should call the right tool with appropriate arguments.
+  # ============================================================================
+
+  - id: "args-search-pdf"
+    difficulty: 2
+    category: "Arguments"
+    prompt: "Find all PDF files in my drive."
+    expected_tools: ["drive_search"]
+    acceptable_tools: ["drive_ls"]
+    expected_args:
+      drive_search: ["pdf"]
+    validator_type: "tool_called_with_arg"
+
+  - id: "args-email-from-subject"
+    difficulty: 2
+    category: "Arguments"
+    prompt: "Find emails about the budget."
+    expected_tools: ["email_search"]
+    expected_args:
+      email_search: ["budget"]
+    validator_type: "tool_called_with_arg"
+
+  - id: "args-calendar-date-range"
+    difficulty: 2
+    category: "Arguments"
+    prompt: "Show my calendar events for this week."
+    expected_tools: ["calendar_list"]
+    validator_type: "tool_called"
+
+  - id: "args-drive-search-keyword"
+    difficulty: 2
+    category: "Arguments"
+    prompt: "Search for spreadsheets in my drive."
+    expected_tools: ["drive_search"]
+    acceptable_tools: ["drive_ls"]
+    expected_args:
+      drive_search: ["spreadsheet"]
+    validator_type: "tool_called_with_arg"
+
+  # ============================================================================
+  # Level 3 - Multi-Tool Chaining (3 tests)
+  # The model should call multiple tools and combine results.
+  # ============================================================================
+
+  - id: "multi-meetings-emails"
+    difficulty: 3
+    category: "Multi-Tool"
+    prompt: "What meetings do I have this week, and are there any unread emails I should read before them?"
+    expected_tools: ["calendar_list", "email_search"]
+    validator_type: "all_tools_called"
+
+  - id: "multi-files-events"
+    difficulty: 3
+    category: "Multi-Tool"
+    prompt: "List my recent files and also show this week's calendar events."
+    expected_tools: ["drive_ls", "calendar_list"]
+    acceptable_tools: ["drive_search"]
+    validator_type: "all_tools_called"
+
+  - id: "multi-calendars-events"
+    difficulty: 3
+    category: "Multi-Tool"
+    prompt: "Show me all my calendars, then list this week's events from my primary calendar."
+    expected_tools: ["calendar_calendars", "calendar_list"]
+    validator_type: "all_tools_called"
+
+  # ============================================================================
+  # Level 4 - Error Recovery (2 tests)
+  # The model should handle errors gracefully without hallucinating data.
+  # ============================================================================
+
+  - id: "error-invalid-sheet"
+    difficulty: 4
+    category: "Error Recovery"
+    prompt: "Read the spreadsheet with ID invalid-xyz-999."
+    expected_tools: ["sheets_read"]
+    validator_type: "handles_error"
+    error_keywords: ["not found", "error", "invalid", "doesn't exist", "does not exist", "could not", "unable", "no spreadsheet", "failed", "issue", "problem"]
+
+  - id: "error-empty-search"
+    difficulty: 4
+    category: "Error Recovery"
+    prompt: "Search my drive for files named 'xylophonenebulatractor'."
+    expected_tools: ["drive_search"]
+    acceptable_tools: ["drive_ls"]
+    validator_type: "handles_empty"
+    empty_keywords: ["no results", "no files", "nothing", "not found", "couldn't find", "could not find", "empty", "no matching", "didn't find", "did not find", "0 results", "none", "no documents", "no items", "weren't any", "were not any", "doesn't appear", "does not appear"]
+
+  # ============================================================================
+  # Level 5 - Complex Reasoning (3 tests)
+  # The model should call multiple tools and synthesize a coherent summary.
+  # ============================================================================
+
+  - id: "complex-weekly-summary"
+    difficulty: 5
+    category: "Complex Reasoning"
+    prompt: "Summarize my week: what meetings do I have, any unread emails I should attend to, and what files have been recently updated?"
+    expected_tools: ["calendar_list", "email_search", "drive_ls"]
+    acceptable_tools: ["drive_search"]
+    synthesis_keywords: ["meeting", "email", "file"]
+    validator_type: "all_tools_called_and_coherent"
+
+  - id: "complex-project-overview"
+    difficulty: 5
+    category: "Complex Reasoning"
+    prompt: "Give me a project overview: check for recent emails, upcoming meetings this week, and recent files in my drive."
+    expected_tools: ["email_search", "calendar_list", "drive_ls"]
+    acceptable_tools: ["drive_search"]
+    synthesis_keywords: ["email", "meeting", "file"]
+    validator_type: "all_tools_called_and_coherent"
+
+  - id: "complex-day-prep"
+    difficulty: 5
+    category: "Complex Reasoning"
+    prompt: "Help me prepare for today: what's on my calendar, any unread emails, and what files were recently modified?"
+    expected_tools: ["calendar_list", "email_search", "drive_ls"]
+    acceptable_tools: ["drive_search"]
+    synthesis_keywords: ["calendar", "email", "file"]
+    validator_type: "all_tools_called_and_coherent"

@@ -1,0 +1,71 @@
+report_dir: "testdata"
+cloud_ctl_url: "http://localhost:8085"
+
+# Model IDs must match the rho/llm registry exactly (see rho/llm/registry.go).
+# Short aliases (opus, sonnet, haiku, grok-mini, etc.) are also accepted.
+#
+# Fields:
+#   provider:        rho/llm provider name (anthropic, gemini, xai, ollama, ...)
+#   model:           exact registry ID or registered alias
+#   api_key_env:     env var holding the API key -- model is skipped if unset/empty
+#   base_url:        optional endpoint override
+#   timeout_seconds: per-request deadline (default: 180 for tool use)
+
+models:
+
+  # ---------------------------------------------------------------------------
+  # Anthropic  (ANTHROPIC_API_KEY)
+  # ---------------------------------------------------------------------------
+  - provider: "anthropic"
+    model: "claude-haiku-4-5-20251001"
+    api_key_env: "ANTHROPIC_API_KEY"
+    timeout_seconds: 180
+  - provider: "anthropic"
+    model: "claude-sonnet-4-6"
+    api_key_env: "ANTHROPIC_API_KEY"
+    timeout_seconds: 180
+  - provider: "anthropic"
+    model: "claude-opus-4-6"
+    api_key_env: "ANTHROPIC_API_KEY"
+    timeout_seconds: 180
+
+  # ---------------------------------------------------------------------------
+  # Google Gemini  (GEMINI_API_KEY)
+  # ---------------------------------------------------------------------------
+  - provider: "gemini"
+    model: "gemini-3-flash-preview"
+    api_key_env: "GEMINI_API_KEY"
+    timeout_seconds: 180
+  - provider: "gemini"
+    model: "gemini-3.1-pro-preview"
+    api_key_env: "GEMINI_API_KEY"
+    timeout_seconds: 180
+
+  # ---------------------------------------------------------------------------
+  # xAI / Grok  (XAI_API_KEY)
+  # ---------------------------------------------------------------------------
+  - provider: "xai"
+    model: "grok-3-mini"
+    api_key_env: "XAI_API_KEY"
+    timeout_seconds: 180
+  - provider: "xai"
+    model: "grok-4-1-fast-non-reasoning"
+    api_key_env: "XAI_API_KEY"
+    timeout_seconds: 180
+
+  # ---------------------------------------------------------------------------
+  # Ollama  (local, no API key -- model must be pulled)
+  # ---------------------------------------------------------------------------
+  - provider: "ollama"
+    model: "qwen3:8b"
+    timeout_seconds: 300
+  # Models below are too slow for the 1h test timeout on this hardware:
+  # - provider: "ollama"
+  #   model: "qwen3:14b"
+  #   timeout_seconds: 300
+  # - provider: "ollama"
+  #   model: "gemma3:12b"
+  #   timeout_seconds: 300
+  # - provider: "ollama"
+  #   model: "mistral:7b"
+  #   timeout_seconds: 300
