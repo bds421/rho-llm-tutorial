@@ -1,5 +1,27 @@
 # Changelog
 
+## v0.3.2 — 2026-03-24
+
+### Changed
+- Bump `rho/llm` dependency from v0.2.1 to v0.2.3 across all 22 modules + root
+- v0.2.2 added `ThinkingBudgetTokens`, per-request `ThinkingBudget`, `ReasoningSummary`, new `ThinkingMinimal`/`ThinkingXHigh` levels
+- v0.2.3 fixed Gemini adapter sending `thinkingConfig` at wrong JSON level (top-level instead of inside `generationConfig`)
+
+### Added — Tutorial 04 (Thinking) extensions
+- `thinking_budget_test.go` — live integration tests for ThinkingBudget across all three providers:
+  - **Anthropic** (`claude-haiku-4-5-20251001`): per-request `ThinkingLevel` + `ThinkingBudget` override
+  - **Gemini** (`gemini-2.5-flash`): native thinking verification (explicit `ThinkingLevel` was broken in v0.2.2, fixed in v0.2.3)
+  - **OpenAI** (`gpt-5.4-nano`): `ThinkingLevel` + `ReasoningSummaryDetailed` via Responses API
+- `TestThinkingBudgetTokensDefaults` — unit test for `ThinkingBudgetTokens()` helper across all levels (minimal→1024, low→4096, medium→16384, high→65536, xhigh→128000) plus custom override
+- `TestReasoningSummaryConstants` — verifies `ReasoningSummaryNone`/`Auto`/`Detailed`/`Concise` values
+- Steps 4–6 in `main.go`: `ThinkingBudgetTokens` demo, per-request `ThinkingBudget` override, `ReasoningSummary` constants
+
+### Added — Tutorial 22 (Cloud CTL HTTP Tool Use)
+- New tutorial module with HTTP-based tool use tests
+
+### Improved — CLAUDE.md
+- Document `.env` file for API keys and testing workflow (start small, avoid full IQ test)
+
 ## v0.3.1 — 2026-03-18
 
 ### Added — Tutorial 18 (Content Model) live vision tests
