@@ -93,6 +93,15 @@ models:
   - provider: "ollama"
     model: "qwen3:8b"
     timeout_seconds: 300
+  - provider: "ollama"
+    model: "gemma4:e4b"
+    timeout_seconds: 300
+  - provider: "ollama"
+    model: "gemma4:26b"
+    timeout_seconds: 300
+  - provider: "ollama"
+    model: "gemma4:31b"
+    timeout_seconds: 300
   # Models below are too slow for the 1h test timeout on this hardware:
   # - provider: "ollama"
   #   model: "qwen3:14b"

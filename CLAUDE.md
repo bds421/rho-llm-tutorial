@@ -18,6 +18,10 @@ demonstrates `ResolveModelAlias`.
 - **19_stress_tests** uses mocks and is safe to run without API keys or `-short`.
 - **20_capability_test** is the full IQ test — never run it casually; it's expensive and slow.
 
+## Git Workflow
+
+- **Always `git pull` first** before starting any work — ensure you have the latest remote changes.
+
 ## Releases
 
 - **Always update `CHANGELOG.md`** before committing a version bump or tagged release.

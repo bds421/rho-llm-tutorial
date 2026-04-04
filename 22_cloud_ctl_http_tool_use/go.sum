@@ -1,7 +1,3 @@
-github.com/bds421/rho-llm v0.2.2 h1:KtmqSsOCWlIQdrvxPiQlCooXHq0bVfxHmzBQXRP7RvI=
-github.com/bds421/rho-llm v0.2.2/go.mod h1:LEhfJA5vstvQeIXE8elltyOgJo+YEOPJq4fZ/8SABYE=
-github.com/bds421/rho-llm v0.2.3 h1:CaZ+VX4jUpGXBCyJDKYLx0ajwvIJPUzBc6lta25kcVk=
-github.com/bds421/rho-llm v0.2.3/go.mod h1:LEhfJA5vstvQeIXE8elltyOgJo+YEOPJq4fZ/8SABYE=
 gitlab2024.bds421-cloud.com/bds421/rho/llm v0.1.11 h1:wP1XNv1QSrluGXkq65uzTBJfql+fwL+KAN2AsqB4APc=
 gitlab2024.bds421-cloud.com/bds421/rho/llm v0.1.11/go.mod h1:KBfw7zPGRNioBZSOaoP9sTg3tkNYCujUvt69aKwUR44=
 gopkg.in/check.v1 v0.0.0-20161208181325-20d25e280405 h1:yhCVgyC4o1eVCa2tZl7eS0r+SDo693bJlVdllGtEeKM=

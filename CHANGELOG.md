@@ -1,5 +1,18 @@
 # Changelog
 
+## v0.3.3 — 2026-04-04
+
+### Changed
+- Bump `rho/llm` dependency from v0.2.3 to v0.2.7 across all 23 modules + root — gains Gemma 4 registry entries (with thinking + tool support), thinking budget clamping, `NewSystemMessage()` helper, and new providers (DashScope, DeepSeek, Cohere)
+
+### Added
+- **20_capability_test/config.yaml**: Gemma 4 models (`gemma4:e4b`, `gemma4:26b`, `gemma4:31b`) — benchmarked at 93.5% / 80.6% / 80.6%
+- **main.go**: Update Ollama demo from `gemma3:4b` to `gemma4:e4b`
+- **13_registry_deep/main.go**: Add `dashscope` and `ollama` to provider list
+
+### Removed
+- Stale `test_new_models.go` scratch file (models now covered by capability test config)
+
 ## v0.3.2 — 2026-03-24
 
 ### Changed

@@ -33,7 +33,7 @@ func main() {
 
 	// --- Test 2: GetAvailableModels per provider ---
 	fmt.Println("=== Available Models Per Provider ===")
-	providers := []string{"anthropic", "gemini", "xai", "openai", "groq", "mistral"}
+	providers := []string{"anthropic", "gemini", "xai", "openai", "groq", "mistral", "dashscope", "ollama"}
 	for _, prov := range providers {
 		models := llm.GetAvailableModels(prov)
 		fmt.Printf("  %s (%d models):\n", prov, len(models))

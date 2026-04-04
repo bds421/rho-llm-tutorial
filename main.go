@@ -28,8 +28,8 @@ func main() {
 		// Ollama (local, no API key — requires `ollama pull <model>` first)
 		{"Ollama Qwen3 Complete", "ollama", "qwen3:4b", "", false},
 		{"Ollama Qwen3 Stream", "ollama", "qwen3:4b", "", true},
-		{"Ollama Gemma3 Complete", "ollama", "gemma3:4b", "", false},
-		{"Ollama Gemma3 Stream", "ollama", "gemma3:4b", "", true},
+		{"Ollama Gemma4 Complete", "ollama", "gemma4:e4b", "", false},
+		{"Ollama Gemma4 Stream", "ollama", "gemma4:e4b", "", true},
 	}
 
 	prompt := "What is 2+2? Answer with just the number."

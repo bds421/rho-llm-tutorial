@@ -1,31 +1,21 @@
-# Tutorial migration to rho/llm v0.2.1
+# Tutorial upgrade to rho/llm v0.2.7 (v0.3.3)
 
-## Breaking changes to apply
+## Completed
 
-### 1. Temperature: float64 → *float64
-- [ ] `08_auth_pool_failover/main.go:36` — `Temperature: 0.7` → `Temperature: llm.Float64(0.7)` or `ptr(0.7)`
-- [ ] `12_request_overrides/main.go:26` — `Temperature: 1.0` → pointer
-- [ ] `12_request_overrides/main.go:46` — `Temperature: temp` (Request loop) → pointer
-- [ ] `13_registry_deep/main.go:24` — `cfg.Temperature` read — check if print format needs deref
-
-### 2. EstimateCost → EstimateCostDetailed (no backward compat)
-- [ ] `06_cost_and_registry/main.go:71` — `llm.EstimateCost(s.model, s.input, s.output)`
-- [ ] `08_auth_pool_failover/main.go:63` — `llm.EstimateCost("claude-sonnet-4-6", ...)`
-- [ ] `15_multi_provider/main.go:116` — `llm.EstimateCost(resolvedModel, ...)`
-- [ ] `15_multi_provider/main.go:173` — `llm.EstimateCost(resolvedModel, ...)` (streaming)
-- [ ] `18_content_model/main.go:222` — `llm.EstimateCost(cfg.Model, ...)`
-
-### 3. Unknown providers require BaseURL
-- [ ] `08_auth_pool_failover/main.go:115` — `Provider: "custom"` already has BaseURL ✓ (verify still works)
-- [ ] `14_provider_helpers/main.go:52` — `Provider: "custom"` in preset demo — may need adjustment
-- [ ] `16_pool_deep_dive/main.go:141` — `Provider: "demo"` — mock, verify RegisterProvider fires before validation
-- [ ] `19_stress_tests/*` — 12 callsites with `Provider: "mock"` — uses RegisterProvider, verify order
-
-### 4. Post-migration
-- [ ] `go get github.com/bds421/rho-llm@v0.2.1` on root + all 21 submodules
-- [ ] `make build-all` passes
-- [ ] Run tutorial 15 live (Gemini + Ollama + Anthropic)
-- [ ] Run `15_multi_provider` integration tests
-- [ ] Run `19_stress_tests` (mock provider)
-- [ ] Update CHANGELOG.md
-- [ ] Commit, tag, push
+- [x] `git pull` — sync with remote v0.3.2 (v0.2.3 + ThinkingBudget + tutorial 22)
+- [x] `go get github.com/bds421/rho-llm@v0.2.7` — all 23 modules + root
+- [x] `go mod tidy` — all modules clean
+- [x] `go build ./...` — all tutorials compile
+- [x] `go vet ./...` — no issues
+- [x] Add Gemma 4 models (`gemma4:e4b`, `gemma4:26b`, `gemma4:31b`) to `20_capability_test/config.yaml`
+- [x] Add Gemma 4 models to `21_cloud_ctl_tool_use/config.yaml` (tool use support is new in Gemma 4)
+- [x] Update root `main.go` demo from `gemma3:4b` → `gemma4:e4b`
+- [x] Add `dashscope` and `ollama` to `13_registry_deep/main.go` provider list
+- [x] Add `git pull first` rule to CLAUDE.md
+- [x] ThinkingBudget unit tests pass with v0.2.7 (tutorial 04)
+- [x] Stress tests pass with v0.2.7 (tutorial 19, mock provider)
+- [x] Capability test — Gemma 4 report generated: e4b 75.3%, 26b 79.6%, 31b 100% (partial)
+- [x] Tool use test — Gemma 4 report generated: e4b 93.3%, 26b 100%, 31b 100%
+- [x] No regressions vs previous v0.2.3 run
+- [x] Update CHANGELOG.md (v0.3.3)
+- [x] Commit, tag v0.3.3, push
