@@ -1,5 +1,19 @@
 # Changelog
 
+## Unreleased
+
+## v0.3.5 — 2026-09-17
+
+### Added
+
+- Tutorial 23: bounded food-photo nutrition CLI with a forced structured tool result, optional kcal/macronutrient reference errors, local image/result validation, and offline tests.
+- Nutrition5k and SNAPMe evaluation/download/citation guidance; no automatic dataset downloads or bundled media. SNAPMe is evaluation-only and must not be used for training.
+- Include tutorial 23 in module maintenance and offline `test-all` checks (24 modules including root).
+
+### Changed
+
+- Upgrade all 24 Go modules to `github.com/bds421/rho-llm v0.7.5`.
+
 ## v0.3.4 — 2026-09-17
 
 ### Changed

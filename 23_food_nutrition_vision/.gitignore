@@ -1,0 +1,8 @@
+/data/
+/results/
+/23_food_nutrition_vision
+*.jpg
+*.jpeg
+*.png
+*.zip
+*.tar.gz
