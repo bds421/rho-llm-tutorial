@@ -30,7 +30,7 @@ func TestBackoff_ExponentialGrowth(t *testing.T) {
 		hi := maxDelay // jitter can't exceed maxDelay
 
 		for s := 0; s < samples; s++ {
-			d := llm.Backoff(attempt, baseDelay, maxDelay)
+			d := backoff(attempt, baseDelay, maxDelay)
 			if d < lo || d > hi {
 				t.Errorf("attempt %d sample %d: got %v, want [%v, %v]", attempt, s, d, lo, hi)
 			}
@@ -51,7 +51,7 @@ func TestBackoff_JitterDistribution(t *testing.T) {
 	qWidth := (hi - lo) / 4
 
 	for i := 0; i < samples; i++ {
-		d := float64(llm.Backoff(0, baseDelay, maxDelay))
+		d := float64(backoff(0, baseDelay, maxDelay))
 		q := int((d - lo) / qWidth)
 		if q < 0 {
 			q = 0
@@ -76,7 +76,7 @@ func TestBackoff_CappedAtMaxDelay(t *testing.T) {
 
 	for attempt := 0; attempt <= 20; attempt++ {
 		for s := 0; s < 100; s++ {
-			d := llm.Backoff(attempt, baseDelay, maxDelay)
+			d := backoff(attempt, baseDelay, maxDelay)
 			if d > maxDelay {
 				t.Errorf("attempt %d: got %v > maxDelay %v", attempt, d, maxDelay)
 			}
@@ -86,7 +86,7 @@ func TestBackoff_CappedAtMaxDelay(t *testing.T) {
 
 func TestBackoff_ZeroBaseDelay(t *testing.T) {
 	// Should not panic
-	d := llm.Backoff(0, 0, 10*time.Second)
+	d := backoff(0, 0, 10*time.Second)
 	if d < 0 {
 		t.Errorf("got negative duration: %v", d)
 	}
@@ -95,7 +95,7 @@ func TestBackoff_ZeroBaseDelay(t *testing.T) {
 func TestBackoff_BaseExceedsMax(t *testing.T) {
 	maxDelay := 1 * time.Second
 	for s := 0; s < 100; s++ {
-		d := llm.Backoff(0, 10*time.Second, maxDelay)
+		d := backoff(0, 10*time.Second, maxDelay)
 		if d > maxDelay {
 			t.Errorf("got %v > maxDelay %v", d, maxDelay)
 		}
@@ -105,6 +105,21 @@ func TestBackoff_BaseExceedsMax(t *testing.T) {
 func BenchmarkBackoff(b *testing.B) {
 	b.ReportAllocs()
 	for i := 0; i < b.N; i++ {
-		llm.Backoff(i%10, time.Second, 30*time.Second)
+		backoff(i%10, time.Second, 30*time.Second)
 	}
+}
+
+// backoff replicates the compatibility-only llm.Backoff wrapper that rho-llm
+// removed in v0.6.0 ("Callers configure and invoke RetryPolicy directly").
+// These tests exercise the backoff *math*, which still lives in
+// RetryPolicy.Delay — this keeps that coverage without reintroducing the
+// deleted API. Factor/Jitter match the old wrapper exactly (2.0 / 0.25).
+func backoff(attempt int, baseDelay, maxDelay time.Duration) time.Duration {
+	p := llm.RetryPolicy{
+		BaseDelay: baseDelay,
+		MaxDelay:  maxDelay,
+		Factor:    2.0,
+		Jitter:    0.25,
+	}
+	return p.Delay(attempt)
 }
