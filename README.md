@@ -1,6 +1,6 @@
 # rho/llm Tutorial Suite
 
-Tutorial suite release: **v0.3.5**.
+Tutorial suite release: **v0.3.6**.
 
 Welcome to the **rho/llm Tutorial Suite**! This directory contains a comprehensive guide to mastering the `rho/llm` library—a production-grade Go wrapper for Large Language Models (LLMs) featuring built-in streaming, multi-key failover, and agentic workflows.
 

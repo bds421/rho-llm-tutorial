@@ -10,11 +10,11 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
-      - uses: actions/setup-go@v5
+      - uses: actions/setup-go@v6
         with:
-          go-version: "1.26"
+          go-version-file: go.mod
 
       - name: Vet all modules
         run: make vet-all
@@ -22,5 +22,5 @@ jobs:
       - name: Build all tutorials
         run: make build-all
 
-      - name: Run stress tests
-        run: make test-stress
+      - name: Run offline race tests
+        run: make test-stress test-food

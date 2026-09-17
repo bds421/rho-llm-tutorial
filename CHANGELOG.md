@@ -2,6 +2,15 @@
 
 ## Unreleased
 
+## v0.3.6 — 2026-09-17
+
+### Changed
+
+- Upgrade `actions/checkout` from v4 to v7 and `actions/setup-go` from v5 to
+  v6, using the root `go.mod` as the CI toolchain authority.
+- Run Tutorial 23's offline race tests in GitHub Actions alongside Tutorial 19's
+  stress suite.
+
 ## v0.3.5 — 2026-09-17
 
 ### Added
