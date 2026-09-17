@@ -67,7 +67,6 @@ func main() {
 				event.StopReason, event.InputTokens, event.OutputTokens)
 		}
 	}
-	// Note: EventDone is optional metadata. If the connection drops,
-	// the iterator may exhaust without it. Handle iterator exhaustion
-	// as the authoritative "stream ended" signal.
+	// A successful stream emits exactly one EventDone. A dropped connection
+	// produces an iterator error; partial text is not a completed response.
 }

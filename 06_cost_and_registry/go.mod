@@ -1,5 +1,5 @@
 module github.com/bds421/rho-llm-tutorial/06_cost_and_registry
 
-go 1.26.1
+go 1.26.8
 
-require github.com/bds421/rho-llm v0.2.7
+require github.com/bds421/rho-llm v0.7.4

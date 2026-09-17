@@ -1,5 +1,19 @@
 # Changelog
 
+## v0.3.4 — 2026-09-17
+
+### Changed
+- Upgrade all 23 Go modules (22 tutorials/test suites plus root) to `github.com/bds421/rho-llm v0.7.4` and Go 1.26.8.
+- Compile all packages and test binaries in `make build-all` without running live services; clarify offline and live verification commands in the README.
+- Mark the earlier QA report as historical rather than claiming current API coverage.
+
+### Fixed
+- Migrate tutorial 22 from the retired GitLab module path and include it in every module maintenance/check loop.
+- Stop Makefile loops immediately when a module fails, so later successes cannot hide failures.
+- Replace tutorial 05's removed `llm.Backoff` calls with `RetryPolicy.Delay`; migrate tutorial 19's backoff tests to the same supported API.
+- Correct tutorial 02's successful stream completion contract and preserve assistant tool calls in tutorial 10's conversation history.
+- Correct the README's tutorial count and document the live dependencies of tutorials 20–22.
+
 ## v0.3.3 — 2026-04-04
 
 ### Changed

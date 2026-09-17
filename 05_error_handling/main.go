@@ -1,7 +1,7 @@
 // Tutorial 05: Structured Error Handling
 //
 // Demonstrates: APIError, IsRateLimited, IsOverloaded, IsAuthError,
-//               IsContextLength, IsRetryable, Backoff
+//               IsContextLength, IsRetryable, RetryPolicy.Delay
 //
 // All API errors are returned as *APIError with an HTTP status code,
 // enabling reliable classification for retry logic.
@@ -45,6 +45,9 @@ func main() {
 	}
 
 	// --- Attempt the request with manual retry logic ---
+	retryPolicy := llm.DefaultRetryPolicy
+	overloadPolicy := retryPolicy
+	overloadPolicy.BaseDelay = 2 * time.Second
 	maxRetries := 3
 	for attempt := range maxRetries {
 		fmt.Printf("Attempt %d/%d...\n", attempt+1, maxRetries)
@@ -61,14 +64,14 @@ func main() {
 
 			case llm.IsRateLimited(err):
 				// 429 — too many requests. Back off and retry.
-				delay := llm.Backoff(attempt, 1*time.Second, 30*time.Second)
+				delay := retryPolicy.Delay(attempt)
 				fmt.Printf("  Rate limited. Backing off %v...\n", delay)
 				time.Sleep(delay)
 				continue
 
 			case llm.IsOverloaded(err):
 				// 503 — server busy. Retry later.
-				delay := llm.Backoff(attempt, 2*time.Second, 30*time.Second)
+				delay := overloadPolicy.Delay(attempt)
 				fmt.Printf("  Server overloaded. Backing off %v...\n", delay)
 				time.Sleep(delay)
 				continue
@@ -81,7 +84,7 @@ func main() {
 
 			case llm.IsRetryable(err):
 				// Any retryable error (429, 503, 500, 502, 408)
-				delay := llm.Backoff(attempt, 1*time.Second, 30*time.Second)
+				delay := retryPolicy.Delay(attempt)
 				fmt.Printf("  Retryable error: %v. Backing off %v...\n", err, delay)
 				time.Sleep(delay)
 				continue

@@ -137,11 +137,12 @@ func main() {
 			results = append(results, llm.NewToolResultMessage(tc.ID, output, isError))
 		}
 
-		// Append assistant content + tool results for next round.
-		// Only append the assistant text if non-empty — Anthropic rejects empty text blocks.
-		if contentBuf.Len() > 0 {
-			req.Messages = append(req.Messages, llm.NewTextMessage(llm.RoleAssistant, contentBuf.String()))
-		}
+		// Preserve the assistant's tool calls so each result refers to a call
+		// in the conversation history, including tool-only assistant turns.
+		req.Messages = append(req.Messages, llm.NewAssistantMessage(&llm.Response{
+			Content:   contentBuf.String(),
+			ToolCalls: toolCalls,
+		}))
 		req.Messages = append(req.Messages, results...)
 	}
 }

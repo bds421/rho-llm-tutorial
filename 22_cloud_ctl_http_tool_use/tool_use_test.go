@@ -1,8 +1,9 @@
 // Tutorial 22: Cloud-CTL HTTP Tool Use Benchmark
 //
 // Demonstrates: llm.Tool, llm.ToolCall, llm.NewAssistantMessage,
-//               llm.NewToolResultMessage, agentic tool-use loop,
-//               YAML-driven multi-model test matrix, markdown report generation.
+//
+//	llm.NewToolResultMessage, agentic tool-use loop,
+//	YAML-driven multi-model test matrix, markdown report generation.
 //
 // Runs every tool call against the cloud-ctl HTTP REST API server.
 // Requires: cloud-ctl server running at the configured URL (default localhost:8085).
@@ -29,8 +30,8 @@ import (
 	"testing"
 	"time"
 
-	"gitlab2024.bds421-cloud.com/bds421/rho/llm"
-	_ "gitlab2024.bds421-cloud.com/bds421/rho/llm/provider" // register all provider adapters
+	"github.com/bds421/rho-llm"
+	_ "github.com/bds421/rho-llm/provider" // register all provider adapters
 	"gopkg.in/yaml.v3"
 )
 
@@ -239,13 +240,13 @@ type TestResult struct {
 	Provider    string
 	TestCaseID  string
 	Status      TestStatus
-	Response    string        // final text response
+	Response    string // final text response
 	Duration    time.Duration
-	Rounds      int           // number of agentic loop iterations
-	ToolsCalled []string      // tool names invoked
-	ToolTraces  []ToolTrace   // full trace of tool calls
-	ToolCorrect bool          // expected tool(s) called
-	ArgsCorrect bool          // expected arguments present
+	Rounds      int         // number of agentic loop iterations
+	ToolsCalled []string    // tool names invoked
+	ToolTraces  []ToolTrace // full trace of tool calls
+	ToolCorrect bool        // expected tool(s) called
+	ArgsCorrect bool        // expected arguments present
 }
 
 // =============================================================================

@@ -1,8 +1,8 @@
 module tutorial/22_cloud_ctl_http_tool_use
 
-go 1.26.0
+go 1.26.8
 
 require (
-	gitlab2024.bds421-cloud.com/bds421/rho/llm v0.1.11
+	github.com/bds421/rho-llm v0.7.4
 	gopkg.in/yaml.v3 v3.0.1
 )

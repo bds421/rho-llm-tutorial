@@ -4,17 +4,17 @@ TUTORIALS := 01_basic 02_streaming 03_tool_use 04_thinking 05_error_handling \
 	12_request_overrides 13_registry_deep 14_provider_helpers 15_multi_provider \
 	16_pool_deep_dive 17_error_constructors 18_content_model
 
-TEST_SUITES := 19_stress_tests 20_capability_test 21_cloud_ctl_tool_use
+TEST_SUITES := 19_stress_tests 20_capability_test 21_cloud_ctl_tool_use 22_cloud_ctl_http_tool_use
 
 ALL_MODULES := . $(TUTORIALS) $(TEST_SUITES)
 
 .PHONY: build-all test-stress test-capability test-all vet-all tidy-all update-deps clean
 
-## build-all: compile all tutorial binaries (01–18)
+## build-all: compile all packages and tests without running tutorials or tests
 build-all:
-	@for dir in $(TUTORIALS); do \
+	@set -e; for dir in $(ALL_MODULES); do \
 		echo "==> Building $$dir"; \
-		(cd $$dir && go build -o /dev/null .); \
+		(cd $$dir && go test -c -o /dev/null .); \
 	done
 	@echo "All tutorials compile OK"
 
@@ -26,13 +26,13 @@ test-stress:
 test-capability:
 	cd 20_capability_test && go test -count=1 -timeout 120m ./...
 
-## test-all: compile tutorials + run all test suites
+## test-all: compile every module and run offline stress tests (no live providers)
 test-all: build-all test-stress
 	@echo "All tests passed"
 
 ## vet-all: run go vet on every module
 vet-all:
-	@for dir in $(ALL_MODULES); do \
+	@set -e; for dir in $(ALL_MODULES); do \
 		echo "==> Vetting $$dir"; \
 		(cd $$dir && go vet ./...); \
 	done
@@ -40,7 +40,7 @@ vet-all:
 
 ## tidy-all: run go mod tidy on every module
 tidy-all:
-	@for dir in $(ALL_MODULES); do \
+	@set -e; for dir in $(ALL_MODULES); do \
 		echo "==> Tidying $$dir"; \
 		(cd $$dir && go mod tidy); \
 	done
@@ -48,7 +48,7 @@ tidy-all:
 
 ## update-deps: update rho/llm to latest across all modules
 update-deps:
-	@for dir in $(ALL_MODULES); do \
+	@set -e; for dir in $(ALL_MODULES); do \
 		echo "==> Updating $$dir"; \
 		(cd $$dir && go get github.com/bds421/rho-llm@latest && go mod tidy); \
 	done

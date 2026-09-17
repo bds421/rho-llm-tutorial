@@ -1,5 +1,7 @@
 # rho/llm Consolidated Quality Assurance Reports
 
+Historical report: the API inventory and live results below describe earlier library versions. They have not been re-audited for the tutorial suite's current v0.7.4 dependency.
+
 This document merges the API Coverage Report, Tutorial Run Output, and Bug Reports into a single reference file to reduce clutter.
 
 ---

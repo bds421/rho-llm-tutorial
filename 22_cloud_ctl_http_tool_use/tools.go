@@ -1,8 +1,9 @@
 // Tutorial 22: Cloud-CTL HTTP Tool Use Benchmark
 //
 // Demonstrates: llm.Tool, llm.ToolCall, llm.NewAssistantMessage,
-//               llm.NewToolResultMessage, agentic tool-use loop,
-//               multi-model benchmarking with real-world cloud tools.
+//
+//	llm.NewToolResultMessage, agentic tool-use loop,
+//	multi-model benchmarking with real-world cloud tools.
 //
 // This file defines the 6 read-only tools that map to cloud-ctl HTTP REST API
 // endpoints and executes them via HTTP GET requests to the cloud-ctl server.
@@ -16,7 +17,7 @@ import (
 	"strings"
 	"time"
 
-	"gitlab2024.bds421-cloud.com/bds421/rho/llm"
+	"github.com/bds421/rho-llm"
 )
 
 // =============================================================================
@@ -102,7 +103,7 @@ func CloudTools() []llm.Tool {
 			Name:        "calendar_calendars",
 			Description: "List all available calendars. Maps to `GET /api/v1/calendar/calendars`.",
 			InputSchema: map[string]any{
-				"type": "object",
+				"type":       "object",
 				"properties": map[string]any{},
 				"required":   []string{},
 			},
