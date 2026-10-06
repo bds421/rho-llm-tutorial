@@ -2,6 +2,29 @@
 
 ## Unreleased
 
+## v0.3.7 — 2026-10-06
+
+### Added
+
+- Tutorial 24: speech-to-text comparison web app (localhost only). One browser
+  recording is transcribed in parallel by Google Gemini 3.5 Transcribe and
+  Gemini 3.5 Flash Lite, OpenAI gpt-transcribe and gpt-4o-mini-transcribe, and
+  xAI Grok Voice Transcribe 2.0 through rho-llm's `TranscribeAudio`; Anthropic
+  is shown as having no speech-to-text API. Shows transcript, latency,
+  approximate cost and word error rate against a reference, with an editable
+  vocabulary list. Transcribes automatically on Stop; logs every request to
+  `stt.log`.
+- Offline break tests for tutorial 24 (`make test-stt`, also in CI and
+  `test-all`): invalid uploads and languages rejected before any paid call,
+  chunked oversize bodies, client disconnect cancelling provider calls, slow
+  providers isolated by timeout, failures isolated per column, concurrent
+  requests under `-race`, loopback-only binding.
+
+### Changed
+
+- Tutorial 24 requires rho-llm v0.9.0 (Gemini Transcribe, xAI STT,
+  transcription vocabulary).
+
 ## v0.3.6 — 2026-09-17
 
 ### Changed

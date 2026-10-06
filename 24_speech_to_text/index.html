@@ -1,0 +1,241 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Speech-to-Text Compare</title>
+<style>
+  :root {
+    --bg: #f7f7f8; --card: #ffffff; --fg: #18181b; --muted: #6b7280; --border: #e4e4e7;
+    --accent: #2563eb; --accent-fg: #ffffff; --rec: #dc2626; --ok: #059669; --warn: #b45309; --bad: #dc2626;
+    --mark: #fef3c7;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg: #0b0b0d; --card: #16161a; --fg: #f4f4f5; --muted: #a1a1aa; --border: #2a2a31;
+      --accent: #3b82f6; --rec: #ef4444; --ok: #34d399; --warn: #fbbf24; --bad: #f87171; --mark: #3b2f0b; }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--fg); font: 15px/1.5 system-ui, -apple-system, "Segoe UI", sans-serif; }
+  main { max-width: 1100px; margin: 0 auto; padding: 24px 16px 48px; }
+  h1 { font-size: 22px; margin: 0 0 4px; }
+  .sub { color: var(--muted); margin: 0 0 20px; }
+  .panel { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 16px; margin-bottom: 16px; }
+  .row { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+  label { font-size: 13px; color: var(--muted); display: block; margin-bottom: 4px; }
+  input[type=text], textarea { width: 100%; background: var(--bg); color: var(--fg); border: 1px solid var(--border); border-radius: 8px; padding: 8px 10px; font: inherit; }
+  textarea { min-height: 72px; resize: vertical; }
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 12px; }
+  @media (max-width: 720px) { .grid2 { grid-template-columns: 1fr; } }
+  button { font: inherit; border-radius: 999px; border: 1px solid var(--border); background: var(--card); color: var(--fg); padding: 8px 16px; cursor: pointer; }
+  button.primary { background: var(--accent); border-color: var(--accent); color: var(--accent-fg); font-weight: 600; }
+  button.rec { background: var(--rec); border-color: var(--rec); color: #fff; font-weight: 600; }
+  button:disabled { opacity: .5; cursor: default; }
+  .timer { font-variant-numeric: tabular-nums; color: var(--muted); }
+  audio { height: 36px; max-width: 100%; }
+  .check { display: flex; gap: 6px; align-items: center; font-size: 14px; color: var(--fg); margin: 0; }
+  .results { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 12px; }
+  .card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 14px; display: flex; flex-direction: column; gap: 8px; }
+  .vendor { font-size: 12px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); }
+  .model { font-weight: 600; }
+  .mono { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 12px; color: var(--muted); }
+  .text { white-space: pre-wrap; min-height: 3em; }
+  .text.empty { color: var(--muted); font-style: italic; }
+  .stats { display: flex; gap: 14px; flex-wrap: wrap; font-size: 13px; color: var(--muted); font-variant-numeric: tabular-nums; }
+  .stats b { color: var(--fg); font-weight: 600; }
+  .err { color: var(--bad); font-size: 13px; word-break: break-word; }
+  .na { color: var(--muted); font-size: 14px; }
+  .wer-good { color: var(--ok); } .wer-mid { color: var(--warn); } .wer-bad { color: var(--bad); }
+  mark { background: var(--mark); color: inherit; border-radius: 3px; padding: 0 2px; }
+  .best { outline: 2px solid var(--ok); }
+  .spin { display: inline-block; width: 14px; height: 14px; border: 2px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: s .8s linear infinite; vertical-align: -2px; }
+  @keyframes s { to { transform: rotate(360deg); } }
+  .note { font-size: 12px; color: var(--muted); margin-top: 12px; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Speech-to-Text Compare</h1>
+  <p class="sub">One recording, every provider in parallel, through rho-llm's <code>TranscribeAudio</code>.</p>
+
+  <section class="panel">
+    <div class="row">
+      <button id="rec" class="rec">● Record</button>
+      <span id="timer" class="timer">0:00</span>
+      <button id="pick">Upload file…</button>
+      <input id="file" type="file" accept="audio/*,video/webm,video/mp4" hidden>
+      <audio id="player" controls hidden></audio>
+      <button id="go" class="primary" disabled>Transcribe again</button>
+      <span id="status" class="mono"></span>
+    </div>
+    <div class="grid2">
+      <div>
+        <label for="lang">Language (BCP 47; OpenAI and xAI get the primary subtag)</label>
+        <input id="lang" type="text" value="de-AT">
+        <label for="ref" style="margin-top:12px">Reference text (optional, enables word error rate)</label>
+        <textarea id="ref" placeholder="What you actually said…"></textarea>
+      </div>
+      <div>
+        <div class="row" style="justify-content:space-between">
+          <label for="vocab" style="margin:0">Vocabulary (one term per line)</label>
+          <label class="check"><input id="useVocab" type="checkbox" checked> use</label>
+        </div>
+        <textarea id="vocab" style="min-height:132px">Weckerl
+Semmel
+Schinken
+faschierter Braten
+Faschiertes
+Meal Prep
+Hühnerfleisch
+dünne Scheiben
+Couscous
+Granola
+Skyr
+Kraut</textarea>
+      </div>
+    </div>
+  </section>
+
+  <section id="results" class="results"></section>
+  <p class="note">Cost is an approximate list price per audio minute (see README), shown for comparison only.
+    Word error rate = word-level edit distance ÷ reference words, ignoring case and punctuation.</p>
+</main>
+
+<script>
+const $ = (id) => document.getElementById(id)
+let candidates = [], audioBlob = null, durationSec = 0, recorder = null, chunks = [], t0 = 0, tick = null
+
+async function loadCandidates() {
+  candidates = await (await fetch("/api/candidates")).json()
+  render({})
+}
+
+function fmtTime(s) { return `${Math.floor(s / 60)}:${String(Math.floor(s % 60)).padStart(2, "0")}` }
+
+function setAudio(blob, seconds) {
+  audioBlob = blob
+  durationSec = seconds || 0
+  const p = $("player")
+  p.src = URL.createObjectURL(blob)
+  p.hidden = false
+  p.onloadedmetadata = () => { if (isFinite(p.duration) && p.duration > 0) durationSec = p.duration }
+  $("go").disabled = false
+}
+
+$("rec").onclick = async () => {
+  if (recorder && recorder.state === "recording") { recorder.stop(); return }
+  try {
+    const stream = await navigator.mediaDevices.getUserMedia({ audio: true })
+    const type = ["audio/webm;codecs=opus", "audio/mp4", "audio/ogg;codecs=opus"].find((t) => MediaRecorder.isTypeSupported(t)) || ""
+    recorder = new MediaRecorder(stream, type ? { mimeType: type } : undefined)
+    chunks = []
+    recorder.ondataavailable = (e) => e.data.size && chunks.push(e.data)
+    recorder.onstop = () => {
+      stream.getTracks().forEach((t) => t.stop())
+      clearInterval(tick)
+      $("rec").textContent = "● Record"
+      setAudio(new Blob(chunks, { type: recorder.mimeType }), (Date.now() - t0) / 1000)
+      transcribe() // Stop sends the recording; no extra click needed
+    }
+    recorder.start()
+    t0 = Date.now()
+    $("rec").textContent = "■ Stop"
+    tick = setInterval(() => {
+      const s = (Date.now() - t0) / 1000
+      $("timer").textContent = fmtTime(s)
+      if (s >= 120) recorder.stop() // keep clips short
+    }, 250)
+  } catch (err) {
+    $("status").textContent = "Microphone unavailable: " + err.message
+  }
+}
+
+$("pick").onclick = () => $("file").click()
+$("file").onchange = (e) => { const f = e.target.files[0]; if (f) setAudio(f, 0); e.target.value = "" }
+
+$("go").onclick = () => transcribe()
+
+async function transcribe() {
+  if (!audioBlob) return
+  const fd = new FormData()
+  fd.append("audio", audioBlob, "clip")
+  fd.append("language", $("lang").value.trim())
+  if ($("useVocab").checked) fd.append("vocabulary", $("vocab").value)
+  $("go").disabled = true
+  $("status").innerHTML = '<span class="spin"></span> transcribing…'
+  render({ pending: true })
+  try {
+    const res = await fetch("/api/transcribe", { method: "POST", body: fd })
+    const body = await res.json()
+    if (!res.ok) throw new Error(body.error || res.statusText)
+    $("status").textContent = `${body.media_type} · ${durationSec ? durationSec.toFixed(1) + " s" : ""}`
+    render({ results: Object.fromEntries(body.results.map((r) => [r.id, r])) })
+  } catch (err) {
+    $("status").textContent = "Error: " + err.message
+    render({})
+  } finally {
+    $("go").disabled = false
+  }
+}
+$("ref").oninput = () => lastResults && render({ results: lastResults })
+
+// ---- word error rate ---------------------------------------------------------
+const words = (s) => s.toLowerCase().normalize("NFC").replace(/[^\p{L}\p{N}\s]/gu, " ").split(/\s+/).filter(Boolean)
+function wer(ref, hyp) {
+  const r = words(ref), h = words(hyp)
+  if (!r.length) return null
+  const d = Array.from({ length: r.length + 1 }, (_, i) => [i, ...Array(h.length).fill(0)])
+  for (let j = 1; j <= h.length; j++) d[0][j] = j
+  for (let i = 1; i <= r.length; i++)
+    for (let j = 1; j <= h.length; j++)
+      d[i][j] = Math.min(d[i - 1][j] + 1, d[i][j - 1] + 1, d[i - 1][j - 1] + (r[i - 1] === h[j - 1] ? 0 : 1))
+  return d[r.length][h.length] / r.length
+}
+// Mark hypothesis words that do not occur in the reference.
+function highlight(ref, hyp) {
+  const known = new Set(words(ref))
+  if (!known.size) return escapeHTML(hyp)
+  return hyp.split(/(\s+)/).map((tok) => {
+    const w = words(tok)[0]
+    return w && !known.has(w) ? `<mark>${escapeHTML(tok)}</mark>` : escapeHTML(tok)
+  }).join("")
+}
+const escapeHTML = (s) => s.replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c])
+
+// ---- rendering ----------------------------------------------------------------
+let lastResults = null
+function render({ results, pending }) {
+  if (results) lastResults = results
+  const ref = $("ref").value.trim()
+  const scores = {}
+  if (results && ref) for (const [id, r] of Object.entries(results)) if (r.text && !r.error) scores[id] = wer(ref, r.text)
+  const valid = Object.values(scores).filter((v) => v != null)
+  const best = valid.length ? Math.min(...valid) : null
+
+  $("results").innerHTML = candidates.map((c) => {
+    const r = results?.[c.id]
+    let body
+    if (c.unsupported) body = `<div class="na">${escapeHTML(c.unsupported)}</div>`
+    else if (!c.configured) body = `<div class="na">Not configured — add the API key to .env and restart.</div>`
+    else if (pending) body = `<div class="text empty"><span class="spin"></span> waiting…</div>`
+    else if (!r) body = `<div class="text empty">No transcript yet.</div>`
+    else {
+      const score = scores[c.id]
+      const cls = score == null ? "" : score <= 0.05 ? "wer-good" : score <= 0.15 ? "wer-mid" : "wer-bad"
+      const cost = durationSec && c.usd_per_minute ? `$${(durationSec / 60 * c.usd_per_minute).toFixed(5)}` : "—"
+      body = (r.error ? `<div class="err">${escapeHTML(r.error)}</div>` :
+        `<div class="text ${r.text ? "" : "empty"}">${r.text ? highlight(ref, r.text) : "(empty transcript)"}</div>`) +
+        `<div class="stats"><span>latency <b>${(r.latency_ms / 1000).toFixed(2)} s</b></span>` +
+        `<span>cost <b>${cost}</b></span>` +
+        (score != null ? `<span>WER <b class="${cls}">${(score * 100).toFixed(1)}%</b></span>` : "") + `</div>`
+    }
+    const isBest = best != null && scores[c.id] === best
+    return `<article class="card ${isBest ? "best" : ""}">
+      <div><div class="vendor">${escapeHTML(c.vendor)}</div><div class="model">${escapeHTML(c.label)}</div>
+      ${c.model ? `<div class="mono">${escapeHTML(c.model)}</div>` : ""}</div>${body}</article>`
+  }).join("")
+}
+
+loadCandidates()
+</script>
+</body>
+</html>

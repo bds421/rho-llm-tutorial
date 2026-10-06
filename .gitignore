@@ -50,3 +50,6 @@ server
 */config_*.yaml
 !*/config.yaml
 
+
+# Tutorial 24 request log (contains transcripts of the user's own speech)
+24_speech_to_text/stt.log

@@ -10,7 +10,7 @@ The `rho/llm` library provides a unified interface for interacting with various 
 - **Cloud:** Anthropic (Claude), Google (Gemini), OpenAI, Groq, Mistral, xAI.
 - **Local:** Ollama, vLLM, LM Studio.
 
-This suite contains **23 tutorials and test suites**, plus a root demo (24 Go modules), using **rho-llm v0.7.5**.
+This suite contains **24 tutorials and test suites**, plus a root demo (25 Go modules), using **rho-llm v0.7.5**.
 
 The library source is at [github.com/bds421/rho-llm](https://github.com/bds421/rho-llm).
 
@@ -32,6 +32,7 @@ The tutorials are organized by complexity and feature set:
 | [21](./21_cloud_ctl_tool_use) | Tool Use Benchmark | Live model tool-use loop with mocked tool responses, YAML-driven multi-model test matrix, parallel-by-provider execution, markdown report generation. |
 | [22](./22_cloud_ctl_http_tool_use) | HTTP Tool Use Benchmark | Live model tool-use loop against a running cloud-ctl HTTP server. |
 | [23](./23_food_nutrition_vision) | Food-photo Nutrition Evaluation | Vision, forced structured tool results, reference error metrics, Nutrition5k and SNAPMe evaluation guidance; offline unit tests. |
+| [24](./24_speech_to_text) | Speech-to-Text Compare | Browser recording sent in parallel to Google (Gemini 3.5 Transcribe, Flash Lite), OpenAI (gpt-transcribe, gpt-4o-mini-transcribe) and xAI (Grok) via `TranscribeAudio`; vocabulary biasing, latency, cost and word error rate side by side; offline break tests. |
 
 ## Getting Started
 
@@ -55,7 +56,7 @@ go run main.go
 
 ### Offline Verification
 
-`make build-all` compiles all 24 modules, including test binaries, without running them. `make vet-all` checks every module. `make test-all` also runs tutorial 19's mock-based stress tests and tutorial 23's offline tests with the race detector; it does not run live provider benchmarks. Tutorial 23's CLI explicitly sends the selected image to a provider when run; its tests do not.
+`make build-all` compiles all 25 modules, including test binaries, without running them. `make vet-all` checks every module. `make test-all` also runs tutorial 19's mock-based stress tests and tutorial 23's and tutorial 24's offline tests with the race detector; it does not run live provider benchmarks. Tutorial 23's CLI explicitly sends the selected image to a provider when run, and tutorial 24's page sends each recording to every configured provider; their tests do not.
 
 Tutorials 20–22 are live benchmarks. Tutorial 20's `-short` flag only reduces the language matrix; it still calls models. Tutorial 21 mocks tools, not model responses. Tutorial 22 also requires a running cloud-ctl HTTP server. Run these suites explicitly when their services and credentials are configured.
 
