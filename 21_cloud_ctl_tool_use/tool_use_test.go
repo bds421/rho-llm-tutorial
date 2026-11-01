@@ -1,8 +1,9 @@
 // Tutorial 21: Tool Use Benchmark
 //
 // Demonstrates: llm.Tool, llm.ToolCall, llm.NewAssistantMessage,
-//               llm.NewToolResultMessage, agentic tool-use loop,
-//               YAML-driven multi-model test matrix, markdown report generation.
+//
+//	llm.NewToolResultMessage, agentic tool-use loop,
+//	YAML-driven multi-model test matrix, markdown report generation.
 //
 // Tool calls return mock responses (no external dependencies needed).
 // The benchmark tests tool *selection* and *argument construction*.
@@ -200,13 +201,13 @@ type TestResult struct {
 	Provider    string
 	TestCaseID  string
 	Status      TestStatus
-	Response    string        // final text response
+	Response    string // final text response
 	Duration    time.Duration
-	Rounds      int           // number of agentic loop iterations
-	ToolsCalled []string      // tool names invoked
-	ToolTraces  []ToolTrace   // full trace of tool calls
-	ToolCorrect bool          // expected tool(s) called
-	ArgsCorrect bool          // expected arguments present
+	Rounds      int         // number of agentic loop iterations
+	ToolsCalled []string    // tool names invoked
+	ToolTraces  []ToolTrace // full trace of tool calls
+	ToolCorrect bool        // expected tool(s) called
+	ArgsCorrect bool        // expected arguments present
 }
 
 // =============================================================================

@@ -1,5 +1,5 @@
 module github.com/bds421/rho-llm-tutorial/05_error_handling
 
-go 1.26.8
+go 1.27.1
 
-require github.com/bds421/rho-llm v0.7.5
+require github.com/bds421/rho-llm v0.9.5

@@ -1,6 +1,36 @@
 # Changelog
 
-## Unreleased
+## v0.3.8 — 2026-11-01
+
+### Added
+
+- Tutorial 25: drift canary for detecting a nerfed, quantized or rerouted
+  model API. Eleven seeded task families with exact checkers: `intent` and
+  `instruct_persist` (understanding terse, typo-laden, mixed-language user
+  messages, distilled from real agent sessions where the model misread the
+  user), agentic record work (`log_count`, `superseded`, `progress_state`,
+  `cli_flags`, `cost_choice`) and quantization-sensitive precision
+  (`arith_mul`, `var_track`, `kv_recall`, `str_reverse`). Logs served model,
+  tokens, latency, stop reason and refusals per answer to JSONL; `compare`
+  runs paired McNemar (fixed set) or Fisher tests plus Mann–Whitney on tokens
+  and exits 3 on a significant drop. Per-model `capabilities` declare models
+  not yet in the rho-llm registry. Built on rho-llm v0.9.5 and Go 1.27.1.
+- Offline tests for tutorial 25 (`make test-canary`, also in `test-all` and CI).
+
+### Changed
+
+- All 26 modules updated to rho-llm v0.9.5 (from v0.7.5) and Go 1.27.1
+  (from 1.26.8); all other dependencies at their latest versions. Docs updated.
+- gofmt alignment fixes in tutorials 01, 04, 08, 17 and 21.
+
+### Fixed
+
+- Tutorial 20: `TestAnalyzeProblematicPrompts` now skips when Ollama is not
+  reachable or `deepseek-r1:14b` is not pulled, instead of failing after 90 s
+  of retries.
+- Tutorial 18: the cost estimate now includes `ThinkingTokens`. Gemini (and,
+  since rho-llm v0.9.5, the OpenAI Responses API) report reasoning separately
+  from `OutputTokens`, so thinking turns were under-priced.
 
 ## v0.3.7 — 2026-10-06
 

@@ -12,6 +12,11 @@ import (
 // TestAnalyzeProblematicPrompts sends each problematic prompt to sonnet with
 // an extra "think aloud" instruction to expose ambiguity and suggest a better prompt.
 func TestAnalyzeProblematicPrompts(t *testing.T) {
+	if models := fetchOllamaModels(); models == nil {
+		t.Skip("Ollama is not reachable")
+	} else if !models["deepseek-r1:14b"] {
+		t.Skip("deepseek-r1:14b not pulled (run: ollama pull deepseek-r1:14b)")
+	}
 	client, err := llm.NewClient(llm.Config{
 		Provider:  "ollama",
 		Model:     "deepseek-r1:14b",

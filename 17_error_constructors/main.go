@@ -23,8 +23,8 @@ func main() {
 	fmt.Println("=== Step 1: Named Error Constructors ===")
 
 	cases := []struct {
-		name string
-		err  error
+		name   string
+		err    error
 		checks map[string]func(error) bool
 	}{
 		{
@@ -47,16 +47,16 @@ func main() {
 			name: "NewAuthError (401)",
 			err:  llm.NewAuthError("openai", "invalid api key", 401),
 			checks: map[string]func(error) bool{
-				"IsAuthError":  llm.IsAuthError,
-				"IsRetryable":  llm.IsRetryable,
+				"IsAuthError": llm.IsAuthError,
+				"IsRetryable": llm.IsRetryable,
 			},
 		},
 		{
 			name: "NewAuthError (403)",
 			err:  llm.NewAuthError("anthropic", "forbidden", 403),
 			checks: map[string]func(error) bool{
-				"IsAuthError":  llm.IsAuthError,
-				"IsRetryable":  llm.IsRetryable,
+				"IsAuthError": llm.IsAuthError,
+				"IsRetryable": llm.IsRetryable,
 			},
 		},
 		{

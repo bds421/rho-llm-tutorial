@@ -29,8 +29,8 @@ func main() {
 		Provider:  "gemini",
 		Model:     "gemini-2.5-flash",
 		APIKey:    os.Getenv("GEMINI_API_KEY"), // from environment
-		MaxTokens: 256,                        // max output tokens (default: 8192)
-		Timeout:   30 * time.Second,           // HTTP timeout (default: 120s)
+		MaxTokens: 256,                         // max output tokens (default: 8192)
+		Timeout:   30 * time.Second,            // HTTP timeout (default: 120s)
 	}
 
 	// --- Step 2: Create a client ---

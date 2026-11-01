@@ -1,0 +1,64 @@
+# Drift canary configuration.
+#
+# Keep this file STABLE between runs you want to compare: same models, same
+# thinking level, same temperature, same levels and count. Any change here is a
+# change in the experiment, not in the provider.
+
+out_dir: "runs"
+
+# Tasks per family weight unit. Weights: intent ×3, instruct_persist ×2, all
+# other families ×1 → 16 units in total, so count: 10 gives 160 tasks per model.
+count: 10
+
+# Difficulty per family (1–5, default 3). Calibrate once per model so that the
+# healthy model scores roughly 60–80% on each family. At 100% or 0% a drop is
+# invisible. Raise a family that is at 100%, lower one that is near 0%.
+levels:
+  intent: 4
+  instruct_persist: 4
+  log_count: 3
+  superseded: 4
+  progress_state: 4
+  cli_flags: 5
+  cost_choice: 4
+  arith_mul: 3
+  var_track: 4
+  kv_recall: 4
+  str_reverse: 3
+
+# Fields:
+#   provider, model:  rho/llm provider and full model ID
+#   api_key_env:      env var with the API key; model is skipped when unset
+#   thinking:         "", low, medium, high — pin it; a silent reasoning-budget
+#                     cut is one of the most common forms of nerfing
+#   temperature:      pin it where the model accepts it (omit for models that
+#                     reject temperature together with thinking)
+#   max_tokens:       default 8192; truncation is reported separately
+#   concurrency:      parallel requests per model (default 4)
+models:
+  - provider: "anthropic"
+    model: "claude-haiku-4-5-20251001"
+    api_key_env: "ANTHROPIC_API_KEY"
+    temperature: 0
+  - provider: "anthropic"
+    model: "claude-opus-5-5"
+    api_key_env: "ANTHROPIC_API_KEY"
+    # Not in the rho-llm v0.9.5 registry yet — declared here until it is.
+    capabilities: [chat, stream, tools, reasoning]
+  - provider: "anthropic"
+    model: "claude-fable-5-1"
+    api_key_env: "ANTHROPIC_API_KEY"
+  - provider: "gemini"
+    model: "gemini-3.5-flash"
+    api_key_env: "GEMINI_API_KEY"
+    max_tokens: 24576  # Gemini counts thinking against max_tokens
+  # - provider: "openai"
+  #   model: "gpt-5.5"
+  #   api_key_env: "OPENAI_API_KEY"
+  # - provider: "xai"
+  #   model: "grok-4.5"
+  #   api_key_env: "XAI_API_KEY"
+  # - provider: "ollama"
+  #   model: "qwen3:14b"
+  #   timeout_seconds: 600
+  #   concurrency: 1

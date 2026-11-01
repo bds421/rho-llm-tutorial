@@ -23,4 +23,4 @@ jobs:
         run: make build-all
 
       - name: Run offline race tests
-        run: make test-stress test-food test-stt
+        run: make test-stress test-food test-stt test-canary

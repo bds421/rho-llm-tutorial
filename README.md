@@ -10,7 +10,7 @@ The `rho/llm` library provides a unified interface for interacting with various 
 - **Cloud:** Anthropic (Claude), Google (Gemini), OpenAI, Groq, Mistral, xAI.
 - **Local:** Ollama, vLLM, LM Studio.
 
-This suite contains **24 tutorials and test suites**, plus a root demo (25 Go modules), using **rho-llm v0.7.5**.
+This suite contains **25 tutorials and test suites**, plus a root demo (26 Go modules), using **rho-llm v0.9.5**.
 
 The library source is at [github.com/bds421/rho-llm](https://github.com/bds421/rho-llm).
 
@@ -33,11 +33,12 @@ The tutorials are organized by complexity and feature set:
 | [22](./22_cloud_ctl_http_tool_use) | HTTP Tool Use Benchmark | Live model tool-use loop against a running cloud-ctl HTTP server. |
 | [23](./23_food_nutrition_vision) | Food-photo Nutrition Evaluation | Vision, forced structured tool results, reference error metrics, Nutrition5k and SNAPMe evaluation guidance; offline unit tests. |
 | [24](./24_speech_to_text) | Speech-to-Text Compare | Browser recording sent in parallel to Google (Gemini 3.5 Transcribe, Flash Lite), OpenAI (gpt-transcribe, gpt-4o-mini-transcribe) and xAI (Grok) via `TranscribeAudio`; vocabulary biasing, latency, cost and word error rate side by side; offline break tests. |
+| [25](./25_drift_canary) | Drift Canary | Detect a nerfed, quantized or rerouted model API: seeded tasks with exact checkers (intent understanding from real agent sessions, agentic record work, quantization-sensitive precision), JSONL run logs with served model/tokens/latency/refusals, paired McNemar/Fisher comparison against a baseline; offline tests. |
 
 ## Getting Started
 
 ### Prerequisites
-- Go 1.26.8+
+- Go 1.27.1+
 - API Keys for Gemini, Anthropic, or OpenAI (optional if using [Ollama](https://ollama.com))
 
 ### Environment Setup
@@ -62,7 +63,7 @@ Tutorials 20–22 are live benchmarks. Tutorial 20's `-short` flag only reduces 
 
 ## Documentation & Reports
 
-- **[Historical QA Report](./REPORT.md)**: Includes an earlier API coverage cross-reference, tutorial execution logs, and tracked bug reports; it is not a coverage audit of v0.7.5.
+- **[Historical QA Report](./REPORT.md)**: Includes an earlier API coverage cross-reference, tutorial execution logs, and tracked bug reports; it is not a coverage audit of v0.9.5.
 - **[Stress Test Details](./19_stress_tests)**: Deep dive into the 49+ tests that ensure library stability.
 - **[Capability Test Reports](./20_capability_test/reports)**: Multi-model regression results across reasoning and formatting tasks (generated locally, not checked in).
 

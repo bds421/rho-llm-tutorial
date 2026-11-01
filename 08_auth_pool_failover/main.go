@@ -85,8 +85,8 @@ func main() {
 		// Keys can include a custom BaseURL using the "API_KEY|BASE_URL" format.
 		// This enables failover across entirely different backends.
 		keys := []string{
-			os.Getenv("OPENAI_PRIMARY_KEY"),                       // uses default openai endpoint
-			os.Getenv("OPENAI_BACKUP_KEY"),                        // same provider, different key
+			os.Getenv("OPENAI_PRIMARY_KEY"),                                          // uses default openai endpoint
+			os.Getenv("OPENAI_BACKUP_KEY"),                                           // same provider, different key
 			os.Getenv("AZURE_OPENAI_KEY") + "|https://my-azure-proxy.example.com/v1", // custom endpoint
 		}
 

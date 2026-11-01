@@ -95,8 +95,8 @@ func main() {
 		Provider:      "anthropic",
 		Model:         "claude-sonnet-4-6",
 		APIKey:        os.Getenv("ANTHROPIC_API_KEY"),
-		MaxTokens:     16000,                          // required when thinking is enabled
-		ThinkingLevel: llm.ThinkingHigh,                // ThinkingLow / ThinkingMedium / ThinkingHigh
+		MaxTokens:     16000,            // required when thinking is enabled
+		ThinkingLevel: llm.ThinkingHigh, // ThinkingLow / ThinkingMedium / ThinkingHigh
 		Timeout:       120 * time.Second,
 	}
 

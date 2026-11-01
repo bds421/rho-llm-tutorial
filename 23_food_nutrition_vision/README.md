@@ -1,10 +1,10 @@
 # Tutorial 23: food-photo nutrition evaluation
 
-A single-photo vision CLI using rho-llm v0.7.5. It forces one `report_nutrition` function call, validates the returned kcal/macronutrient fields, and optionally compares them with reference values. It is an evaluation building block for both datasets below, not a dataset parser, training pipeline, or validated dietary assessment system.
+A single-photo vision CLI using rho-llm v0.9.5. It forces one `report_nutrition` function call, validates the returned kcal/macronutrient fields, and optionally compares them with reference values. It is an evaluation building block for both datasets below, not a dataset parser, training pipeline, or validated dietary assessment system.
 
 ## Run
 
-Requires Go 1.26.8 and an exported `GEMINI_API_KEY`. No `.env` is loaded automatically. Run this only after deciding the image may be sent to your selected provider. The command performs one paid inference request with retries disabled, a default 60-second deadline (maximum 2 minutes), and a 1,024-token output limit.
+Requires Go 1.27.1 and an exported `GEMINI_API_KEY`. No `.env` is loaded automatically. Run this only after deciding the image may be sent to your selected provider. The command performs one paid inference request with retries disabled, a default 60-second deadline (maximum 2 minutes), and a 1,024-token output limit.
 
 ```sh
 cd 23_food_nutrition_vision

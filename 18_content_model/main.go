@@ -220,8 +220,9 @@ func main() {
 	fmt.Printf("  Response: %s\n", resp.Content)
 	fmt.Printf("  Tokens: in=%d out=%d\n", resp.InputTokens, resp.OutputTokens)
 	fmt.Printf("  Cost: $%.6f\n", llm.EstimateCost(llm.CostInput{
-		Model:        cfg.Model,
-		InputTokens:  resp.InputTokens,
-		OutputTokens: resp.OutputTokens,
+		Model:          cfg.Model,
+		InputTokens:    resp.InputTokens,
+		OutputTokens:   resp.OutputTokens,
+		ThinkingTokens: resp.ThinkingTokens,
 	}))
 }
