@@ -10,7 +10,7 @@ The `rho/llm` library provides a unified interface for interacting with various 
 - **Cloud:** Anthropic (Claude), Google (Gemini), OpenAI, Groq, Mistral, xAI.
 - **Local:** Ollama, vLLM, LM Studio.
 
-This suite contains **25 tutorials and test suites**, plus a root demo (26 Go modules), using **rho-llm v0.9.5**.
+This suite contains **25 tutorials and test suites**, plus a root demo (26 Go modules), using **rho-llm v0.10.0**.
 
 The library source is at [github.com/bds421/rho-llm](https://github.com/bds421/rho-llm).
 
@@ -38,7 +38,7 @@ The tutorials are organized by complexity and feature set:
 ## Getting Started
 
 ### Prerequisites
-- Go 1.27.1+
+- Go 1.27.3+
 - API Keys for Gemini, Anthropic, or OpenAI (optional if using [Ollama](https://ollama.com))
 
 ### Environment Setup
@@ -63,7 +63,7 @@ Tutorials 20–22 are live benchmarks. Tutorial 20's `-short` flag only reduces 
 
 ## Documentation & Reports
 
-- **[Historical QA Report](./REPORT.md)**: Includes an earlier API coverage cross-reference, tutorial execution logs, and tracked bug reports; it is not a coverage audit of v0.9.5.
+- **[Historical QA Report](./REPORT.md)**: Includes an earlier API coverage cross-reference, tutorial execution logs, and tracked bug reports; it is not a coverage audit of v0.10.0.
 - **[Stress Test Details](./19_stress_tests)**: Deep dive into the 49+ tests that ensure library stability.
 - **[Capability Test Reports](./20_capability_test/reports)**: Multi-model regression results across reasoning and formatting tasks (generated locally, not checked in).
 

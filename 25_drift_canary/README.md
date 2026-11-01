@@ -113,15 +113,19 @@ separately, and a significant rise in refusals is flagged.
 
 ## Models not yet in the rho-llm registry
 
-rho-llm refuses models without reviewed capability metadata. Declare them in
-`config.yaml` until the registry includes them:
+rho-llm refuses models without reviewed capability metadata. Declare a new
+model's capabilities in `config.yaml` until the registry includes it:
 
 ```yaml
   - provider: "anthropic"
-    model: "claude-opus-5-5"
+    model: "<new model ID>"
     api_key_env: "ANTHROPIC_API_KEY"
     capabilities: [chat, stream, tools, reasoning]
 ```
+
+A rho-llm upgrade can change what is sent for the same config (v0.10.0, for
+example, changed how thinking is requested from Claude 4.7+ models). Take a new
+baseline after upgrading the library, just as after a config change.
 
 ## Limits
 

@@ -1,5 +1,28 @@
 # Changelog
 
+## v0.3.9 — 2026-11-01
+
+### Changed
+
+- All 26 modules updated to rho-llm v0.10.0 (from v0.9.5) and Go 1.27.3
+  (from 1.27.1); all other dependencies at their latest versions. Docs updated.
+- Tutorial 25: `claude-opus-5-5` is now in the rho-llm registry, so its
+  `capabilities` override is removed. The commented-out models point at
+  `gpt-6.1-sol` and `grok-4.7`, and the README asks for a new baseline after
+  a library upgrade (v0.10.0 changed how thinking is requested from Claude
+  4.7+ models).
+- Tutorial 23: the README notes that Fable 5.1, Opus 5.5 and Sonnet 5.5
+  reject the forced `tool_choice` this tutorial uses.
+
+### Fixed
+
+- Configs no longer list models rho-llm rejects. Tutorial 21: `gpt-4.1-nano`
+  (retired) replaced by `gpt-5.6-luna`, and the retired `mistral-small-2506`
+  removed. Tutorial 20: retired `mistral-small-2506` removed,
+  `gemini-3.1-flash-lite-preview` replaced by the registered
+  `gemini-3.1-flash-lite`, the unregistered Ollama models `qwen3:14b` and
+  `mistral:7b` commented out, and retired commented-out entries deleted.
+
 ## v0.3.8 — 2026-11-01
 
 ### Added

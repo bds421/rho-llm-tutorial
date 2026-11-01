@@ -31,8 +31,8 @@ levels:
 #   api_key_env:      env var with the API key; model is skipped when unset
 #   thinking:         "", low, medium, high — pin it; a silent reasoning-budget
 #                     cut is one of the most common forms of nerfing
-#   temperature:      pin it where the model accepts it (omit for models that
-#                     reject temperature together with thinking)
+#   temperature:      pin it where the model accepts it (Claude 4.7+ models
+#                     reject it; rho-llm fails such a config before sending)
 #   max_tokens:       default 8192; truncation is reported separately
 #   concurrency:      parallel requests per model (default 4)
 models:
@@ -43,8 +43,6 @@ models:
   - provider: "anthropic"
     model: "claude-opus-5-5"
     api_key_env: "ANTHROPIC_API_KEY"
-    # Not in the rho-llm v0.9.5 registry yet — declared here until it is.
-    capabilities: [chat, stream, tools, reasoning]
   - provider: "anthropic"
     model: "claude-fable-5-1"
     api_key_env: "ANTHROPIC_API_KEY"
@@ -53,12 +51,13 @@ models:
     api_key_env: "GEMINI_API_KEY"
     max_tokens: 24576  # Gemini counts thinking against max_tokens
   # - provider: "openai"
-  #   model: "gpt-5.5"
+  #   model: "gpt-6.1-sol"
   #   api_key_env: "OPENAI_API_KEY"
   # - provider: "xai"
-  #   model: "grok-4.5"
+  #   model: "grok-4.7"
   #   api_key_env: "XAI_API_KEY"
   # - provider: "ollama"
   #   model: "qwen3:14b"
+  #   capabilities: [chat, stream, tools]  # not in the rho-llm registry
   #   timeout_seconds: 600
   #   concurrency: 1
