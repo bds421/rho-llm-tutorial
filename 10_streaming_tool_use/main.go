@@ -48,7 +48,7 @@ func main() {
 
 	cfg := llm.Config{
 		Provider:  "gemini",
-		Model:     "gemini-2.5-flash",
+		Model:     "gemini-3.8-flash",
 		APIKey:    os.Getenv("GEMINI_API_KEY"),
 		MaxTokens: 512,
 		Timeout:   30 * time.Second,

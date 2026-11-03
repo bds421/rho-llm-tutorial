@@ -31,11 +31,11 @@ func main() {
 	// --- Step 2: Query per-model metadata ---
 	fmt.Println("=== Model Info ===")
 	models := []string{
-		"claude-opus-4-6",
-		"claude-sonnet-4-6",
-		"gemini-2.5-flash",
-		"grok-4-fast-non-reasoning",
-		"gpt-5.4-nano",
+		"claude-opus-5-5",
+		"claude-sonnet-5-5",
+		"gemini-3.8-flash",
+		"grok-4.7",
+		"gpt-6-luna",
 		"mistral-small-2603",
 	}
 	for _, model := range models {
@@ -63,9 +63,9 @@ func main() {
 		output int
 	}
 	scenarios := []scenario{
-		{"claude-sonnet-4-6", 1000, 500},
-		{"claude-opus-4-6", 10000, 2000},
-		{"gemini-2.5-flash", 5000, 1000},
+		{"claude-sonnet-5-5", 1000, 500},
+		{"claude-opus-5-5", 10000, 2000},
+		{"gemini-3.8-flash", 5000, 1000},
 	}
 	for _, s := range scenarios {
 		cost := llm.EstimateCost(llm.CostInput{
@@ -79,7 +79,7 @@ func main() {
 
 	// --- Step 4: Detect provider from model ID ---
 	fmt.Println("=== Provider Detection ===")
-	for _, model := range []string{"gemini-2.5-flash", "claude-sonnet-4-6", "gpt-5.4"} {
+	for _, model := range []string{"gemini-3.8-flash", "claude-sonnet-5-5", "gpt-6.1-sol"} {
 		provider := llm.ProviderForModel(model)
 		fmt.Printf("  %-30s -> provider: %s\n", model, provider)
 	}

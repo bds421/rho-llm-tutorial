@@ -1,5 +1,37 @@
 # Changelog
 
+## v0.3.10 — 2026-11-03
+
+### Changed
+
+- All 26 modules updated to rho-llm v0.10.1 (from v0.10.0); all other
+  dependencies at their latest versions. v0.10.1 fixes Gemini 3+ replies being
+  cut off by their own thinking at small `MaxTokens`.
+- Tutorials moved to the current models: `claude-haiku-5-5` (02, 04, 05, 09,
+  11, 15, 18, root demo), `gemini-3.8-flash` (01, 03, 04, 07, 09, 10, 15, 18,
+  23, root demo), `claude-opus-5-5`/`claude-sonnet-5-5`/`gpt-6.1-sol`/
+  `gpt-6-luna`/`grok-4.7` in 06, `gpt-6-luna` in 04 and 08. Tutorial 12 uses
+  `gemini-3.1-flash-lite` and `gemini-3.5-flash-lite`, because its temperature
+  demo needs a model that still accepts sampling controls.
+- Kept on purpose: `claude-sonnet-4-6` in 04 (per-request `ThinkingBudget`)
+  and 08 (`Config.Temperature`), and `claude-haiku-4-5-20251001` in 04's
+  budget test. Claude 4.7+ models reject both settings.
+- Tutorials 20, 21 and 22 also benchmark `claude-haiku-5-5`,
+  `claude-sonnet-5-5`, `claude-opus-5-5`, `gemini-3.8-flash`,
+  `gemini-4-argon` and `grok-4.7`. Tutorial 21: `gpt-5-nano` (announced
+  shutdown) replaced by `gpt-6-luna`.
+- Tutorial 25: Haiku 4.5 (temperature 0) replaced by `claude-haiku-5-5`,
+  `claude-sonnet-5-5` added, and `gemini-3.5-flash` (deprecated, routed to
+  3.8 Flash by Google) replaced by `gemini-3.8-flash`.
+
+### Fixed
+
+- Tutorials no longer use models with an announced shutdown:
+  `gemini-2.5-flash` (Google shuts it down 2026-12-01), `gemini-2.5-flash-lite`
+  (limited access), `gpt-5-nano`, `gpt-4.1` and `gpt-5.4-nano`. Tutorial 20
+  drops the commented-out `gemini-2.0-flash` and `gemini-3-pro-preview`, both
+  shut down.
+
 ## v0.3.9 — 2026-11-01
 
 ### Changed

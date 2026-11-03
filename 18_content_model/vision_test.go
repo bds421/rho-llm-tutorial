@@ -34,7 +34,7 @@ func TestGeminiVisionDescribesImage(t *testing.T) {
 
 	client, err := llm.NewClient(llm.Config{
 		Provider:  "gemini",
-		Model:     "gemini-2.5-flash",
+		Model:     "gemini-3.8-flash",
 		APIKey:    apiKey,
 		MaxTokens: 100,
 		Timeout:   30 * time.Second,
@@ -69,7 +69,7 @@ func TestGeminiVisionDescribesImage(t *testing.T) {
 	}
 
 	cost := llm.EstimateCost(llm.CostInput{
-		Model:        "gemini-2.5-flash",
+		Model:        "gemini-3.8-flash",
 		InputTokens:  resp.InputTokens,
 		OutputTokens: resp.OutputTokens,
 	})
@@ -94,7 +94,7 @@ func TestAnthropicVisionDescribesImage(t *testing.T) {
 
 	client, err := llm.NewClient(llm.Config{
 		Provider:  "anthropic",
-		Model:     "claude-haiku-4-5-20251001",
+		Model:     "claude-haiku-5-5",
 		APIKey:    apiKey,
 		MaxTokens: 100,
 		Timeout:   30 * time.Second,
@@ -129,7 +129,7 @@ func TestAnthropicVisionDescribesImage(t *testing.T) {
 	}
 
 	cost := llm.EstimateCost(llm.CostInput{
-		Model:        "claude-haiku-4-5-20251001",
+		Model:        "claude-haiku-5-5",
 		InputTokens:  resp.InputTokens,
 		OutputTokens: resp.OutputTokens,
 	})

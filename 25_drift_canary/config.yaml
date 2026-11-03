@@ -37,9 +37,11 @@ levels:
 #   concurrency:      parallel requests per model (default 4)
 models:
   - provider: "anthropic"
-    model: "claude-haiku-4-5-20251001"
+    model: "claude-haiku-5-5"
     api_key_env: "ANTHROPIC_API_KEY"
-    temperature: 0
+  - provider: "anthropic"
+    model: "claude-sonnet-5-5"
+    api_key_env: "ANTHROPIC_API_KEY"
   - provider: "anthropic"
     model: "claude-opus-5-5"
     api_key_env: "ANTHROPIC_API_KEY"
@@ -47,7 +49,7 @@ models:
     model: "claude-fable-5-1"
     api_key_env: "ANTHROPIC_API_KEY"
   - provider: "gemini"
-    model: "gemini-3.5-flash"
+    model: "gemini-3.8-flash"
     api_key_env: "GEMINI_API_KEY"
     max_tokens: 24576  # Gemini counts thinking against max_tokens
   # - provider: "openai"

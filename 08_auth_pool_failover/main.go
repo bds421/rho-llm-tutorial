@@ -77,7 +77,7 @@ func main() {
 	{
 		cfg := llm.Config{
 			Provider:  "openai",
-			Model:     "gpt-4.1",
+			Model:     "gpt-6-luna",
 			MaxTokens: 256,
 			Timeout:   30 * time.Second,
 		}

@@ -94,7 +94,7 @@ func TestThinkingBudgetGemini(t *testing.T) {
 
 	client, err := llm.NewClient(llm.Config{
 		Provider:  "gemini",
-		Model:     "gemini-2.5-flash",
+		Model:     "gemini-3.8-flash",
 		APIKey:    apiKey,
 		MaxTokens: 1024,
 		Timeout:   60 * time.Second,
@@ -122,8 +122,8 @@ func TestThinkingBudgetGemini(t *testing.T) {
 		resp.Content, len(resp.Thinking), resp.ThinkingTokens, resp.InputTokens, resp.OutputTokens)
 }
 
-// TestThinkingBudgetOpenAI tests ThinkingLevel + ReasoningSummary on GPT-5.4.
-// GPT-5.4 models use the Responses API and support reasoning effort control.
+// TestThinkingBudgetOpenAI tests ThinkingLevel + ReasoningSummary on GPT-6 Luna.
+// GPT-6 models use the Responses API and support reasoning effort control.
 // Requires OPENAI_API_KEY; skipped otherwise.
 func TestThinkingBudgetOpenAI(t *testing.T) {
 	if testing.Short() {
@@ -136,7 +136,7 @@ func TestThinkingBudgetOpenAI(t *testing.T) {
 
 	client, err := llm.NewClient(llm.Config{
 		Provider:  "openai",
-		Model:     "gpt-5.4-nano",
+		Model:     "gpt-6-luna",
 		APIKey:    apiKey,
 		MaxTokens: 2048,
 		Timeout:   60 * time.Second,

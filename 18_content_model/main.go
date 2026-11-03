@@ -187,7 +187,7 @@ func main() {
 
 	cfg := llm.Config{
 		Provider:  "gemini",
-		Model:     "gemini-2.5-flash",
+		Model:     "gemini-3.8-flash",
 		APIKey:    apiKey,
 		MaxTokens: 256,
 	}

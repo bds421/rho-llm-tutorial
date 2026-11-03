@@ -29,7 +29,7 @@ func main() {
 	ctx := context.Background()
 
 	// --- Step 1: Check model thinking capabilities via the registry ---
-	modelID := "claude-opus-4-6"
+	modelID := "claude-opus-5-5"
 	info, ok := llm.GetModelInfo(modelID)
 	if !ok {
 		fmt.Fprintf(os.Stderr, "Model %q not found in registry\n", modelID)
@@ -58,7 +58,7 @@ func main() {
 	{
 		noneCfg := llm.Config{
 			Provider:      "anthropic",
-			Model:         "claude-haiku-4-5-20251001",
+			Model:         "claude-haiku-5-5",
 			APIKey:        os.Getenv("ANTHROPIC_API_KEY"),
 			MaxTokens:     100,
 			ThinkingLevel: llm.ThinkingNone, // Explicitly no thinking

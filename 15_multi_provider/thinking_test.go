@@ -24,7 +24,7 @@ func TestGeminiThinkingModelReturnsContent(t *testing.T) {
 
 	client, err := llm.NewClient(llm.Config{
 		Provider:  "gemini",
-		Model:     "gemini-2.5-flash",
+		Model:     "gemini-3.8-flash",
 		APIKey:    apiKey,
 		MaxTokens: 100,
 		Timeout:   30 * time.Second,

@@ -44,7 +44,7 @@ func run(args []string, out io.Writer) error {
 	flags := flag.NewFlagSet("food-nutrition", flag.ContinueOnError)
 	path := flags.String("image", "", "local JPEG/PNG; maximum 4 MiB and 25 megapixels")
 	provider := flags.String("provider", "gemini", "vision/tool-capable provider")
-	model := flags.String("model", "gemini-2.5-flash", "full model ID supporting vision and forced tools")
+	model := flags.String("model", "gemini-3.8-flash", "full model ID supporting vision and forced tools")
 	keyEnv := flags.String("api-key-env", "GEMINI_API_KEY", "environment variable holding API key")
 	timeout := flags.Duration("timeout", 60*time.Second, "total request deadline (maximum 2m)")
 	known := []*float64{

@@ -21,10 +21,10 @@ func main() {
 		stream   bool
 	}{
 		// Cloud providers
-		{"Gemini Complete", "gemini", "gemini-2.5-flash", os.Getenv("GEMINI_API_KEY"), false},
-		{"Gemini Stream", "gemini", "gemini-2.5-flash", os.Getenv("GEMINI_API_KEY"), true},
-		{"Anthropic Complete", "anthropic", "claude-haiku-4-5-20251001", os.Getenv("ANTHROPIC_API_KEY"), false},
-		{"Anthropic Stream", "anthropic", "claude-haiku-4-5-20251001", os.Getenv("ANTHROPIC_API_KEY"), true},
+		{"Gemini Complete", "gemini", "gemini-3.8-flash", os.Getenv("GEMINI_API_KEY"), false},
+		{"Gemini Stream", "gemini", "gemini-3.8-flash", os.Getenv("GEMINI_API_KEY"), true},
+		{"Anthropic Complete", "anthropic", "claude-haiku-5-5", os.Getenv("ANTHROPIC_API_KEY"), false},
+		{"Anthropic Stream", "anthropic", "claude-haiku-5-5", os.Getenv("ANTHROPIC_API_KEY"), true},
 		// Ollama (local, no API key — requires `ollama pull <model>` first)
 		{"Ollama Qwen3 Complete", "ollama", "qwen3:4b", "", false},
 		{"Ollama Qwen3 Stream", "ollama", "qwen3:4b", "", true},

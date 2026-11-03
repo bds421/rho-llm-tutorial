@@ -20,7 +20,7 @@ func main() {
 
 	cfg := llm.Config{
 		Provider:  "gemini",
-		Model:     "gemini-2.5-flash",
+		Model:     "gemini-3.1-flash-lite",
 		APIKey:    os.Getenv("GEMINI_API_KEY"),
 		MaxTokens: 1024, // default max tokens
 		// Temperature: nil means "use provider default, don't send".
@@ -106,7 +106,7 @@ func main() {
 	{
 		// Config.Model is "flash" but we override per-request
 		req := llm.Request{
-			Model: "gemini-2.5-flash-lite", // override to a different model
+			Model: "gemini-3.5-flash-lite", // override to a different model
 			Messages: []llm.Message{
 				llm.NewTextMessage(llm.RoleUser, "What model are you? Answer in one word."),
 			},
@@ -118,7 +118,7 @@ func main() {
 			fmt.Fprintf(os.Stderr, "  Error: %v\n", err)
 		} else {
 			fmt.Printf("  Config model: %s\n", client.Model())
-			fmt.Printf("  Request model: gemini-2.5-flash-lite\n")
+			fmt.Printf("  Request model: gemini-3.5-flash-lite\n")
 			fmt.Printf("  Response.Model: %s\n", resp.Model)
 			fmt.Printf("  Response: %s\n", resp.Content)
 		}

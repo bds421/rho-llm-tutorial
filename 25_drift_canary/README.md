@@ -134,8 +134,9 @@ baseline after upgrading the library, just as after a config change.
   this does not measure.
 - Multiple-choice intent tasks measure understanding, not the action itself.
   A model that picks the right option can still act wrongly in a long session.
-- Temperature 0 is not fully deterministic on most providers. Treat single
-  flipped answers as noise and rely on the statistics.
+- Answers are not deterministic: Claude 4.7+ and Gemini 3.5-flash-lite and
+  later reject a temperature setting, and even temperature 0 varies on most
+  providers. Treat single flipped answers as noise and rely on the statistics.
 
 ## Offline tests
 

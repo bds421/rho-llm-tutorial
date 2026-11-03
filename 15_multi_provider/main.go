@@ -46,7 +46,7 @@ func main() {
 			name: "Gemini Flash",
 			config: llm.Config{
 				Provider:  "gemini",
-				Model:     "gemini-2.5-flash",
+				Model:     "gemini-3.8-flash",
 				APIKey:    os.Getenv("GEMINI_API_KEY"),
 				MaxTokens: 100,
 				Timeout:   30 * time.Second,
@@ -56,7 +56,7 @@ func main() {
 			name: "Anthropic Haiku",
 			config: llm.Config{
 				Provider:  "anthropic",
-				Model:     "claude-haiku-4-5-20251001",
+				Model:     "claude-haiku-5-5",
 				APIKey:    os.Getenv("ANTHROPIC_API_KEY"),
 				MaxTokens: 100,
 				Timeout:   30 * time.Second,
