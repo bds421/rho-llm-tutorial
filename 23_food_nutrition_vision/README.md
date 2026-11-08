@@ -1,6 +1,6 @@
 # Tutorial 23: food-photo nutrition evaluation
 
-A single-photo vision CLI using rho-llm v0.10.1. It forces one `report_nutrition` function call, validates the returned kcal/macronutrient fields, and optionally compares them with reference values. It is an evaluation building block for both datasets below, not a dataset parser, training pipeline, or validated dietary assessment system.
+A single-photo vision CLI using rho-llm v0.14.0. It forces one `report_nutrition` function call, validates the returned kcal/macronutrient fields, and optionally compares them with reference values. It is an evaluation building block for both datasets below, not a dataset parser, training pipeline, or validated dietary assessment system.
 
 ## Run
 
