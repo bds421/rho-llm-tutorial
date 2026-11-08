@@ -1,5 +1,13 @@
 # Changelog
 
+## v0.3.11 — 2026-11-08
+
+### Changed
+
+- All 26 modules updated to rho-llm v0.14.0 (from v0.10.1); no tutorial code
+  changes. Every module builds and vets, and the offline `-race` suites (19, 23,
+  24, 25) pass.
+
 ## v0.3.10 — 2026-11-03
 
 ### Changed
