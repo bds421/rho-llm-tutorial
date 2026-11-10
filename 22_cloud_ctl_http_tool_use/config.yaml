@@ -65,11 +65,11 @@ models:
   # xAI / Grok  (XAI_API_KEY)
   # ---------------------------------------------------------------------------
   - provider: "xai"
-    model: "grok-3-mini"
+    model: "grok-4.3"
     api_key_env: "XAI_API_KEY"
     timeout_seconds: 180
   - provider: "xai"
-    model: "grok-4-1-fast-non-reasoning"
+    model: "grok-4.20-0309-non-reasoning"
     api_key_env: "XAI_API_KEY"
     timeout_seconds: 180
   - provider: "xai"

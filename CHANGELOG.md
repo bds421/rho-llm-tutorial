@@ -1,5 +1,21 @@
 # Changelog
 
+## v0.3.12 — 2026-11-10
+
+### Changed
+
+- All 26 modules updated to rho-llm v0.15.0 (from v0.14.0).
+- Retired xAI models replaced. xAI answers `grok-3(-mini)`, `grok-4-0709`,
+  `grok-4(-1)-fast-*` and `grok-code-fast-1` with grok-4.3 / grok-build-0.1,
+  and rho-llm v0.15.0 now refuses them:
+  - 20: `grok-4.3`, `grok-4.20-0309-non-reasoning`, `grok-4.7` and
+    `grok-build-0.1`, with grok-4.6, 4.5 and 4.20 reasoning commented out.
+  - 21 and 22: `grok-4.3` and `grok-4.20-0309-non-reasoning`.
+- 20: `mistral-large-4-0` replaces Mistral Large 3, which Mistral deprecated
+  on 2026-10-31.
+- 25: the canary tests `claude-fable-5-2` (released 2026-11-09) instead of
+  Fable 5.1. Take a new baseline.
+
 ## v0.3.11 — 2026-11-08
 
 ### Changed

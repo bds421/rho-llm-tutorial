@@ -12,7 +12,7 @@ go run . -image /absolute/path/to/meal.jpg
 # Illustrative reference values only: replace all four with this photo's labels.
 go run . -image /absolute/path/to/meal.jpg -calories 600 -fat 20 -carbs 75 -protein 30
 # Alternate provider: supply a full model ID supporting vision and forced tools.
-# Not Fable 5.1, Opus 5.5 or Sonnet 5.5: they reject a forced tool_choice.
+# Not Fable 5.1/5.2, Opus 5.5 or Sonnet 5.5: they reject a forced tool_choice.
 go run . -image /absolute/path/to/meal.png -provider anthropic -model claude-haiku-4-5 -api-key-env ANTHROPIC_API_KEY
 ```
 
