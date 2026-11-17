@@ -1,5 +1,15 @@
 # Changelog
 
+## Unreleased
+
+### Changed
+
+- All 26 modules updated to rho-llm v0.18.0 (from v0.15.0).
+- 13: `llm.GetAvailableModels` (removed in rho-llm v0.17.0) replaced by a small
+  `modelIDs` helper over `llm.ModelsByProvider`.
+- Every module vets and compiles; the offline `-race` suites (19, 23, 24, 25)
+  pass. No hard-coded model ID is retired in the v0.18.0 registry.
+
 ## v0.3.12 — 2026-11-10
 
 ### Changed

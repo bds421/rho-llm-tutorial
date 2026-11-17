@@ -1,6 +1,6 @@
 // Tutorial 13: Deep Registry Exploration
 //
-// Demonstrates: GetAvailableModels, DefaultConfig, ModelInfo.Label,
+// Demonstrates: ModelsByProvider, DefaultConfig, ModelInfo.Label,
 //               ModelInfo.NoToolSupport, ModelInfo.ThoughtSignature,
 //               comprehensive model enumeration
 
@@ -31,11 +31,11 @@ func main() {
 	}
 	fmt.Println()
 
-	// --- Test 2: GetAvailableModels per provider ---
+	// --- Test 2: ModelsByProvider per provider ---
 	fmt.Println("=== Available Models Per Provider ===")
 	providers := []string{"anthropic", "gemini", "xai", "openai", "groq", "mistral", "dashscope", "ollama"}
 	for _, prov := range providers {
-		models := llm.GetAvailableModels(prov)
+		models := modelIDs(prov)
 		fmt.Printf("  %s (%d models):\n", prov, len(models))
 		for _, m := range models {
 			info, ok := llm.GetModelInfo(m)
@@ -65,7 +65,7 @@ func main() {
 	// --- Test 3: Models with thinking support ---
 	fmt.Println("=== Models with Thinking Support ===")
 	for _, prov := range providers {
-		for _, m := range llm.GetAvailableModels(prov) {
+		for _, m := range modelIDs(prov) {
 			info, ok := llm.GetModelInfo(m)
 			if ok && (info.SupportsThinking || info.Thinking) {
 				thinkType := "API-controlled"
@@ -81,7 +81,7 @@ func main() {
 	// --- Test 4: Models with ThoughtSignature ---
 	fmt.Println("=== Models with ThoughtSignature ===")
 	for _, prov := range providers {
-		for _, m := range llm.GetAvailableModels(prov) {
+		for _, m := range modelIDs(prov) {
 			info, ok := llm.GetModelInfo(m)
 			if ok && info.ThoughtSignature {
 				fmt.Printf("  %-40s %s\n", m, prov)
@@ -93,11 +93,21 @@ func main() {
 	// --- Test 5: Models without tool support ---
 	fmt.Println("=== Models Without Tool Support ===")
 	for _, prov := range providers {
-		for _, m := range llm.GetAvailableModels(prov) {
+		for _, m := range modelIDs(prov) {
 			info, ok := llm.GetModelInfo(m)
 			if ok && info.NoToolSupport {
 				fmt.Printf("  %-40s %s\n", m, prov)
 			}
 		}
 	}
+}
+
+// modelIDs lists the registered model IDs of a provider. It replaces the
+// GetAvailableModels helper removed in rho-llm v0.17.0.
+func modelIDs(provider string) []string {
+	var ids []string
+	for _, m := range llm.ModelsByProvider(provider) {
+		ids = append(ids, m.ID)
+	}
+	return ids
 }
