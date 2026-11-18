@@ -1,14 +1,41 @@
 # Changelog
 
-## Unreleased
+## v0.4.0 — 2026-11-18
+
+### Added
+
+- 26 `26_documents`: PDF input on every protocol (Anthropic `document`, Gemini
+  `inlineData`, Responses `input_file`, OpenAI-compatible `file`, Mistral
+  `document_url`, xAI refused before the request), with offline wire tests
+  (hostile documents, many PDFs, concurrency) and live tests on five providers.
+- 27 `27_message_threads`: Anthropic message threads through `Session` and
+  `WithMessageThreads()`, against a fake Messages API that implements thread
+  semantics (delta turns, every fallback, error codes, concurrency), plus a
+  live test. Threads shrink the request (12.3 KB → 3.7 KB over 4 turns); they
+  do not cut billed input tokens.
+- 28 `28_gemini_frontier`: Gemini 4 thinking levels, caching refusal, long
+  decode across continuation hops (fake server), finish reasons, sampling-key
+  refusals and the `gemini-interactions` preset, with live tests.
+- 29 `29_perplexity_agent`: the unchanged `perplexity` (Sonar) preset and the
+  opt-in `perplexity-agent` preset, separate catalogs, cache-read pricing and
+  the Responses stream hardening; offline only (no Perplexity key), plus a
+  live OpenAI streamed-tool-call check.
+- `make test-features` (offline, part of `test-all`) and `make
+  test-features-live`.
+- CLAUDE.md: the DEV step for adapting to an unreleased rho-llm.
 
 ### Changed
 
-- All 26 modules updated to rho-llm v0.18.0 (from v0.15.0).
+- All 26 existing modules updated to rho-llm v0.20.0 (from v0.15.0).
 - 13: `llm.GetAvailableModels` (removed in rho-llm v0.17.0) replaced by a small
   `modelIDs` helper over `llm.ModelsByProvider`.
-- Every module vets and compiles; the offline `-race` suites (19, 23, 24, 25)
-  pass. No hard-coded model ID is retired in the v0.18.0 registry.
+- 20: `gemini-4-carbon` and `gemini-4-hydrogen` added, `gpt-6.2-sol` listed.
+
+### Found and fixed in rho-llm v0.20.0 by these tests
+
+- A trailing slash in `BaseURL` made `//` request paths (29).
+- An empty Gemini long-decode hop dropped the earlier hops' text (28).
+- `gemini-interactions` did not refuse top-level sampling keys (28).
 
 ## v0.3.12 — 2026-11-10
 

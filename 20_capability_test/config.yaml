@@ -61,6 +61,12 @@ models:
     model: "gemini-4-argon"
     api_key_env: "GEMINI_API_KEY"
   - provider: "gemini"
+    model: "gemini-4-carbon"
+    api_key_env: "GEMINI_API_KEY"
+  - provider: "gemini"
+    model: "gemini-4-hydrogen"
+    api_key_env: "GEMINI_API_KEY"
+  - provider: "gemini"
     model: "gemini-3.1-flash-lite"
     api_key_env: "GEMINI_API_KEY"
 
@@ -96,6 +102,9 @@ models:
   # ---------------------------------------------------------------------------
   # - provider: "openai"
   #   model: "gpt-5.4-nano"
+  #   api_key_env: "OPENAI_API_KEY"
+  # - provider: "openai"
+  #   model: "gpt-6.2-sol"
   #   api_key_env: "OPENAI_API_KEY"
 
   # ---------------------------------------------------------------------------

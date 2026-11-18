@@ -3,13 +3,16 @@ TUTORIALS := 01_basic 02_streaming 03_tool_use 04_thinking 05_error_handling \
 	09_system_and_multiturn 10_streaming_tool_use 11_stream_abort_and_errors \
 	12_request_overrides 13_registry_deep 14_provider_helpers 15_multi_provider \
 	16_pool_deep_dive 17_error_constructors 18_content_model 23_food_nutrition_vision \
-	24_speech_to_text 25_drift_canary
+	24_speech_to_text 25_drift_canary $(FEATURES)
+
+# Feature tutorials with offline (-short) and gated live tests.
+FEATURES := 26_documents 27_message_threads 28_gemini_frontier 29_perplexity_agent
 
 TEST_SUITES := 19_stress_tests 20_capability_test 21_cloud_ctl_tool_use 22_cloud_ctl_http_tool_use
 
 ALL_MODULES := . $(TUTORIALS) $(TEST_SUITES)
 
-.PHONY: build-all test-stress test-food test-stt test-canary test-capability test-all vet-all tidy-all update-deps clean
+.PHONY: build-all test-stress test-food test-stt test-canary test-features test-features-live test-capability test-all vet-all tidy-all update-deps clean
 
 ## build-all: compile all packages and tests without running tutorials or tests
 build-all:
@@ -35,12 +38,26 @@ test-stt:
 test-canary:
 	cd 25_drift_canary && go test -race -count=1 ./...
 
+## test-features: run the offline tests of tutorials 26-29 with race detector
+test-features:
+	@set -e; for dir in $(FEATURES); do \
+		echo "==> Testing $$dir (offline)"; \
+		(cd $$dir && go test -short -race -count=1 ./...); \
+	done
+
+## test-features-live: also run their live tests (needs API keys; each skips without its key)
+test-features-live:
+	@set -e; for dir in $(FEATURES); do \
+		echo "==> Testing $$dir (live)"; \
+		(cd $$dir && go test -race -count=1 -timeout 20m ./...); \
+	done
+
 ## test-capability: run tutorial 20 capability tests (requires API keys)
 test-capability:
 	cd 20_capability_test && go test -count=1 -timeout 120m ./...
 
 ## test-all: compile every module and run offline stress tests (no live providers)
-test-all: build-all test-stress test-food test-stt test-canary
+test-all: build-all test-stress test-food test-stt test-canary test-features
 	@echo "All tests passed"
 
 ## vet-all: run go vet on every module

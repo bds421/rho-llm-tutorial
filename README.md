@@ -1,16 +1,16 @@
 # rho/llm Tutorial Suite
 
-Tutorial suite release: **v0.3.6**.
+Tutorial suite release: **v0.4.0**.
 
 Welcome to the **rho/llm Tutorial Suite**! This directory contains a comprehensive guide to mastering the `rho/llm` library—a production-grade Go wrapper for Large Language Models (LLMs) featuring built-in streaming, multi-key failover, and agentic workflows.
 
 ## Overview
 
 The `rho/llm` library provides a unified interface for interacting with various LLM providers, including:
-- **Cloud:** Anthropic (Claude), Google (Gemini), OpenAI, Groq, Mistral, xAI.
+- **Cloud:** Anthropic (Claude), Google (Gemini), OpenAI, Groq, Mistral, xAI, Perplexity.
 - **Local:** Ollama, vLLM, LM Studio.
 
-This suite contains **25 tutorials and test suites**, plus a root demo (26 Go modules), using **rho-llm v0.14.0**.
+This suite contains **29 tutorials and test suites**, plus a root demo (30 Go modules), using **rho-llm v0.20.0**.
 
 The library source is at [github.com/bds421/rho-llm](https://github.com/bds421/rho-llm).
 
@@ -34,6 +34,10 @@ The tutorials are organized by complexity and feature set:
 | [23](./23_food_nutrition_vision) | Food-photo Nutrition Evaluation | Vision, forced structured tool results, reference error metrics, Nutrition5k and SNAPMe evaluation guidance; offline unit tests. |
 | [24](./24_speech_to_text) | Speech-to-Text Compare | Browser recording sent in parallel to Google (Gemini 3.5 Transcribe, Flash Lite), OpenAI (gpt-transcribe, gpt-4o-mini-transcribe) and xAI (Grok) via `TranscribeAudio`; vocabulary biasing, latency, cost and word error rate side by side; offline break tests. |
 | [25](./25_drift_canary) | Drift Canary | Detect a nerfed, quantized or rerouted model API: seeded tasks with exact checkers (intent understanding from real agent sessions, agentic record work, quantization-sensitive precision), JSONL run logs with served model/tokens/latency/refusals, paired McNemar/Fisher comparison against a baseline; offline tests. |
+| [26](./26_documents) | PDF Documents | `ContentDocument` on every protocol: Anthropic `document`, Gemini `inlineData`, Responses `input_file`, OpenAI-compatible `file` / Mistral `document_url`, xAI refused before the request; offline wire tests and gated live tests. |
+| [27](./27_message_threads) | Message Threads | Anthropic message threads through `Session` + `WithMessageThreads()`: delta-only turns, every fallback (expired, already continued, unsupported), `Request.Thread`, `ThreadErrorCode`; fake-server tests and a gated live test. |
+| [28](./28_gemini_frontier) | Gemini 4 & Interactions | Gemini 4 thinking levels (`xhigh`, `minimal`→`low`), caching refusal, long decode across continuation hops, new finish reasons, sampling-key refusal, the opt-in `gemini-interactions` preset; fake-server tests and gated live tests. |
+| [29](./29_perplexity_agent) | Perplexity Presets | Sonar (`perplexity`, unchanged) vs the opt-in Agent API (`perplexity-agent`, Responses dialect), separate catalogs, cache-read pricing, Responses stream hardening; offline tests (Agent API shapes are from the docs, not live-verified). |
 
 ## Getting Started
 
@@ -57,13 +61,13 @@ go run main.go
 
 ### Offline Verification
 
-`make build-all` compiles all 25 modules, including test binaries, without running them. `make vet-all` checks every module. `make test-all` also runs tutorial 19's mock-based stress tests and tutorial 23's and tutorial 24's offline tests with the race detector; it does not run live provider benchmarks. Tutorial 23's CLI explicitly sends the selected image to a provider when run, and tutorial 24's page sends each recording to every configured provider; their tests do not.
+`make build-all` compiles all 30 modules, including test binaries, without running them. `make vet-all` checks every module. `make test-all` also runs tutorial 19's mock-based stress tests and the offline tests of tutorials 23, 24, 25 and 26–29 with the race detector; it does not call any provider. `make test-features-live` adds the live tests of tutorials 26–29 (each skips when its API key is missing). Tutorial 23's CLI explicitly sends the selected image to a provider when run, and tutorial 24's page sends each recording to every configured provider; their tests do not.
 
 Tutorials 20–22 are live benchmarks. Tutorial 20's `-short` flag only reduces the language matrix; it still calls models. Tutorial 21 mocks tools, not model responses. Tutorial 22 also requires a running cloud-ctl HTTP server. Run these suites explicitly when their services and credentials are configured.
 
 ## Documentation & Reports
 
-- **[Historical QA Report](./REPORT.md)**: Includes an earlier API coverage cross-reference, tutorial execution logs, and tracked bug reports; it is not a coverage audit of v0.14.0.
+- **[Historical QA Report](./REPORT.md)**: Includes an earlier API coverage cross-reference, tutorial execution logs, and tracked bug reports; it is not a coverage audit of v0.20.0.
 - **[Stress Test Details](./19_stress_tests)**: Deep dive into the 49+ tests that ensure library stability.
 - **[Capability Test Reports](./20_capability_test/reports)**: Multi-model regression results across reasoning and formatting tasks (generated locally, not checked in).
 
