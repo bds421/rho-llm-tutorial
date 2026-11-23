@@ -1,5 +1,12 @@
 # Changelog
 
+## v0.4.1 — 2026-11-23
+
+### Changed
+
+- Every module requires rho-llm v0.20.1, which writes the cache marker of a
+  tool result on the Anthropic wire. No tutorial changes.
+
 ## v0.4.0 — 2026-11-18
 
 ### Added
