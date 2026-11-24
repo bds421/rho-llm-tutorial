@@ -9,7 +9,7 @@ import (
 
 const okBody = `{"candidates":[{"content":{"parts":[{"text":"ok"}]},"finishReason":"STOP"}],"usageMetadata":{"promptTokenCount":3,"candidatesTokenCount":1}}`
 
-// What thinkingLevel reaches the wire, per model: xhigh exists on Hydrogen only,
+// What thinkingLevel reaches the wire, per model: xhigh exists on Hydrogen and Neon,
 // "minimal" is a 400 on 3.8 Flash / 3.7 Flash / every Gemini 4 so it becomes
 // "low", and levels are never sent together with a budget.
 func TestThinkingLevelOnTheWire(t *testing.T) {
@@ -23,6 +23,9 @@ func TestThinkingLevelOnTheWire(t *testing.T) {
 		{"gemini-4-hydrogen", llm.ThinkingHigh, "high"},
 		{"gemini-4-hydrogen", llm.ThinkingMedium, "medium"},
 		{"gemini-4-hydrogen", llm.ThinkingMinimal, "low"},
+		{"gemini-4-neon", llm.ThinkingXHigh, "xhigh"},
+		{"gemini-4-neon", llm.ThinkingMax, "xhigh"},
+		{"gemini-4-neon", llm.ThinkingMinimal, "low"},
 		{"gemini-4-carbon", llm.ThinkingXHigh, "high"},
 		{"gemini-4-carbon", llm.ThinkingMax, "high"},
 		{"gemini-4-carbon", llm.ThinkingMinimal, "low"},
@@ -138,7 +141,7 @@ func TestMaxOutputTokensPaddingPerModel(t *testing.T) {
 func TestUnregisteredGemini4ModelGetsGemini4Rules(t *testing.T) {
 	f := newFake(t, jsonReply(okBody))
 	// The factory refuses a model with no reviewed metadata, so declare it.
-	c := geminiClient(t, f, "gemini-4-neon", func(c *llm.Config) {
+	c := geminiClient(t, f, "gemini-4-krypton", func(c *llm.Config) {
 		c.ModelCapabilities = llm.Capabilities(llm.CapabilityChat, llm.CapabilityStream, llm.CapabilityReasoning)
 	})
 	req := userReq("hi")

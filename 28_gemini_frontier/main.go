@@ -46,7 +46,7 @@ func main() {
 	// Step 1: The Gemini 4 rows in the registry, and what a turn costs
 	// =========================================================================
 	fmt.Println("=== Step 1: registry rows and cost ===")
-	for _, id := range []string{"gemini-4-carbon", "gemini-4-hydrogen", "gemini-3.8-flash"} {
+	for _, id := range []string{"gemini-4-carbon", "gemini-4-hydrogen", "gemini-4-neon", "gemini-3.8-flash"} {
 		info, ok := llm.GetModelInfo(id)
 		if !ok {
 			fmt.Printf("  %-18s not in the registry\n", id)

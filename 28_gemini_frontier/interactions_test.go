@@ -227,6 +227,7 @@ func TestInteractionsThinkingLevelPerModel(t *testing.T) {
 		{"gemini-3.8-flash", llm.ThinkingMax, "high"},
 		{"gemini-4-hydrogen", llm.ThinkingXHigh, "xhigh"},
 		{"gemini-4-hydrogen", llm.ThinkingMinimal, "low"},
+		{"gemini-4-neon", llm.ThinkingXHigh, "xhigh"},
 		{"gemini-4-carbon", llm.ThinkingXHigh, "high"},
 		{"gemini-4-carbon", llm.ThinkingMedium, "medium"},
 	}

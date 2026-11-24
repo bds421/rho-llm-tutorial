@@ -1,5 +1,19 @@
 # Changelog
 
+## v0.4.2 — 2026-11-24
+
+### Changed
+
+- Every module requires rho-llm v0.20.2: Gemini 4 Neon, content parts in their
+  original order on OpenAI-compatible hosts and the Responses API, and a
+  registry sweep that defaults belong to their own provider family.
+- 28 `28_gemini_frontier`: Gemini 4 Neon in the registry, cost and thinking
+  tests (`xhigh` on Neon like Hydrogen, on both protocols). The
+  unregistered-Gemini-4 test now uses a made-up ID, since Neon is registered.
+- 20 `20_capability_test`: the IQ test config lists every current Gemini chat
+  model (3.5 Flash, 3.5 Flash Lite, 3.6/3.7 Flash, 3.1 Pro custom tools,
+  4 Neon) and two `gemini-interactions` entries.
+
 ## v0.4.1 — 2026-11-23
 
 ### Changed

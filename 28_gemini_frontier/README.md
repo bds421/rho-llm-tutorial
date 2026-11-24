@@ -5,7 +5,7 @@ Covers what rho-llm v0.19.0 and v0.20.0 added for Google's newest surface.
 | Topic | Behaviour |
 |---|---|
 | Models | `gemini-4-carbon`, `gemini-4-hydrogen` (1,048,576-token window; `ModelInfo.MaxTokens` is the *per-request* output limit) |
-| Thinking levels | `xhigh` exists on Hydrogen only (`ThinkingXHigh`/`ThinkingMax` send `high` elsewhere). `minimal` is a 400 on 3.8 Flash, 3.7 Flash and every Gemini 4 model, so it is sent as `low`. |
+| Thinking levels | `xhigh` exists on Hydrogen and Neon (`ThinkingXHigh`/`ThinkingMax` send `high` elsewhere). `minimal` is a 400 on 3.8 Flash, 3.7 Flash and every Gemini 4 model, so it is sent as `low`. |
 | Caching | Gemini 4 has no explicit caching: `Request.CachedContent` is refused before the request. |
 | Long decode | A Gemini 4 hop can end with `finishReason: CONTINUATION` + `continuationToken`. The adapter resends the same request with the token (top level, contents unchanged), joins text and tool calls, sums usage, stops at 64 hops (reported as `max_tokens`). Works for `Complete` and `Stream`. |
 | Finish reasons | `ESCALATION`, `PUP_LIMITED_DISABLED` -> `refusal`; `MISSING_THOUGHT_SIGNATURE`, `MALFORMED_RESPONSE` -> `error`; `RawStopReason` keeps the original. |

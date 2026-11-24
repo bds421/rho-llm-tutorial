@@ -161,7 +161,7 @@ func TestEffortRefusedOnGemini(t *testing.T) {
 // The Gemini 4 rows exist in the registry with sane shape: per-request output
 // limit below the context window (long decode continues past it).
 func TestGemini4RegistryRows(t *testing.T) {
-	for _, id := range []string{"gemini-4-carbon", "gemini-4-hydrogen"} {
+	for _, id := range []string{"gemini-4-carbon", "gemini-4-hydrogen", "gemini-4-argon", "gemini-4-neon"} {
 		info, ok := llm.GetModelInfo(id)
 		if !ok {
 			t.Fatalf("%s missing from the registry", id)
@@ -177,6 +177,11 @@ func TestGemini4RegistryRows(t *testing.T) {
 	got := llm.EstimateCost(llm.CostInput{Model: "gemini-4-hydrogen", InputTokens: 1_000_000, OutputTokens: 1_000_000, CacheReadTokens: 1_000_000})
 	if want := 1.50 + 7.50 + 0.075; got < want-1e-9 || got > want+1e-9 {
 		t.Errorf("cost = %v, want %v", got, want)
+	}
+	// Neon (2026-11-18): $3 / $15, cache read $0.15.
+	got = llm.EstimateCost(llm.CostInput{Model: "gemini-4-neon", InputTokens: 1_000_000, OutputTokens: 1_000_000, CacheReadTokens: 1_000_000})
+	if want := 3.00 + 15.00 + 0.15; got < want-1e-9 || got > want+1e-9 {
+		t.Errorf("neon cost = %v, want %v", got, want)
 	}
 	// Hostile inputs never produce a negative or NaN estimate.
 	if c := llm.EstimateCost(llm.CostInput{Model: "gemini-4-carbon", InputTokens: -5, OutputTokens: llm.TokensNotReported}); c != 0 {
